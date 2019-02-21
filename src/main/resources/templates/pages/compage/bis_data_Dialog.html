@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+ <div th:fragment="bis_data_dialog">
+	<!--  BayArea dialogs-->
+	<div id="bis_data_Dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 id="bis_data_Dialog_title" class="modal-title">
+						参数修改
+					</h4>
+				</div>
+				<!--Modal header-->
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="control-group col-md-6 col-sm-6 col-lg-6" style="padding-left: 0px">
+							<label class="control-label col-xs-5 col-lg-5 col-md-5 col-sm-5" for="dia_dataCateSel">
+								<s:message code="DATA_CATE_TAG" />
+							</label>
+							<div class="col-xs-7 col-lg-7 col-md-7 col-sm-7">
+								<input type="text" id="dia_dataCateTxt" class="form-control" readonly>
+							</div>
+						</div>
+						<div class="form-group col-md-6 col-sm-6 col-lg-6">
+							<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 col-md-push-4" >
+								<label id="dia_cateDescSpn" class="help-inline"></label>
+							</div>
+						</div>
+
+					</form>
+		
+					<div class="row">
+						<form id="dataForm" class="form-horizontal">
+							<div id="dia_dataIDDiv" class="control-group col-md-6 dia_class">
+								<label id="dia_dataIDLbl" class="control-label col-xs-5 col-lg-5 col-md-5 col-sm-5" for="dia_dataIdTxt"> 参数代码
+								</label>
+								<div class="col-xs-7 col-lg-7 col-md-7 col-sm-7">
+									<input type="text" id="dia_dataIdTxt" class="form-control" maxlength="10" rel="tooltip" data-original-title="必须输入不超过10位的字符">
+								</div>
+							</div>
+							<div id="dia_dataExtDiv" class="control-group col-md-6 dia_class">
+								<label id="dia_dataExtLbl" class="control-label col-xs-5" for="dia_dataExtTxt"> 参数拓展码
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_dataExtTxt" class="form-control" maxlength="50" rel="tooltip" data-original-title="必须输入不超过50位的字符">
+								</div>
+							</div>
+							<div id="dia_dataItemDiv" class="control-group col-md-6 dia_class">
+								<label id="dia_dataItemLbl" class="control-label col-xs-5" for="dia_dataItemTxt">  参数项
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_dataItemTxt" class="form-control" maxlength="10" rel="tooltip" data-original-title="必须输入不超过10位的字符"/>
+								</div>
+							</div>
+							<div id="dia_dataDescDiv" class="control-group col-md-6 dia_class">
+								<label id="dia_dataDescLbl" class="control-label col-xs-5" for="dia_dataDescTxt"> 参数描述
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_dataDescTxt" class="form-control" maxlength="60" rel="tooltip" data-original-title="必须输入不超过60位的字符"/>
+								</div>
+							</div>
+							<div id="dia_ext1Div" class="control-group col-md-6 dia_class">
+								<label id="dia_ext1Lbl" class="control-label col-xs-5" for="dia_ext1Txt">EXT_1
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_ext1Txt" class="form-control" maxlength="40" rel="tooltip" data-original-title="必须输入不超过40位的字符"/>
+								</div>
+							</div>
+							<div id="dia_ext2Div" class="control-group col-md-6 dia_class">
+								<label id="dia_ext2Lbl" class="control-label col-xs-5" for="dia_ext2Txt">EXT_2
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_ext2Txt" class="form-control" maxlength="40" rel="tooltip" data-original-title="必须输入不超过40位的字符"/>
+								</div>
+							</div>
+							<div id="dia_ext3Div" class="control-group col-md-6 dia_class">
+								<label id="dia_ext3Lbl" class="control-label col-xs-5" for="dia_ext3Txt">EXT_3
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_ext3Txt" class="form-control" maxlength="40" rel="tooltip" data-original-title="必须输入不超过40位的字符"/>
+								</div>
+							</div>
+							<div id="dia_ext4Div" class="control-group col-md-6 dia_class">
+								<label id="dia_ext4Lbl" class="control-label col-xs-5" for="dia_ext4Txt">EXT_4
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_ext4Txt" class="form-control" maxlength="40" rel="tooltip" data-original-title="必须输入不超过40位的字符"/>
+								</div>
+							</div>
+							<div id="dia_ext5Div" class="control-group col-md-6 dia_class">
+								<label id="dia_ext5Lbl" class="control-label col-xs-5" for="dia_ext5Txt">EXT_5
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_ext5Txt" class="form-control" maxlength="40" rel="tooltip" data-original-title="必须输入不超过40位的字符"/>
+								</div>
+							</div>
+
+							<div id="dia_ext6Div" class="control-group col-md-6 dia_class">
+								<label id="dia_ext6Lbl" class="control-label col-xs-5" for="dia_ext6Txt">EXT_6
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_ext6Txt" class="form-control" maxlength="40" rel="tooltip" data-original-title="必须输入不超过40位的字符"/>
+								</div>
+							</div>
+
+							<div id="dia_ext7Div" class="control-group col-md-6 dia_class">
+								<label id="dia_ext7Lbl" class="control-label col-xs-5" for="dia_ext7Txt">EXT_7
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_ext7Txt" class="form-control" maxlength="40" rel="tooltip" data-original-title="必须输入不超过40位的字符"/>
+								</div>
+							</div>
+
+							<div id="dia_ext8Div" class="control-group col-md-6 dia_class">
+								<label id="dia_ext8Lbl" class="control-label col-xs-5" for="dia_ext8Txt">EXT_8
+								</label>
+								<div class="col-xs-7">
+									<input type="text" id="dia_ext8Txt" class="form-control" maxlength="40" rel="tooltip" data-original-title="必须输入不超过40位的字符"/>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--Modal body-->
+				<div class="modal-footer">
+					<a id="bisDataDialog_cancelBtn" class="btn" data-dismiss="modal">取消
+					</a> <a id="bisDataDialog_f5update_Btn" class="btn btn-primary"> 保存
+					</a>
+				</div>
+				<!--Modal footer-->
+			</div>
+		</div>
+	</div>
+ </div>
+	<!--Modal-->
+
+</body>
+</html>

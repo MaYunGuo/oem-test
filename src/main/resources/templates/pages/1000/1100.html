@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <title th:text="#{M_1100_BASE_DATA_TAG}"></title>
+	<head th:include="compage/comCss::commCss"></head>
+	<span th:include="compage/comJs :: commJs"></span>
+	<script th:src="@{js/pages/1000/1100.js?v=2017040701}"></script>
+	<script th:src="@{js/dialog/bis_data_6300_Dialog.js?v=2017040701}"></script>
+</head>
+<body>
+    <div th:include="compage/navbar :: ComTop"></div>
+	<div class="container-fluid">
+		<div class="col-lg-12 btnDivCss">
+			<button class="btn btn-info"    id="query_btn"          th:text="#{QUERY_BTN_TAG}"></button>
+			<button class="btn btn-primary" id="add_btn"            th:text="#{ADD_PARAMTER__BTN_TAG}"></button>
+			<button class="btn btn-primary" id="addDataCate_btn"    th:text="#{ADD_PARAMTER_CATE_BTN_TAG}"></button>
+			<button class="btn btn-warning" id="updateDataCate_btn" th:text="#{UPDATE_PARAMTER_CATE_BTN_TAG}"></button>
+			<button class="btn btn-danger"  id="deleteDataCate_btn" th:text="#{DELETE_PARAMTER_CATE_BTN_TAG}"></button>
+		</div>
+		<div class="col-lg-12">
+			<div class="cardBox cardBoxTable noPosition" style="border: none;">
+				<div class="tab" role="tabpane">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist" style="border: none;">
+						<li role="presentation" class="active">
+							<a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
+								<i class="fa fa-table" th:text="#{PARAMTER_INFO_TAG}"></i>
+							</a>
+						</li>
+					</ul>
+					<!-- Tab panes -->
+					<div class="tab-content tabs">
+						<div role="tabpane" class="tab-pane fade in active" id="tab1">
+							<div class="col-lg-12">
+								<form id="dataForm" class="form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-lg-2" for="dataCateSel" th:text="#{PARAMTER_CATE_TAG}"></label>
+										<div class="col-lg-3">
+											<select id="dataCateSel" class="form-control"></select>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div id="dataListDiv" class="col-lg-12" style="padding-left: 0; padding-right: 0;">
+								<table id="dataListGrd"></table>
+								<div id="dataListPg"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 新增Data Cate Dialog -->
+	<div id="addDataCateDialog"
+		 class="modal fade myDialog"
+		 tabindex="-1"
+		 role="dialog"
+		 aria-labelledby="title"
+		 data-backdrop="static"
+		 aria-hidden="true"
+		 data-keyboard="false"
+	>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 id="addDataCateDialog_title" class="modal-title" th:text="#{ADD_PARAMTER_CATE_BTN_TAG}"></h4>
+				</div>
+				<!--Modal header-->
+				<div class="modal-body">
+					<form id="addDatacateDialog_dataCateForm" class="form-horizontal row">
+						<label class="control-label col-lg-4 keyClass" for="addDataCateDialog_dataCateTxt" th:text="#{PARAMTER_CATE_TAG}">
+						</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dataCateTxt" class="form-control" maxlength="10" rel="tooltip" data-original-title="必须输入不超过10位的非中文字符"
+								onKeyUp="value=value.replace(/[\W]/g,'')"/>
+						</div>
+						<label class="control-label col-lg-4 keyClass" for="addDataCateDialog_dataDescTxt" th:text="#{PARAMTER_DESC_TAG}">
+						</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dataDescTxt" class="form-control" maxlength="60" />
+						</div>
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_data_IdTxt">第一列含义(data_id)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_data_IdTxt" class="form-control" maxlength="20" />
+						</div>
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_data_ExtTxt">第二列含义(data_ext)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_data_ExtTxt" class="form-control" maxlength="20" />
+						</div>
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_data_ItemTxt">第三列含义(data_item)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_data_ItemTxt" class="form-control" maxlength="20" />
+						</div>
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_1Txt">第四列含义(ext_1)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_1Txt" class="form-control" maxlength="20" />
+						</div>
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_2Txt">第五列含义(ext_2)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_2Txt" class="form-control" maxlength="20" />
+						</div>
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_3Txt">第六列含义(ext_3)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_3Txt" class="form-control" maxlength="20" />
+						</div>
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_4Txt">第七列含义(ext_4)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_4Txt" class="form-control" maxlength="20" />
+						</div>
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_5Txt">第八列含义(ext_5)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_5Txt" class="form-control" maxlength="20" />
+						</div>
+
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_6Txt">第九列含义(ext_6)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_6Txt" class="form-control" maxlength="20" />
+						</div>
+
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_7Txt">第十列含义(ext_7)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_7Txt" class="form-control" maxlength="20" />
+						</div>
+
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_8Txt">第十一列含义(ext_8)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_8Txt" class="form-control" maxlength="20" />
+						</div>
+
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_9Txt">第十二列含义(ext_9)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_9Txt" class="form-control" maxlength="20" />
+						</div>
+
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_ext_10Txt">第十三列含义(ext_10)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_ext_10Txt" class="form-control" maxlength="20" />
+						</div>
+
+						<label class="control-label col-lg-4" for="addDataCateDialog_dsc_data_DscTxt">第十四列含义(data_dsc)</label>
+						<div class="col-lg-6">
+							<input type="text" id="addDataCateDialog_dsc_data_DscTxt" class="form-control" maxlength="20" />
+						</div>
+					</form>
+				</div>
+				<!--Modal body-->
+				<div class="modal-footer">
+					<a id="addDatacateDialog_cancelBtn" class="btn" data-dismiss="modal" th:text="#{CANCEL_BTN_TAG}"></a>
+					<a id="addDatacateDialog_addDateCateBtn" class="btn btn-primary" th:text="#{CONFIRM_BTN_TAG}"></a>
+				</div>
+				<!--Modal footer-->
+			</div>
+		</div>
+	</div>
+	<!-- 删除Data Cate Dialog -->
+	<div id="deleteDataCateDialog" class="modal fade myDialog" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" th:text="#{PARAMTER_DELETE_TAG}"></h4>
+				</div>
+				<!--Modal header-->
+				<div class="modal-body">
+					<div class="row">
+						<form id="deleteDataCateDialog_dataForm" class="form-horizontal row">
+							<label class="control-label col-lg-3" for="deleteDataCateDialog_dataCateSel" th:text="#{PARAMTER_CATE_TAG}"></label>
+							<div class="col-lg-6">
+								<select id="deleteDataCateDialog_dataCateSel" class="form-control"></select>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--Modal body-->
+				<div class="modal-footer">
+					<a id="deleteDatacateDialog_cancelBtn" class="btn" data-dismiss="modal" th:text="#{CANCEL_BTN_TAG}"></a>
+					<a id="deleteDatacateDialog_deleteDateCateBtn" class="btn btn-danger" th:text="#{DELETE_BTN_TAG}"></a>
+				</div>
+				<!--Modal footer-->
+			</div>
+		</div>
+	</div>
+	<div th:include="compage/bis_data_Dialog :: bis_data_dialog"></div>
+
+</body>
+</html>

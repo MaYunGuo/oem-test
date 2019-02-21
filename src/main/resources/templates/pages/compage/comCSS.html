@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment = "commCss">
+    <link rel="stylesheet" media="screen" th:href="@{lib/bootstrap-3.3.5-dist/css/bootstrap.min.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{lib/jquery-ui-1.9.2.custom/css/smoothness/jquery-ui-1.9.2.custom.min.css}" />
+
+    <!-- fileinput 上传 -->
+    <link rel="stylesheet" type="text/css" th:href="@{lib/fileinput/css/fileinput.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{lib/jquery-ui-1.9.2.custom/development-bundle/themes/redmond/jquery.ui.theme.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{lib/jquery-ui-1.9.2.custom/development-bundle/themes/redmond/jquery-ui.css}" />
+
+    <!-- jqgrid -->
+    <link rel="stylesheet" media="screen" th:href="@{lib/jquery.jqGrid-4.4.1/css/ui.jqgrid.css}"   />
+    <link rel="stylesheet" type="text/css" th:href="@{css/ui-icon.css}" ></link>
+
+    <link rel="stylesheet" th:href="@{lib/font-awesome-4.7.0/css/font-awesome.min.css}"/>
+
+    <link rel="stylesheet" th:href="@{lib/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css}" >
+    <link rel="stylesheet" th:href="@{lib/select2-4.0.2/dist/css/select2.min.css}" >
+    <link rel="stylesheet" th:href="@{lib/select2-bootstrap-theme-0.1.0-beta.4/dist/select2-bootstrap.min.css}" >
+    <link rel="stylesheet" th:href="@{lib/HubSpot-messenger/build/css/messenger-theme-future.css}" >
+    <link rel="stylesheet" th:href="@{lib/HubSpot-messenger/build/css/messenger.css}" >
+    <!-- switch -->
+    <link rel="stylesheet" type="text/css" th:href="@{lib/switch/bootstrap-switch.css}"/>
+
+    <!-- 日历 -->
+    <link rel="stylesheet" type="text/css" th:href="@{lib/fullcalendar/fullcalendar.css}" />
+
+    <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+
+        #skin{
+            height: 127px;
+        }
+        #skin li {
+            list-style: none;
+            border: 1px solid #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+            position: relative;
+            top: -5px;
+        }
+        #skin li:hover {
+            /*      padding: 5px 10px;
+                  background-color: #f9f9f9;
+                  opacity: 0.9;*/
+        }
+        .selected6{
+            border:1px solid red;
+        }
+        #skin_0{
+            background-color:rgb(199,237,204);
+        }
+        #skin_1{
+            background-color:#ccccccba;
+        }
+        #skin_2{
+            background-color: #f8a9b1;
+        }
+        #skin_3{
+            background-color: #ABD3F6;
+        }
+
+        .keyCss:after {
+            float:right;
+            content: '*';
+            color: red;
+        }
+        .keyClass {
+            color: blue;
+            font-weight: bold;
+        }
+        .keyClass:after {
+            content: '*';
+            color: red;
+        }
+        .ui-jqgrid-btable .ui-state-highlight {
+            background: #0090ff; /*#86caff;*/
+        }
+        /*Set Row Bg*/
+        .bg-reset{
+            background: #FFFFFF;
+        }
+        .text-center{
+            text-align: center;
+        }
+        /*  .bg-reset{
+              background: #FFFFFF;
+          }
+          .bg-found{
+              background: #00EE00;
+          }*/
+        .errorAlert {
+            color:rgb(255,0,0)
+        }
+        .hide{
+            display:none;
+        }
+        .btnDivCss {
+            position: relative;
+            top: -5px;
+        }
+        .borderCss {
+            border: 1px solid ;
+            overflow:auto;
+        }
+        .marginT10{
+            margin-top: 10px;
+        }
+        .marginB10{
+            margin-bottom: 10px;
+        }
+        .marginL10{
+            margin-left: 10px;
+        }
+        .marginR10{
+            margin-right: 10px;
+        }
+
+        legend{
+            border: none;
+        }
+        .marginL5{
+            margin-left: 5px;
+        }
+        table {
+            border-spacing: 0;
+            border-collapse: separate;
+        }
+        .altClass{
+            background: #fffcdb;
+        }
+        /*    .form-group {
+              margin-top: -10px;
+          }*/
+        .cardBox{
+            clear: both;
+            border: 1px solid #c7c7c7;
+            border-radius: 5px;
+            position: absolute;
+            margin-top: 10px;
+        }
+        .tab{
+            margin-top: -3px;
+        }
+        .tab .nav-tabs{
+        }
+
+
+        .tab .nav-tabs li.active a{
+            opacity: 1;
+        }
+
+        .tab .nav-tabs li a i,
+        .tab .nav-tabs li.active a i{
+            display: inline-block;
+            padding-right: 5px;
+            font-size: 15px;
+            text-shadow: none;
+        }
+        .tab .nav-tabs li a span{
+            display: inline-block;
+            font-size: 14px;
+            letter-spacing: -9px;
+            opacity: 0;
+            transition: all 0.3s ease 0s;
+        }
+        .tab .nav-tabs li a:hover span,
+        .tab .nav-tabs li.active a span{
+            letter-spacing: 1px;
+            opacity: 1;
+            transition: all 0.3s ease 0s;
+        }
+        .tab .tab-content{
+            padding: 10px;
+            background: #fff;
+            border: 2px solid #d4d4d4;
+            display:inline-block;
+            _zoom:1;_display:inline;
+            width:100%;
+        }
+        .tab .tab-content h3{
+            font-size: 24px;
+            margin-top: 0;
+        }
+        @media only screen and (max-width: 479px){
+            .tab .nav-tabs li{
+                text-align: center;
+            }
+            .tab .nav-tabs li a span{
+                letter-spacing: 1px;
+                opacity: 1;
+            }
+        }
+        .noPosition{
+            position: relative;
+        }
+        .ui-jqgrid-bdiv{
+            min-height:60px;
+        }
+    </style>
+</head>
+</html>
