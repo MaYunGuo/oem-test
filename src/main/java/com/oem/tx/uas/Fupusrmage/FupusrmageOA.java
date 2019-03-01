@@ -1,10 +1,12 @@
-package com.oem.tx.uas.usermage;
+package com.oem.tx.uas.Fupusrmage;
 
-public class UsermageOA {
+public class FupusrmageOA {
     private String usr_id;
     private String usr_name;
     private String usr_type;
     private String usr_fty;
+    private String usr_phone;
+    private String usr_mail;
     private String admin_flg;
 
     public String getUsr_id() {
@@ -37,6 +39,22 @@ public class UsermageOA {
 
     public void setUsr_fty(String usr_fty) {
         this.usr_fty = usr_fty;
+    }
+
+    public String getUsr_phone() {
+        return usr_phone;
+    }
+
+    public void setUsr_phone(String usr_phone) {
+        this.usr_phone = usr_phone;
+    }
+
+    public String getUsr_mail() {
+        return usr_mail;
+    }
+
+    public void setUsr_mail(String usr_mail) {
+        this.usr_mail = usr_mail;
     }
 
     public String getAdmin_flg() {

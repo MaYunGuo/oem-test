@@ -25,12 +25,17 @@ public class GenericDef {
     public static final char ACTION_FLG_QUERY = 'Q';
     public static final char ACTION_FLG_SEARCH = 'S';
     public static final char ACTION_FLG_UPDATE = 'U';
+    public static final char ACTION_FLG_MODIFY = 'M';
     public static final char ACTION_FLG_ADD = 'A';
     public static final char ACTION_FLG_DELETE = 'D';
+    public static final char ACTION_FLG_REMOVE = 'R';
     public static final char ACTION_FLG_INQUIRE = 'I';
     public static final char ACTION_FLG_ADD_NEW_CATE = 'N'; //新增
     public static final char ACTION_FLG_UPDATE_NEW_CATE = 'R'; //更新
     public static final char ACTON_FLG_DELETE_NEW_CATE='C'; //删除
+    public static final char ACTION_FLG_CREAT = 'C';
+    public static final char ACTION_FLG_BIND ='B';
+
 
 
 
@@ -46,7 +51,8 @@ public class GenericDef {
     /**
      * 1. TRX名称
      */
-    public static final String TX_USERMAGE = "USERMAGE";
+    public static final String TX_FUPUSRMAGE = "FUPUSRMAGE";
+    public static final String TX_FUPFNCMAGE = "FUPFNCMAGE";
     public static final String TX_FBPBISDATA = "FBPBISDATA";
     public static final String TX_FBPBISFATY = "FBPBISFATY";
 
@@ -55,15 +61,18 @@ public class GenericDef {
     /**
      * 2. service对应错误代码
      */
-    public static final long E_USERMAGE = 1000100;
-    public static final long E_USERMAGE_INVALID_INPUT = E_USERMAGE + 1;
+    public static final long E_FUPUSRMAGE = 1000100;
+    public static final long E_FUPUSRMAGE_INVALID_INPUT = E_FUPUSRMAGE + 1;
 
 
     public static final long E_FBPBISDATA = 1000200;
     public static final long E_FBPBISDATA_INVALID_INPUT = E_FBPBISDATA + 1;
 
     public static final long E_FBPBISFATY = 1000300;
-    public static final long E_FBPBISFATY_INVALID_INPUT = E_FBPBISDATA + 1;
+    public static final long E_FBPBISFATY_INVALID_INPUT = E_FBPBISFATY + 1;
+
+    public static final long E_FUPFNCMAGE = 1000400;
+    public static final long E_FUPFNCMAGE_INVALID_INPUT = E_FUPFNCMAGE + 1;
 
 
 
@@ -86,6 +95,10 @@ public class GenericDef {
     public static final long E_BIS_DATA = 3000100;
     public static final long E_BIS_USER = 3000200;
     public static final long E_BIS_FACTORY = 3000300;
+    public static final long E_BIS_FUNC_GRP = 3000400;
+    public static final long E_BIS_FUNC_CODE = 3000500;
+    public static final long E_BIS_GRP_FUNC = 3000600;
+    public static final long E_BIS_USR_GRP = 3000700;
 
 
 

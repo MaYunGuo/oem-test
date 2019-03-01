@@ -3,7 +3,6 @@ package com.oem.service.brm.impl;
 import com.oem.dao.IBisDataRepository;
 import com.oem.entity.Bis_data;
 import com.oem.service.brm.IFbpbisdataService;
-import com.oem.service.uas.impl.UsermageService;
 import com.oem.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

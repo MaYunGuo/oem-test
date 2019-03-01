@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  */
 
 @Entity
-public class Bis_usr_grp implements Serializable {
+public class Bis_usr_grp extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -22,7 +22,7 @@ public class Bis_usr_grp implements Serializable {
     @Column(name = "EVT_USR", length = 15)
     private String evt_usr;
 
-    @Column(name="EVT_TIMESTAMP", length = 19)
+    @Column(name="EVT_TIMESTAMP", length = 25)
     private Timestamp evt_timestamp;
 
     public Bis_usr_grpId getId() {
@@ -57,5 +57,12 @@ public class Bis_usr_grp implements Serializable {
 
     public void setEvt_timestamp(Timestamp evt_timestamp) {
         this.evt_timestamp = evt_timestamp;
+    }
+
+
+    public Bis_usr_grp(){}
+
+    public Bis_usr_grp(Bis_usr_grpId id){
+        this.id = id;
     }
 }

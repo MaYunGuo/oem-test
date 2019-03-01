@@ -17,14 +17,14 @@ public class DateUtil {
 
     public static String getEvtTime() {
         Calendar now = Calendar.getInstance();
-        SimpleDateFormat tempDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat tempDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String evt_timestamp = tempDate.format(now.getTime());
         return evt_timestamp;
     }
 
     public static Timestamp getCurrentTimestamp() {
         Calendar now = Calendar.getInstance();
-        SimpleDateFormat tempDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat tempDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String evt_timestamp = tempDate.format(now.getTime());
         Timestamp timestatmp = null;
         try {

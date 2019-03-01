@@ -5,7 +5,7 @@ import com.oem.entity.Bis_user;
 
 import java.util.List;
 
-public interface IUsermageService extends IBaseServiceInterface{
+public interface IFupusrmageService extends IBaseServiceInterface{
     Bis_user getBisUser(String usr_id);
 
     List<String> getUserFuncCode(Bis_user bis_user);

@@ -1,6 +1,6 @@
-package com.oem.tx.uas.usermage;
+package com.oem.tx.uas.Fupusrmage;
 
-public class UsermageIA {
+public class FupusrmageIA {
     private String usr_id;
     private String usr_name;
     private String usr_type;

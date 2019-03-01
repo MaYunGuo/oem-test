@@ -10,11 +10,10 @@ import java.sql.Timestamp;
  */
 
 @Entity
-public class Bis_func_grp implements Serializable {
+public class Bis_func_grp extends BaseEntity implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "GROUP_ID", length = 40)
     private String group_id;
 
@@ -27,7 +26,7 @@ public class Bis_func_grp implements Serializable {
     @Column(name = "EVT_USR", length = 15)
     private String evt_usr;
 
-    @Column(name = "EVT_TIMESTAMP", length = 19)
+    @Column(name = "EVT_TIMESTAMP", length = 25)
     private Timestamp evt_timestamp;
 
     public String getGroup_id() {

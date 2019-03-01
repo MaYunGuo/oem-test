@@ -28,7 +28,7 @@ public class Bis_factory extends BaseEntity implements Serializable {
     @Column(name = "EVT_USR", length = 10)
     private String evt_usr;
 
-    @Column(name = "EVT_TIMESTAMP", length = 10)
+    @Column(name = "EVT_TIMESTAMP", length = 25)
     private Timestamp evt_timestamp;
 
 

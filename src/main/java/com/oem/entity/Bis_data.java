@@ -57,7 +57,7 @@ public class Bis_data extends BaseEntity implements Serializable {
     @Column(name="EVT_USR", length = 10)
     private String evt_usr;
 
-    @Column(name="EVT_TIMESTAMP", length = 19)
+    @Column(name="EVT_TIMESTAMP", length = 25)
     private Timestamp evt_timestamp;
 
     public String getData_seq_id() {

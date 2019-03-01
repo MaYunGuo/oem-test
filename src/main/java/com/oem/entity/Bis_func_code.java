@@ -11,10 +11,9 @@ import java.sql.Timestamp;
  */
 
 @Entity
-public class Bis_func_code implements Serializable {
+public class Bis_func_code extends BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="FUNC_CODE", length = 40)
     private String func_code;
 
@@ -30,7 +29,7 @@ public class Bis_func_code implements Serializable {
     @Column(name="EVT_USR", length = 15)
     private String evt_usr;
 
-    @Column(name="EVT_TIMESTAMP", length = 19)
+    @Column(name="EVT_TIMESTAMP", length = 25)
     private Timestamp evt_timestamp;
 
     public String getFunc_code() {

@@ -1,7 +1,7 @@
 package com.oem.controller;
 
 import com.oem.entity.Bis_user;
-import com.oem.service.uas.IUsermageService;
+import com.oem.service.uas.IFupusrmageService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -12,17 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @Controller
 public class LoginController {
 
     @Autowired
-    private IUsermageService usermageService;
+    private IFupusrmageService usermageService;
 
     @RequestMapping("/login.do")
     public String login(HttpServletRequest request, HttpServletResponse response){

@@ -1,6 +1,7 @@
 package com.oem.base.dao;
 
 import com.oem.entity.BaseEntity;
+import com.oem.entity.Bis_func_grp;
 import com.oem.entity.Bis_user;
 
 import javax.persistence.EntityManager;

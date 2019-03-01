@@ -1,7 +1,7 @@
 package com.oem.resolve;
 
 import com.oem.entity.Bis_user;
-import com.oem.service.uas.IUsermageService;
+import com.oem.service.uas.IFupusrmageService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -14,7 +14,7 @@ import java.util.List;
 public class MyRealm extends AuthorizingRealm {
     //用于用户查询
     @Autowired
-    private IUsermageService usermageService;
+    private IFupusrmageService usermageService;
 
     //角色权限和对应权限添加
     @Override

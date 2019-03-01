@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var VAL = {
-        T_USERMAGE : "USERMAGE",
+        T_FUPUSRMAGE : "FUPUSRMAGE",
         T_FBPBISDATA : "FBPBISDATA",
         NORMAL : "0000000",
         EVT_USR : $("#userId").text(),
@@ -65,25 +65,26 @@ $(document).ready(function(){
             usr_id = rowData.usr_id;
 
             inObj = {
-                trx_id : VAL.T_USERMAGE,
+                trx_id : VAL.T_FUPUSRMAGE,
                 action_flg : "Q",
                 evt_usr : VAL.EVT_USR,
-                iary : [{
+                iaryA : [{
                     usr_id : usr_id
                 }]
             };
             outObj = comTrxSubSendPostJson(inObj);
             if (outObj.rtn_code == VAL.NORMAL) {
-                oary = outObj.oary[0];
+                oary = outObj.oaryA[0];
                 if (!oary) {
                     return false;
                 }
 
                 domObj.$usrIdTxt.val(oary.usr_id);
                 domObj.$usrNameTxt.val(oary.usr_name);
-                domObj.$phoneTxt.val(oary.usr_sms);
-                domObj.$telTxt.val(oary.usr_phs);
+                domObj.$phoneTxt.val(oary.usr_phone);
                 domObj.$mailTxt.val(oary.usr_mail);
+                SelectDom.setSelect(domObj.$usrTypeSel, oary.usr_type);
+                SelectDom.setSelect(domObj.$usrFtySel, oary.usr_fty);
                 if (oary.valid_flg === "Y") {
                     domObj.$validFlg.attr('checked','checked');
                 }else {
@@ -212,7 +213,7 @@ $(document).ready(function(){
                 admin_flg    :    adminFlg,
             }
             inObj = {
-                trx_id : VAL.T_USERMAGE,
+                trx_id : VAL.T_FUPUSRMAGE,
                 action_flg : actionFlg,
                 evt_usr : VAL.EVT_USR,
                 iary : [iary]
@@ -257,7 +258,7 @@ $(document).ready(function(){
         }
 
         var inTrxObj ={
-            trx_id     : VAL.T_USERMAGE ,
+            trx_id     : VAL.T_FUPUSRMAGE ,
             action_flg : "Q"        ,
             evt_usr    : VAL.EVT_USR,
             iary       : [iary]
@@ -265,7 +266,7 @@ $(document).ready(function(){
 
         var  outTrxObj = comTrxSubSendPostJson(inTrxObj);
         if(  outTrxObj.rtn_code == _NORMAL ) {
-            setGridInfo(outTrxObj.oary,"#usrListGrd");
+            setGridInfo(outTrxObj.oaryA,domObj.$usrListGrd);
             $('#usrSelectDialog').modal("hide");
         }
     }

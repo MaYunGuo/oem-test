@@ -72,43 +72,38 @@
         <div class=" collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">首页</a></li>
+                <shiro:hasAnyPermissions name = "PAGE_1100,PAGE_1200">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">基础<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li shiro:hasPermission="PAGE_1100">
+                                <a target="_blank" href="pageRedict.do?page=1000/1100" th:text="#{M_1100_BASE_DATA_TAG}"></a>
+                            </li>
+                            <li shiro:hasPermission="PAGE_1200">
+                                <a target="_blank" href="pageRedict.do?page=1000/1200" th:text="#{M_1200_OEM_TAG}" ></a>
+                            </li>
+                        </ul>
+                    </li>
+                </shiro:hasAnyPermissions>
+                <shiro:hasAnyPermissions name = "PAGE_2100,PAGE_2200,PAGE_2300">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限管理<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li shiro:hasPermission="PAGE_2100" >
+                                <a target="_blank" href="pageRedict.do?page=2000/2100"  th:text="#{M_2100_USR_MANAGE_TAG}"></a>
+                            </li>
+                            <li shiro:hasPermission="PAGE_2200">
+                                <a target="_blank" href="pageRedict.do?page=2000/2200" th:text="#{M_2200_USR_AUTH_MANAGE_TAG}"></a>
+                            </li>
+                            <li shiro:hasPermission="PAGE_2300">
+                                <a target="_blank" href="pageRedict.do?page=2000/2300" th:text="#{M_2300_AUTH_MANAGE_TAG}"></a>
+                            </li>
+                        </ul>
+                    </li>
+                </shiro:hasAnyPermissions>
 
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">基础<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a target="_blank" href="pageRedict.do?page=1000/1100" >
-                            参数配置管理
-                        </a></li>
-                        <li><a target="_blank" href="pageRedict.do?page=1000/1200" >
-                            代工厂管理
-                        </a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">3<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+
                     </ul>
-                </li>
-
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">权限管理<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li shiro:hasPermission="PAGE_2100" >
-                            <a target="_blank" href="pageRedict.do?page=2000/2100" >用户管理</a>
-                        </li>
-                        <li shiro:hasPermission="PAGE_2100">
-                            <a target="_blank" href="pageRedict.do?page=2000/2200" >用户权限管理</a>
-                        </li>
-                        <li shiro:hasPermission="PAGE_2100">
-                            <a target="_blank" href="pageRedict.do?page=2000/2300" >权限管理</a>
-                        </li>
-                        <li shiro:hasPermission="PAGE_2100">
-                            <a target="_blank" href="pageRedict.do?page=2000/2400" >权限组管理</a>
-                        </li>
-                        <li shiro:hasPermission="PAGE_2100">
-                            <a target="_blank" href="pageRedict.do?page=2000/2500" >权限群组绑定</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">3<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-
-                   </ul>
-
                 </li>
             </ul>
         </div>
