@@ -2,7 +2,7 @@ package com.oem.service.brm.impl;
 
 import com.oem.dao.IBisFactoryRepository;
 import com.oem.entity.Bis_factory;
-import com.oem.quartz.QuartzJob;
+import com.oem.quartz.QuartzIvDateJob;
 import com.oem.quartz.QuartzService;
 import com.oem.service.brm.IFbpbisfatyService;
 import com.oem.tx.brm.Fbpbisfaty.FbpbisfatyI;
@@ -19,7 +19,6 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.oem.comdef.GenericDef.*;
@@ -141,7 +140,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
             bisFactoryRepository.save(bis_factory);
 
             String conExcepssion = getConExpession(fbpbisfatyIA.getAnls_rate(), fbpbisfatyIA.getAnls_unit());
-            quartzService.addJob(QuartzJob.class, fbpbisfatyIA.getFaty_id(), Scheduler.DEFAULT_GROUP, conExcepssion, fbpbisfatyIA.getFaty_id());
+            quartzService.addJob(QuartzIvDateJob.class, fbpbisfatyIA.getFaty_id(), Scheduler.DEFAULT_GROUP, conExcepssion, fbpbisfatyIA.getFaty_id());
 
             FbpbisfatyOA fbpbisfatyOA = new FbpbisfatyOA();
             fbpbisfatyOA.setFaty_id(fbpbisfatyIA.getFaty_id());

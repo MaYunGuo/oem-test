@@ -113,6 +113,10 @@ public class DateUtil {
         return null;
     }
 
+    public static Timestamp Date2Timestamp(Date date){
+         return new Timestamp(date.getTime());
+    }
+
     public static String Date2String(Date date, String strMySQLTimeFormat) {
         SimpleDateFormat sdf = new SimpleDateFormat(strMySQLTimeFormat);
         return sdf.format(date);

@@ -29,7 +29,7 @@ public class QuartzListener implements ApplicationRunner {
            for(int i=0;i<bisFactoryList.size();i++){
                Bis_factory bis_factory = bisFactoryList.get(i);
               String conEcepssion = getConExpession(bis_factory.getAnls_rate(),bis_factory.getAnls_unit(),i+1);
-              quartzService.addJob(QuartzJob.class, bis_factory.getFaty_id(), Scheduler.DEFAULT_GROUP, conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzIvDateJob.class, bis_factory.getFaty_id(), Scheduler.DEFAULT_GROUP, conEcepssion, bis_factory.getFaty_id());
            }
         }
 
