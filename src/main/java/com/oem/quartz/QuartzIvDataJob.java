@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class QuartzIvDateJob extends QuartzJobBean {
+public class QuartzIvDataJob extends QuartzJobBean {
 
     private LogUtils logUtils;
 
@@ -29,7 +29,7 @@ public class QuartzIvDateJob extends QuartzJobBean {
     @Transactional
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
-        logUtils = new LogUtils(QuartzIvDateJob.class);
+        logUtils = new LogUtils(QuartzIvDataJob.class);
 
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         String task_name = (String) dataMap.get("task_name");
@@ -76,7 +76,7 @@ public class QuartzIvDateJob extends QuartzJobBean {
                        ret_lot_info.setMeas_timestamp(DateUtil.Date2Timestamp(row.getCell(9).getDateCellValue()));
                        retLotInfoRepository.save(ret_lot_info);
                    }
-                   backExcelFile(ivFile);
+                   FileUtil.backExcelFile(ivFile);
                } catch (Exception e) {
                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                    logUtils.info(task_name +"解析IV数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
@@ -85,16 +85,6 @@ public class QuartzIvDateJob extends QuartzJobBean {
         }
         long endTimes = System.currentTimeMillis();
         logUtils.info(task_name +"IV数据解析完成，总耗时:" +(endTimes -startTimes));
-    }
-
-
-    public void backExcelFile(File excelFile) throws IOException {
-        String fileName = excelFile.getName();
-        String filePath = excelFile.getAbsolutePath();
-        String fileBakPath = filePath.substring(0, filePath.lastIndexOf(File.separator)) + File.separator + "TEMP" + File.separator;
-        File destFile = FileUtil.createFile(fileBakPath, fileName);  //备份
-        FileUtil.copyFile(excelFile, destFile);
-        FileUtil.deleteFile(excelFile);
     }
 }
 

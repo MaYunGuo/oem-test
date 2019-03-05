@@ -99,12 +99,18 @@
                         </ul>
                     </li>
                 </shiro:hasAnyPermissions>
-
+                <shiro:hasAnyPermissions name = "PAGE_3100,PAGE_3200">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">3<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-
-                    </ul>
-                </li>
+                            <li shiro:hasPermission="PAGE_3100" >
+                                <a target="_blank" href="pageRedict.do?page=3000/3100"  th:text="#{M_3100_OQC_DATA_UPLOAD_TAG}"></a>
+                            </li>
+                            <li shiro:hasPermission="PAGE_3200" >
+                                <a target="_blank" href="pageRedict.do?page=3000/3200"  th:text="#{M_3200_SHIP_DATA_UPLOAD_TAG}"></a>
+                            </li>
+                        </ul>
+                     </li>
+                </shiro:hasAnyPermissions>
             </ul>
         </div>
     </div>

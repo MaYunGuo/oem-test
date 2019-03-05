@@ -133,4 +133,13 @@ public class FileUtil {
         bw.close();
     }
 
+    public static void backExcelFile(File excelFile) throws IOException {
+        String fileName = excelFile.getName();
+        String filePath = excelFile.getAbsolutePath();
+        String fileBakPath = filePath.substring(0, filePath.lastIndexOf(File.separator)) + File.separator + "TEMP" + File.separator;
+        File destFile = FileUtil.createFile(fileBakPath, fileName);  //备份
+        FileUtil.copyFile(excelFile, destFile);
+        FileUtil.deleteFile(excelFile);
+    }
+
 }

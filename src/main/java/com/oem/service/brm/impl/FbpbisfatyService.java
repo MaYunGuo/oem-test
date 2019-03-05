@@ -2,7 +2,7 @@ package com.oem.service.brm.impl;
 
 import com.oem.dao.IBisFactoryRepository;
 import com.oem.entity.Bis_factory;
-import com.oem.quartz.QuartzIvDateJob;
+import com.oem.quartz.QuartzIvDataJob;
 import com.oem.quartz.QuartzService;
 import com.oem.service.brm.IFbpbisfatyService;
 import com.oem.tx.brm.Fbpbisfaty.FbpbisfatyI;
@@ -140,7 +140,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
             bisFactoryRepository.save(bis_factory);
 
             String conExcepssion = getConExpession(fbpbisfatyIA.getAnls_rate(), fbpbisfatyIA.getAnls_unit());
-            quartzService.addJob(QuartzIvDateJob.class, fbpbisfatyIA.getFaty_id(), Scheduler.DEFAULT_GROUP, conExcepssion, fbpbisfatyIA.getFaty_id());
+            quartzService.addJob(QuartzIvDataJob.class, fbpbisfatyIA.getFaty_id(), Scheduler.DEFAULT_GROUP, conExcepssion, fbpbisfatyIA.getFaty_id());
 
             FbpbisfatyOA fbpbisfatyOA = new FbpbisfatyOA();
             fbpbisfatyOA.setFaty_id(fbpbisfatyIA.getFaty_id());
