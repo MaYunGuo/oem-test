@@ -80,12 +80,12 @@ public class FbpretboxService implements IFbpretboxService {
             case ACTION_FLG_QUERY:
                 rtn_code = queryFunc(inTrx, outTrx);
                 break;
-            case 'O':
-                rtn_code = setOkFunc(inTrx, outTrx);
+            case 'G':
+                rtn_code = setGradeFunc(inTrx, outTrx);
                 break;
-//            case ACTION_FLG_DELETE:
-//                rtn_code = deleteFunc(inTrx, outTrx);
-//                break;
+            case 'S':
+                rtn_code = setShipFunc(inTrx, outTrx);
+                break;
             default:
                 outTrx.setRtn_code(INVALID_ACTION_FLG);
                 outTrx.setRtn_mesg("无效的操作标识");
@@ -98,9 +98,7 @@ public class FbpretboxService implements IFbpretboxService {
         StringBuffer hql = new StringBuffer("From Ret_box_info where 1=1");
         if (inTrx.getIary() != null) {
             FbpretboxIA iary = inTrx.getIary().get(0);
-//            if (!StringUtil.isSpaceCheck(iary.getBox_id())) {
             hql.append(" and box_id ='").append(iary.getBox_id()).append("'");
-//            }
         }
         List<Ret_box_info> retBoxInfoList = retBox.find(hql.toString());
         List<FbpretboxOA> oary = new ArrayList<>();
@@ -118,13 +116,11 @@ public class FbpretboxService implements IFbpretboxService {
         return _NORMAL;
     }
 
-    public long setOkFunc(FbpretboxI inTrx, FbpretboxO outTrx) {
+    public long setGradeFunc(FbpretboxI inTrx, FbpretboxO outTrx) {
         FbpretboxIA iary = inTrx.getIary().get(0);
         StringBuffer hql = new StringBuffer("From Ret_box_info where 1=1");
         if (inTrx.getIary() != null) {
-//            if (!StringUtil.isSpaceCheck(iary.getBox_id())) {
             hql.append(" and box_id ='").append(iary.getBox_id()).append("'");
-//            }
         }
         List<Ret_box_info> retBoxInfoList = retBox.find(hql.toString());
         retBoxInfoList.get(0).setOqc_grade(iary.getOqc_grade());
@@ -143,6 +139,30 @@ public class FbpretboxService implements IFbpretboxService {
         return _NORMAL;
     }
 
+    public long setShipFunc(FbpretboxI inTrx, FbpretboxO outTrx) {
+        FbpretboxIA iary = inTrx.getIary().get(0);
+        StringBuffer hql = new StringBuffer("From Ret_box_info where 1=1");
+        if (inTrx.getIary() != null) {
+//            if (!StringUtil.isSpaceCheck(iary.getBox_id())) {
+            hql.append(" and box_id ='").append(iary.getBox_id()).append("'");
+//            }
+        }
+        List<Ret_box_info> retBoxInfoList = retBox.find(hql.toString());
+        retBoxInfoList.get(0).setShip_flg(iary.getShip_flg());
+        List<FbpretboxOA> oary = new ArrayList<>();
+        if (retBoxInfoList != null && !retBoxInfoList.isEmpty()) {
+            for (Ret_box_info ret_box_info : retBoxInfoList) {
+                FbpretboxOA fbpretboxOA = new FbpretboxOA();
+                fbpretboxOA.setBox_id(ret_box_info.getBox_id());
+                fbpretboxOA.setOqc_grade(ret_box_info.getOqc_grade());
+                fbpretboxOA.setShip_flg(ret_box_info.getShip_flg());
+                oary.add(fbpretboxOA);
+            }
+        }
+        outTrx.setTbl_cnt(oary.size());
+        outTrx.setOary(oary);
+        return _NORMAL;
+    }
 
 //    public long addFunc(FbpbisfatyI inTrx, FbpbisfatyO outTrx){
 //        List<FbpbisfatyIA> iaryList = inTrx.getIary();

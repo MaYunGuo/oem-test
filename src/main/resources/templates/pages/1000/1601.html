@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{M_1600_OQC_GRADE_TAG}"></title>
+    <title th:text="#{M_1601_OQC_SHIP_TAG}"></title>
     <head th:include="compage/comCss::commCss"></head>
     <span th:include="compage/comJs :: commJs"></span>
-    <script th:src="@{js/pages/1000/1600.js}"></script>
+    <script th:src="@{js/pages/1000/1601.js}"></script>
     <script th:src="@{js/jQuery-File-Upload-9.19.1/js/jquery.fileupload.js}"></script>
     <!--<script th:src="@{js/dialog/bis_data_6300_Dialog.js?v=2017040701}"></script>-->
 </head>
@@ -13,8 +13,8 @@
 <div class="container-fluid">
     <div class="col-lg-12 btnDivCss">
         <button class="btn btn-info" id="query_btn" th:text="#{QUERY_BTN_TAG}"></button>
-        <button class="btn btn-primary" id="ok_btn" th:text="#{OK_BTN_TAG}"></button>
-        <button class="btn btn-primary" id="ng_btn" th:text="#{NG_BTN_TAG}"></button>
+        <button class="btn btn-primary" id="ok_btn" th:text="#{MOVEOUT_BTN_TAG}"></button>
+        <!--<button class="btn btn-primary" id="ng_btn" th:text="#{NG_BTN_TAG}"></button>-->
         <button class="btn btn-warning" id="import_btn" th:text="#{IMPORT_EXC_BTN_TAG}"></button>
         <button class="btn btn-danger" id="download_btn" th:text="#{DOWNLOAD_OQC_EXC_BTN_TAG}"></button>
     </div>
@@ -45,9 +45,9 @@
                         <div class="col-lg-12">
 								<span id="dataForm2" class="form-horizontal">
 									<div class="form-group">
-										<label class="control-label col-lg-2" for="judge_code" th:text="判定结果"></label>
+										<label class="control-label col-lg-2" for="ship_code" th:text="出货结果"></label>
 										<div class="col-lg-3">
-											<input id="judge_code" class="form-control" disabled>
+											<input id="ship_code" class="form-control" disabled>
 										</div>
 									</div>
 								</span>

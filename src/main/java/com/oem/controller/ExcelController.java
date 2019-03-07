@@ -64,7 +64,7 @@ public class ExcelController {
     @RequestMapping(value = "/upload.do")
     @ResponseBody
     @Transactional
-    public String uploadExcel(@RequestParam(value = "file", required = false) MultipartFile file, String trx_id, String action_flg) throws IOException {
+    public String uploadExcel(@RequestParam(value = "file", required = false) MultipartFile file, String trx_id, String action_flg,String data_type) throws IOException {
 
         FbpretboxI inTrx = new FbpretboxI();
         inTrx.setTrx_id(trx_id);
@@ -79,7 +79,7 @@ public class ExcelController {
         outTrx.setRtn_code(RETURN_CODE_OK);
         outTrx.setRtn_mesg(RETURN_MESG_OK);
         try {
-            long rtn_code = uploadFile(inTrx,outTrx);
+            long rtn_code = uploadFile(inTrx,outTrx,data_type);
             if (rtn_code != _NORMAL) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
@@ -141,7 +141,7 @@ public class ExcelController {
     }
 
 
-    public long uploadFile(FbpretboxI inTrx, FbpretboxO outTrx) {
+    public long uploadFile(FbpretboxI inTrx, FbpretboxO outTrx,String data_type) {
         MultipartFile file = inTrx.getFile();
         String fileName = file.getOriginalFilename();
         if (fileName.matches("^.+\\.(?i)((xls)|(xlsx))$")) {
@@ -149,9 +149,12 @@ public class ExcelController {
                 //读取文件
                 Workbook workbook = readFile(file, fileName);
                 //处理数据
-                HashMap<String, String> excelData = getExcelData(workbook);
+                HashMap<String, String> excelData =new HashMap<>();
+                if("M1600".equals(data_type))excelData=getOqcGradeExcelData(workbook);
+                if("M1601".equals(data_type))excelData=getOqcShipExcelData(workbook);
                 //操作数据库
-                updateGradeByExcelData(excelData);
+                if("M1600".equals(data_type)) updateOqcGradeByExcelData(excelData);
+                if("M1601".equals(data_type))updateOqcShipByExcelData(excelData);
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 outTrx.setRtn_code(RETURN_CODE_UNKNOWN);
@@ -165,36 +168,6 @@ public class ExcelController {
             return _ERROR;
         }
         return _NORMAL;
-    }
-
-    private void updateGradeByExcelData(HashMap<String, String> excelData) throws Exception{
-        StringBuffer boxIdList = new StringBuffer();
-        excelData.forEach((box_id, oqc_grade) -> boxIdList.append("'" + box_id + "',"));
-        boxIdList.deleteCharAt(boxIdList.length()-1);
-
-        //判断是否已经判定
-        String existBoxGradeSQL="from Ret_box_info where box_id in("+boxIdList+") and oqc_grade is not null";
-        List<Ret_box_info> existBoxGradeList=retBox.find(existBoxGradeSQL);
-        if(!existBoxGradeList.isEmpty()) throw new Exception("箱号 为 "+existBoxGradeList.get(0).getBox_id()+" 已经判定，请修改EXCEL！");
-
-        //update 已经存在的数据
-        String existBoxSQL="from Ret_box_info where box_id in("+boxIdList+")";
-        List<Ret_box_info> existBoxList=retBox.find(existBoxSQL);
-        existBoxList.forEach(e->{
-            e.setOqc_grade(excelData.get(e.getBox_id()));
-            retBox.update(e);
-            excelData.remove(e.getBox_id());
-        });
-
-        //insert 新数据
-        if(!excelData.isEmpty()){
-            excelData.forEach((box_id, oqc_grade)->{
-                Ret_box_info ret_box_info=new Ret_box_info();
-                ret_box_info.setBox_id(box_id);
-                ret_box_info.setOqc_grade(oqc_grade);
-                retBox.save(ret_box_info);
-            });
-        }
     }
 
 
@@ -213,7 +186,7 @@ public class ExcelController {
         return workbook;
     }
 
-    private HashMap<String, String> getExcelData(Workbook workbook) throws Exception {
+    private HashMap<String, String> getOqcGradeExcelData(Workbook workbook) throws Exception {
         HashMap<String, String> boxGradeList = new HashMap<>();
 
         Sheet sheet = workbook.getSheetAt(0);
@@ -249,4 +222,89 @@ public class ExcelController {
         }
         return boxGradeList;
     }
+
+    private HashMap<String, String> getOqcShipExcelData(Workbook workbook) throws Exception {
+        HashMap<String, String> boxShipList = new HashMap<>();
+
+        Sheet sheet = workbook.getSheetAt(0);
+        if (sheet.getPhysicalNumberOfRows() > 1) {
+            for (int k = 1; k <= sheet.getLastRowNum(); k++) {
+                String box_id;
+                String ship_flg="Y";
+                Row row = sheet.getRow(k);
+                Cell cell0 = row.getCell(0);
+                cell0.setCellType(Cell.CELL_TYPE_STRING);
+                if (cell0 != null && !"".equals(cell0.getStringCellValue())) {
+                    box_id = cell0.getStringCellValue();
+                } else {
+                    throw new Exception("第" + (k + 1) + " 行 箱号 为空,请确认！");
+                }
+                boxShipList.put(box_id, ship_flg);
+            }
+        } else {
+            throw new Exception("Excel 数据 为空,请确认！");
+        }
+        return boxShipList;
+    }
+
+    private void updateOqcGradeByExcelData(HashMap<String, String> excelData) throws Exception{
+        StringBuffer boxIdList = new StringBuffer();
+        excelData.forEach((box_id, oqc_grade) -> boxIdList.append("'" + box_id + "',"));
+        boxIdList.deleteCharAt(boxIdList.length()-1);
+
+        //判断是否已经判定
+        String existBoxGradeSQL="from Ret_box_info where box_id in("+boxIdList+") and oqc_grade is not null";
+        List<Ret_box_info> existBoxGradeList=retBox.find(existBoxGradeSQL);
+        if(!existBoxGradeList.isEmpty()) throw new Exception("箱号 为 "+existBoxGradeList.get(0).getBox_id()+" 已经判定，请修改EXCEL！");
+
+        //update 已经存在的数据
+        String existBoxSQL="from Ret_box_info where box_id in("+boxIdList+")";
+        List<Ret_box_info> existBoxList=retBox.find(existBoxSQL);
+        existBoxList.forEach(e->{
+            e.setOqc_grade(excelData.get(e.getBox_id()));
+            retBox.update(e);
+            excelData.remove(e.getBox_id());
+        });
+
+        //insert 新数据
+        if(!excelData.isEmpty()){
+            excelData.forEach((box_id, oqc_grade)->{
+                Ret_box_info ret_box_info=new Ret_box_info();
+                ret_box_info.setBox_id(box_id);
+                ret_box_info.setOqc_grade(oqc_grade);
+                retBox.save(ret_box_info);
+            });
+        }
+    }
+
+    private void updateOqcShipByExcelData(HashMap<String, String> excelData) throws Exception{
+        StringBuffer boxIdList = new StringBuffer();
+        excelData.forEach((box_id, ship_flg) -> boxIdList.append("'" + box_id + "',"));
+        boxIdList.deleteCharAt(boxIdList.length()-1);
+
+        //判断是否已经出货
+        String existBoxShipSQL="from Ret_box_info where box_id in("+boxIdList+") and ship_flg ='Y'";
+        List<Ret_box_info> existBoxShipList=retBox.find(existBoxShipSQL);
+        if(!existBoxShipList.isEmpty()) throw new Exception("箱号 为 "+existBoxShipList.get(0).getBox_id()+" 已经出货，请修改EXCEL！");
+
+        //update 已经存在的数据
+        String existBoxSQL="from Ret_box_info where box_id in("+boxIdList+")";
+        List<Ret_box_info> existBoxList=retBox.find(existBoxSQL);
+        existBoxList.forEach(e->{
+            e.setShip_flg(excelData.get(e.getBox_id()));
+            retBox.update(e);
+            excelData.remove(e.getBox_id());
+        });
+
+        //insert 新数据
+        if(!excelData.isEmpty()){
+            excelData.forEach((box_id, ship_flg)->{
+                Ret_box_info ret_box_info=new Ret_box_info();
+                ret_box_info.setBox_id(box_id);
+                ret_box_info.setShip_flg(ship_flg);
+                retBox.save(ret_box_info);
+            });
+        }
+    }
+
 }

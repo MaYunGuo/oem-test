@@ -2,7 +2,7 @@
 /*                                                                        */
 /*  System  Name :  ICIM                                                  */
 /*                                                                        */
-/*  Description  :  OQC Grade Management                                   */
+/*  Description  :  OQC ship Management                                   */
 /*                                                                        */
 /*  MODIFICATION HISTORY                                                  */
 /*    Date     Ver     Name          Description                          */
@@ -28,7 +28,7 @@ $(document).ready(function () {
     var domObj = {
         W: $(window),
         $box_id: $("#box_id"),
-        $judge_code: $("#judge_code"),
+        $ship_code: $("#ship_code"),
         $fileinput: $("#fileinput"),
 
         button: {
@@ -60,7 +60,7 @@ $(document).ready(function () {
             var inObj = {
                 trx_id: VAL.T_FBPRETBOX,
                 action_flg: 'Q',
-                qry_type:"Grade",
+                qry_type:"Ship",
                 iary: [iary]
             }
             var outObj = comTrxSubSendPostJson(inObj);
@@ -69,10 +69,10 @@ $(document).ready(function () {
                     showErrorDialog("", "请输入正确的箱号！");
                     return false;
                 }
-                domObj.$judge_code.val(outObj.oary[0].oqc_grade);
+                domObj.$ship_code.val(outObj.oary[0].ship_flg);
             }
         },
-        set_grade_func: function (oqc_grade) {
+        set_ship_func: function (ship_flg) {
             var box_id = domObj.$box_id.val();
             if (!box_id || "" == box_id) {
                 showErrorDialog("", "请输入箱号！");
@@ -86,7 +86,7 @@ $(document).ready(function () {
             var inObj = {
                 trx_id: VAL.T_FBPRETBOX,
                 action_flg: 'Q',
-                qry_type:"Grade",
+                qry_type:"Ship",
                 iary: [iary]
             };
             var outObj = comTrxSubSendPostJson(inObj);
@@ -96,24 +96,24 @@ $(document).ready(function () {
                     return false;
                 }
                 ;
-                if (null != outObj.oary[0].oqc_grade) {
-                    showErrorDialog("", "该箱号已经被判定为" + outObj.oary[0].oqc_grade);
+                if ("Y"== outObj.oary[0].ship_flg) {
+                    showErrorDialog("", "该箱号 已经出货!");
                     return false;
                 }
                 ;
                 //没有判定过的箱子才开始进行判定
                 var iary = {
                     box_id: box_id,
-                    oqc_grade: oqc_grade,
+                    ship_flg: ship_flg,
                 }
                 var inObj2 = {
                     trx_id: VAL.T_FBPRETBOX,
-                    action_flg: 'G',
+                    action_flg: 'S',
                     iary: [iary]
                 };
                 var outObj2 = comTrxSubSendPostJson(inObj2);
                 if (outObj2.rtn_code == _NORMAL) {
-                    showSuccessDialog("判定成功!");
+                    showSuccessDialog("出货成功!");
                 }
             }
         },
@@ -140,7 +140,7 @@ $(document).ready(function () {
 
             $('#fileinput').fileupload({
                 url: "upload.do",
-                formData: {trx_id: VAL.T_FBPRETBOX, action_flg: 'U',data_type:"M1600"},
+                formData: {trx_id: VAL.T_FBPRETBOX, action_flg: 'U',data_type:"M1601"},
                 dataType: 'json',
                 limitMultiFileUploads: 1,
                 add: function (e, data) {
@@ -198,7 +198,7 @@ $(document).ready(function () {
         },
         download_func: function () {
             var filePath = "E:/workspace_oem/oem-jn/src/main/resources/static/excelModel"
-            var fileName = "OQC模板.xlsx";
+            var fileName = "出货模板.xlsx";
 
             if ($("#downForm").length > 0) {
                 $("#downForm").remove();
@@ -224,11 +224,11 @@ $(document).ready(function () {
             btnFunc.query_func();
         });
         domObj.button.$ok_btn.click(function () {
-            btnFunc.set_grade_func("OK");
+            btnFunc.set_ship_func("Y");
         });
-        domObj.button.$ng_btn.click(function () {
-            btnFunc.set_grade_func("NG");
-        });
+        // domObj.button.$ng_btn.click(function () {
+        //     btnFunc.set_ship_func("N");
+        // });
         domObj.button.$import_btn.click(function () {
             btnFunc.import_func();
         });
@@ -236,6 +236,7 @@ $(document).ready(function () {
             btnFunc.download_func();
         });
     };
+
     /**
      * Ini view, data and action bind
      */
@@ -244,5 +245,4 @@ $(document).ready(function () {
     };
 
     initializationFunc();
-    //表格自适应
 });

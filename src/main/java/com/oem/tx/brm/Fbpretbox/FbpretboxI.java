@@ -9,5 +9,6 @@ import java.util.List;
 @Data
 public class FbpretboxI extends BaseI {
     private MultipartFile file;
+    private String qry_type;
     private List<FbpretboxIA> iary;
 }
