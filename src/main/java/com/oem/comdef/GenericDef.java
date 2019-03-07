@@ -55,6 +55,7 @@ public class GenericDef {
     public static final String TX_FUPFNCMAGE = "FUPFNCMAGE";
     public static final String TX_FBPBISDATA = "FBPBISDATA";
     public static final String TX_FBPBISFATY = "FBPBISFATY";
+    public static final String TX_FBPRETBOX = "FBPRETBOX";
 
 
 
