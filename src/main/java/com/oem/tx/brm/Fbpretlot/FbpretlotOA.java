@@ -1,44 +1,24 @@
-package com.oem.entity;
+package com.oem.tx.brm.Fbpretlot;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.io.Serializable;
-import java.sql.Time;
+import com.oem.base.tx.BaseI;
+
 import java.sql.Timestamp;
 
-@Entity
-public class Ret_lot_info extends BaseEntity implements Serializable {
+public class FbpretlotOA extends BaseI {
 
-    @Id
-    @Column(name = "LOT_ID", length = 25)
     private String lot_id;
-    @Column(name = "POWER", columnDefinition = "double(10,4)")
     private Double power;
-    @Column(name = "ISC", columnDefinition = "double(10,4)")
     private Double isc;
-    @Column(name = "VOC", columnDefinition = "double(10,4)")
     private Double voc;
-    @Column(name = "IMP", columnDefinition = "double(10,4)")
     private Double imp;
-    @Column(name = "VMP", columnDefinition = "double(10,4)")
     private Double vmp;
-    @Column(name = "FF", columnDefinition = "double(10,4)")
     private Double ff;
-    @Column(name = "TEMP", columnDefinition = "double(10,4)")
     private Double temp;
-    @Column(name = "cal", length = 255)
     private String cal; //校准版
     private Timestamp meas_timestamp; //测试时间
-    @Column(name = "INS_GRADE", length = 10)
     private String ins_grade;   //终检等级
-    @Column(name = "INS_POWER", length = 10)
     private String ins_power;   //终检功率
-    @Column(name = "INS_COLOR", length = 10)
     private String ins_color;   //终检颜色
-    @Column(name = "EVT_USR", length = 10)
-    private String evt_usr;   //操作人
-    private Timestamp evt_timestamp;   //操作人
     private String pack_box_id;
 
     public String getLot_id() {
@@ -151,21 +131,5 @@ public class Ret_lot_info extends BaseEntity implements Serializable {
 
     public void setPack_box_id(String pack_box_id) {
         this.pack_box_id = pack_box_id;
-    }
-
-    public String getEvt_usr() {
-        return evt_usr;
-    }
-
-    public void setEvt_usr(String evt_usr) {
-        this.evt_usr = evt_usr;
-    }
-
-    public Timestamp getEvt_timestamp() {
-        return evt_timestamp;
-    }
-
-    public void setEvt_timestamp(Timestamp evt_timestamp) {
-        this.evt_timestamp = evt_timestamp;
     }
 }

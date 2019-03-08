@@ -30,7 +30,8 @@ public class Bis_factory extends BaseEntity implements Serializable {
 
     @Column(name = "EVT_TIMESTAMP", length = 25)
     private Timestamp evt_timestamp;
-
+    @Column(name = "DA_RATE")
+    private Integer da_rate;
 
     public String getUnq_seq_id() {
         return unq_seq_id;
@@ -86,5 +87,13 @@ public class Bis_factory extends BaseEntity implements Serializable {
 
     public void setEvt_timestamp(Timestamp evt_timestamp) {
         this.evt_timestamp = evt_timestamp;
+    }
+
+    public Integer getDa_rate() {
+        return da_rate;
+    }
+
+    public void setDa_rate(Integer da_rate) {
+        this.da_rate = da_rate;
     }
 }
