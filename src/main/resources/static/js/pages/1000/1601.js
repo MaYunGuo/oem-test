@@ -27,7 +27,7 @@ $(document).ready(function () {
      */
     var domObj = {
         W: $(window),
-        $box_id: $("#box_id"),
+        $box_no: $("#box_no"),
         $ship_code: $("#ship_code"),
         $fileinput: $("#fileinput"),
 
@@ -48,13 +48,13 @@ $(document).ready(function () {
 
     var btnFunc = {
         query_func: function () {
-            var box_id = domObj.$box_id.val();
-            if (!box_id || "" == box_id) {
+            var box_no = domObj.$box_no.val();
+            if (!box_no || "" == box_no) {
                 showErrorDialog("", "请输入箱号！");
                 return false;
             }
             var iary = {
-                box_id: box_id,
+                box_no: box_no,
             }
 
             var inObj = {
@@ -69,18 +69,18 @@ $(document).ready(function () {
                     showErrorDialog("", "请输入正确的箱号！");
                     return false;
                 }
-                domObj.$ship_code.val(outObj.oary[0].ship_flg);
+                domObj.$ship_code.val(outObj.oary[0].ship_statu);
             }
         },
-        set_ship_func: function (ship_flg) {
-            var box_id = domObj.$box_id.val();
-            if (!box_id || "" == box_id) {
+        set_ship_func: function (ship_statu) {
+            var box_no = domObj.$box_no.val();
+            if (!box_no || "" == box_no) {
                 showErrorDialog("", "请输入箱号！");
                 return false;
             }
             ;
             var iary = {
-                box_id: box_id,
+                box_no: box_no,
             };
 
             var inObj = {
@@ -96,15 +96,15 @@ $(document).ready(function () {
                     return false;
                 }
                 ;
-                if ("Y"== outObj.oary[0].ship_flg) {
+                if ("Y"== outObj.oary[0].ship_statu) {
                     showErrorDialog("", "该箱号 已经出货!");
                     return false;
                 }
                 ;
                 //没有判定过的箱子才开始进行判定
                 var iary = {
-                    box_id: box_id,
-                    ship_flg: ship_flg,
+                    box_no: box_no,
+                    ship_statu: ship_statu,
                 }
                 var inObj2 = {
                     trx_id: VAL.T_FBPRETBOX,

@@ -1,8 +1,9 @@
 package com.oem.service.brm.impl;
 
 import com.oem.dao.IBisFactoryRepository;
+import com.oem.dao.IOemPrdBoxRepository;
 import com.oem.dao.IRetBoxInfoRepository;
-import com.oem.entity.Ret_box_info;
+import com.oem.entity.Oem_prd_box;
 import com.oem.quartz.QuartzService;
 import com.oem.service.brm.IFbpretboxService;
 import com.oem.tx.brm.Fbpretbox.FbpretboxI;
@@ -35,7 +36,7 @@ public class FbpretboxService implements IFbpretboxService {
     private LogUtils logUtils;
 
     @Autowired
-    private IRetBoxInfoRepository retBox;
+    private IOemPrdBoxRepository oemPrdBox;
 
     @Autowired
     private QuartzService quartzService;
@@ -95,19 +96,19 @@ public class FbpretboxService implements IFbpretboxService {
     }
 
     public long queryFunc(FbpretboxI inTrx, FbpretboxO outTrx) {
-        StringBuffer hql = new StringBuffer("From Ret_box_info where 1=1");
+        StringBuffer hql = new StringBuffer("From Oem_prd_box where 1=1");
         if (inTrx.getIary() != null) {
             FbpretboxIA iary = inTrx.getIary().get(0);
-            hql.append(" and box_id ='").append(iary.getBox_id()).append("'");
+            hql.append(" and box_no ='").append(iary.getBox_no()).append("'");
         }
-        List<Ret_box_info> retBoxInfoList = retBox.find(hql.toString());
+        List<Oem_prd_box> oemPrdBoxInfoList = oemPrdBox.find(hql.toString());
         List<FbpretboxOA> oary = new ArrayList<>();
-        if (retBoxInfoList != null && !retBoxInfoList.isEmpty()) {
-            for (Ret_box_info ret_box_info : retBoxInfoList) {
+        if (oemPrdBoxInfoList != null && !oemPrdBoxInfoList.isEmpty()) {
+            for (Oem_prd_box oem_prd_box : oemPrdBoxInfoList) {
                 FbpretboxOA fbpretboxOA = new FbpretboxOA();
-                fbpretboxOA.setBox_id(ret_box_info.getBox_id());
-                fbpretboxOA.setOqc_grade(ret_box_info.getOqc_grade());
-                fbpretboxOA.setShip_flg(ret_box_info.getShip_flg());
+                fbpretboxOA.setBox_no(oem_prd_box.getBox_no());
+                fbpretboxOA.setOqc_grade(oem_prd_box.getOqc_grade());
+                fbpretboxOA.setShip_statu(oem_prd_box.getShip_statu());
                 oary.add(fbpretboxOA);
             }
         }
@@ -118,19 +119,19 @@ public class FbpretboxService implements IFbpretboxService {
 
     public long setGradeFunc(FbpretboxI inTrx, FbpretboxO outTrx) {
         FbpretboxIA iary = inTrx.getIary().get(0);
-        StringBuffer hql = new StringBuffer("From Ret_box_info where 1=1");
+        StringBuffer hql = new StringBuffer("From Oem_prd_box where 1=1");
         if (inTrx.getIary() != null) {
-            hql.append(" and box_id ='").append(iary.getBox_id()).append("'");
+            hql.append(" and box_no ='").append(iary.getBox_no()).append("'");
         }
-        List<Ret_box_info> retBoxInfoList = retBox.find(hql.toString());
-        retBoxInfoList.get(0).setOqc_grade(iary.getOqc_grade());
+        List<Oem_prd_box> oemPrdBoxInfoList = oemPrdBox.find(hql.toString());
+        oemPrdBoxInfoList.get(0).setOqc_grade(iary.getOqc_grade());
         List<FbpretboxOA> oary = new ArrayList<>();
-        if (retBoxInfoList != null && !retBoxInfoList.isEmpty()) {
-            for (Ret_box_info ret_box_info : retBoxInfoList) {
+        if (oemPrdBoxInfoList != null && !oemPrdBoxInfoList.isEmpty()) {
+            for (Oem_prd_box oem_prd_box : oemPrdBoxInfoList) {
                 FbpretboxOA fbpretboxOA = new FbpretboxOA();
-                fbpretboxOA.setBox_id(ret_box_info.getBox_id());
-                fbpretboxOA.setOqc_grade(ret_box_info.getOqc_grade());
-                fbpretboxOA.setShip_flg(ret_box_info.getShip_flg());
+                fbpretboxOA.setBox_no(oem_prd_box.getBox_no());
+                fbpretboxOA.setOqc_grade(oem_prd_box.getOqc_grade());
+                fbpretboxOA.setShip_statu(oem_prd_box.getShip_statu());
                 oary.add(fbpretboxOA);
             }
         }
@@ -141,21 +142,21 @@ public class FbpretboxService implements IFbpretboxService {
 
     public long setShipFunc(FbpretboxI inTrx, FbpretboxO outTrx) {
         FbpretboxIA iary = inTrx.getIary().get(0);
-        StringBuffer hql = new StringBuffer("From Ret_box_info where 1=1");
+        StringBuffer hql = new StringBuffer("From Oem_prd_box where 1=1");
         if (inTrx.getIary() != null) {
-//            if (!StringUtil.isSpaceCheck(iary.getBox_id())) {
-            hql.append(" and box_id ='").append(iary.getBox_id()).append("'");
+//            if (!StringUtil.isSpaceCheck(iary.getBox_no())) {
+            hql.append(" and box_no ='").append(iary.getBox_no()).append("'");
 //            }
         }
-        List<Ret_box_info> retBoxInfoList = retBox.find(hql.toString());
-        retBoxInfoList.get(0).setShip_flg(iary.getShip_flg());
+        List<Oem_prd_box> oemPrdBoxInfoList = oemPrdBox.find(hql.toString());
+        oemPrdBoxInfoList.get(0).setShip_statu(iary.getShip_statu());
         List<FbpretboxOA> oary = new ArrayList<>();
-        if (retBoxInfoList != null && !retBoxInfoList.isEmpty()) {
-            for (Ret_box_info ret_box_info : retBoxInfoList) {
+        if (oemPrdBoxInfoList != null && !oemPrdBoxInfoList.isEmpty()) {
+            for (Oem_prd_box oem_prd_box : oemPrdBoxInfoList) {
                 FbpretboxOA fbpretboxOA = new FbpretboxOA();
-                fbpretboxOA.setBox_id(ret_box_info.getBox_id());
-                fbpretboxOA.setOqc_grade(ret_box_info.getOqc_grade());
-                fbpretboxOA.setShip_flg(ret_box_info.getShip_flg());
+                fbpretboxOA.setBox_no(oem_prd_box.getBox_no());
+                fbpretboxOA.setOqc_grade(oem_prd_box.getOqc_grade());
+                fbpretboxOA.setShip_statu(oem_prd_box.getShip_statu());
                 oary.add(fbpretboxOA);
             }
         }
@@ -164,111 +165,4 @@ public class FbpretboxService implements IFbpretboxService {
         return _NORMAL;
     }
 
-//    public long addFunc(FbpbisfatyI inTrx, FbpbisfatyO outTrx){
-//        List<FbpbisfatyIA> iaryList = inTrx.getIary();
-//        if(iaryList == null || iaryList.isEmpty()){
-//           outTrx.setRtn_code(E_FBPBISFATY_INVALID_INPUT + _SPACE);
-//           outTrx.setRtn_mesg("请输入要添加的代工厂信息");
-//           return _ERROR;
-//        }
-//        List<FbpbisfatyOA> oaryList = new ArrayList<>();
-//        for(FbpbisfatyIA fbpbisfatyIA : iaryList){
-//            Bis_factory bis_factory = bisFactoryRepository.get(fbpbisfatyIA.getFaty_id());
-//            if(bis_factory != null){
-//                outTrx.setRtn_code(E_BIS_FACTORY + E_ADD_EXIST + _SPACE);
-//                outTrx.setRtn_mesg("代工厂[" + fbpbisfatyIA.getFaty_id() +"]已经存在，请确认");
-//                return _ERROR;
-//            }
-//            bis_factory = new Bis_factory();
-//            bis_factory.setUnq_seq_id(AppContext.getCurrEventNumber());
-//            bis_factory.setFaty_id(fbpbisfatyIA.getFaty_id());
-//            bis_factory.setFaty_name(fbpbisfatyIA.getFaty_name());
-//            bis_factory.setAnls_rate(fbpbisfatyIA.getAnls_rate());
-//            bis_factory.setAnls_unit(fbpbisfatyIA.getAnls_unit());
-//            bis_factory.setEvt_usr(inTrx.getEvt_usr());
-//            bis_factory.setEvt_timestamp(DateUtil.getCurrentTimestamp());
-//            bisFactoryRepository.save(bis_factory);
-//
-//            String conExcepssion = getConExpession(fbpbisfatyIA.getAnls_rate(), fbpbisfatyIA.getAnls_unit());
-//            quartzService.addJob(QuartzIvDataJob.class, fbpbisfatyIA.getFaty_id(), Scheduler.DEFAULT_GROUP, conExcepssion, fbpbisfatyIA.getFaty_id());
-//
-//            FbpbisfatyOA fbpbisfatyOA = new FbpbisfatyOA();
-//            fbpbisfatyOA.setFaty_id(fbpbisfatyIA.getFaty_id());
-//            fbpbisfatyOA.setFaty_name(fbpbisfatyIA.getFaty_name());
-//            fbpbisfatyOA.setAnls_rate(fbpbisfatyIA.getAnls_rate());
-//            fbpbisfatyOA.setAnls_unit(fbpbisfatyIA.getAnls_unit());
-//            oaryList.add(fbpbisfatyOA);
-//        }
-//        outTrx.setTbl_cnt(oaryList.size());
-//        outTrx.setOary(oaryList);
-//        return _NORMAL;
-//    }
-//    public long updateFunc(FbpbisfatyI inTrx, FbpbisfatyO outTrx) throws SchedulerException {
-//
-//        List<FbpbisfatyIA> iaryList = inTrx.getIary();
-//        if(iaryList == null || iaryList.isEmpty()){
-//            outTrx.setRtn_code(E_FBPBISFATY_INVALID_INPUT + _SPACE);
-//            outTrx.setRtn_mesg("请输入要添加的代工厂信息");
-//            return _ERROR;
-//        }
-//        FbpbisfatyIA fbpbisfatyIA = iaryList.get(0);
-//        String faty_id = fbpbisfatyIA.getFaty_id();
-//        Bis_factory bis_factory = bisFactoryRepository.getWithLock(faty_id);
-//        if(bis_factory == null){
-//            outTrx.setRtn_code(E_BIS_FACTORY + E_READ_NOT_FOUND + _SPACE);
-//            outTrx.setRtn_mesg("没有找到代工厂[" + faty_id +"] 的信息,请确认");
-//            return _ERROR;
-//        }
-//
-//        bis_factory.setFaty_name(fbpbisfatyIA.getFaty_name());
-//        bis_factory.setAnls_rate(fbpbisfatyIA.getAnls_rate());
-//        bis_factory.setAnls_unit(fbpbisfatyIA.getAnls_unit());
-//        bis_factory.setEvt_usr(inTrx.getEvt_usr());
-//        bis_factory.setEvt_timestamp(DateUtil.getCurrentTimestamp());
-//        bisFactoryRepository.update(bis_factory);
-//
-//        String conExcepssion = getConExpession(fbpbisfatyIA.getAnls_rate(), fbpbisfatyIA.getAnls_unit());
-//        quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), Scheduler.DEFAULT_GROUP, conExcepssion);
-//
-//        return _NORMAL;
-//    }
-//    public long deleteFunc(FbpbisfatyI inTrx, FbpbisfatyO outTrx) throws SchedulerException {
-//        List<FbpbisfatyIA> iaryList = inTrx.getIary();
-//        if(iaryList == null || iaryList.isEmpty()){
-//            outTrx.setRtn_code(E_FBPBISFATY_INVALID_INPUT + _SPACE);
-//            outTrx.setRtn_mesg("请输入要删除的代工厂信息");
-//            return _ERROR;
-//        }
-//
-//        for(FbpbisfatyIA fbpbisfatyIA : iaryList){
-//            Bis_factory bis_factory = bisFactoryRepository.get(fbpbisfatyIA.getFaty_id());
-//            if(bis_factory != null){
-//                bis_factory.setEvt_usr(inTrx.getEvt_usr());
-//                bis_factory.setEvt_timestamp(DateUtil.getCurrentTimestamp());
-//                bisFactoryRepository.delete(bis_factory);
-//                quartzService.deleteJob(bis_factory.getFaty_id(), Scheduler.DEFAULT_GROUP);
-//            }
-//        }
-//        return _NORMAL;
-//    }
-//
-//    public String getConExpession(int anls_rate, String anls_unit){
-//       StringBuffer conExcepssion = new StringBuffer("* * * * * ?");
-//       List<Bis_factory> bis_factories = bisFactoryRepository.find("From Bis_factory where 1=1");
-//       int jobSize = bis_factories.size()+1;
-//       int startSecond = jobSize%60;
-//       if("S".equals(anls_unit)){
-//           String newCon = startSecond + "/" + anls_rate;
-//           conExcepssion.replace(0, 1, newCon);
-//       }else if("M".equals(anls_unit)){
-//           String newCon = "0/" + anls_rate;
-//           conExcepssion.replace(0,1, String.valueOf(startSecond));
-//           conExcepssion.replace(2,3, newCon);
-//       }else if("H".equals(anls_unit)){
-//           String newCon = "0/" + anls_rate;
-//           conExcepssion.replace(0,1, String.valueOf(startSecond));
-//           conExcepssion.replace(4,5, newCon);
-//       }
-//       return conExcepssion.toString();
-//    }
 }

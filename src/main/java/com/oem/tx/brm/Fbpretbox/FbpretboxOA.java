@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class FbpretboxOA {
-    private String box_id;
+    private String box_no;
     private String oqc_grade;
-    private String ship_flg;
+    private String ship_statu;
 
 }
