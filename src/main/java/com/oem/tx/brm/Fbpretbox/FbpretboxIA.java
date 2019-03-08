@@ -1,37 +1,28 @@
 package com.oem.tx.brm.Fbpretbox;
 
 
+import com.oem.entity.Oem_image_path;
+import com.oem.entity.Oem_mtrl_use;
+import com.oem.entity.Oem_prd_lot;
 import lombok.Data;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class FbpretboxIA {
 
-    //oem_prd_lot
-    private String lot_no;//主键
-    private String iv_power;//功率
-    private String iv_isc;//ISC
-    private String iv_voc;//VOC
-    private String iv_imp;//IMP
-    private String iv_vmp;//VMP
-    private String iv_ff;//FF
-    private String iv_tmper;//温度
-    private String iv_adj_versioni;//校准版
-    private String iv_timestamp;//IV测试时间
-    private String final_grade;//等级
-    private String final_power_lvl;//功率档
-    private String final_color_lvl;//颜色档
-
-    //ret_box
+    //ret_box 以Box_no 为主
     private String box_no;//主键
     private String oqc_grade;//OQC等级
     private String ship_statu;//出货
 
-    //oem_mtrl_use
-//    private String iv_voc;//扣料信息
+    private String lot_no;
 
-    //image path
-    private String path;//IV/EL3
-    private String img_ope;//IV图片/EL3图片
+    //oem_prd_lot 根据Box_no 串lot 一对多
+    private List<LotInfo> lotList;
+
 
 
 

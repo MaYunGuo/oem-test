@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{M_1700_OEM_DATA_TAG}"></title>
+    <head th:include="compage/comCss::commCss"></head>
+    <span th:include="compage/comJs :: commJs"></span>
+    <script th:src="@{js/pages/1000/1700.js}"></script>
+    <script th:src="@{js/jQuery-File-Upload-9.19.1/js/jquery.fileupload.js}"></script>
+    <!--<script th:src="@{js/dialog/bis_data_6300_Dialog.js?v=2017040701}"></script>-->
+</head>
+<body>
+<div th:include="compage/navbar :: ComTop"></div>
+<div class="container-fluid">
+    <div class="col-lg-12 btnDivCss">
+        <button class="btn btn-info" id="query_btn" th:text="#{QUERY_BTN_TAG}"></button>
+    </div>
+    <div class="col-lg-12">
+        <div class="cardBox cardBoxTable noPosition" style="border: none;">
+            <div class="tab" role="tabpane">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" style="border: none;">
+                    <li role="presentation" class="active">
+                        <a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
+                            <i class="fa fa-table" th:text="#{PARAMTER_INFO_TAG}"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content tabs">
+                    <div role="tabpane" class="tab-pane fade in active" id="tab1">
+                        <div class="col-lg-6">
+								<span id="dataForm" class="form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-lg-2" for="box_no" th:text="箱号"></label>
+										<div class="col-lg-3">
+											<input id="box_no" class="form-control">
+										</div>
+									</div>
+								</span>
+                        </div>
+                        <div class="col-lg-6">
+								<span id="dataForm2" class="form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-lg-2" for="lot_no" th:text="批次号"></label>
+										<div class="col-lg-3">
+											<input id="lot_no" class="form-control">
+										</div>
+									</div>
+								</span>
+                        </div>
+                        <div id="dataListDiv" class="col-lg-12" style="padding-left: 0; padding-right: 0;">
+                            <table id="dataListGrd"></table>
+                            <div id="dataListPg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- file 选择 模态框 -->
+<div id="mtrlDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+    <div class="modal-dialog" style="width:850px;">
+        <div class="modal-content">
+            <!-- 模框头部 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h4 class="modal-title">扣料详细信息</h4>
+            </div>
+            <!-- 模框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form_group">
+                <div id="mtrlListDiv" class="col-lg-12" style="padding-left: 0; padding-right: 0;">
+                    <table id="mtrlListGrd"></table>
+                    <div id="mtrlListPg"></div>
+                </div>
+            </div>
+                </div>
+            </div>
+            <!-- 模框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"
+                        id="mtrlDialog_cancelBtn">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

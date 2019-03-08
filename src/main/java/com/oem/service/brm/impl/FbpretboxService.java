@@ -1,23 +1,14 @@
 package com.oem.service.brm.impl;
 
-import com.oem.dao.IBisFactoryRepository;
-import com.oem.dao.IOemPrdBoxRepository;
-import com.oem.dao.IRetBoxInfoRepository;
+import com.oem.dao.*;
+import com.oem.entity.Oem_image_path;
+import com.oem.entity.Oem_mtrl_use;
 import com.oem.entity.Oem_prd_box;
+import com.oem.entity.Oem_prd_lot;
 import com.oem.quartz.QuartzService;
 import com.oem.service.brm.IFbpretboxService;
-import com.oem.tx.brm.Fbpretbox.FbpretboxI;
-import com.oem.tx.brm.Fbpretbox.FbpretboxIA;
-import com.oem.tx.brm.Fbpretbox.FbpretboxO;
-import com.oem.tx.brm.Fbpretbox.FbpretboxOA;
+import com.oem.tx.brm.Fbpretbox.*;
 import com.oem.util.*;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +28,12 @@ public class FbpretboxService implements IFbpretboxService {
 
     @Autowired
     private IOemPrdBoxRepository oemPrdBox;
+    @Autowired
+    private IOemPrdLotRepository oemPrdLot;
+    @Autowired
+    private IOemMtrlUseRepository oemMtrlUse;
+    @Autowired
+    private IOemImagePathRepository oemImagePath;
 
     @Autowired
     private QuartzService quartzService;
@@ -86,6 +83,9 @@ public class FbpretboxService implements IFbpretboxService {
                 break;
             case 'S':
                 rtn_code = setShipFunc(inTrx, outTrx);
+                break;
+            case 'A':
+                rtn_code = queryOemFunc(inTrx, outTrx);
                 break;
             default:
                 outTrx.setRtn_code(INVALID_ACTION_FLG);
@@ -163,6 +163,73 @@ public class FbpretboxService implements IFbpretboxService {
         outTrx.setTbl_cnt(oary.size());
         outTrx.setOary(oary);
         return _NORMAL;
+    }
+
+    //BOX LOT   是一对多(必定有1个值不为空)   先找 BOX
+    public long queryOemFunc(FbpretboxI inTrx, FbpretboxO outTrx) {
+        FbpretboxIA iary = inTrx.getIary().get(0);
+        List<FbpretboxOA> oary = new ArrayList<>();
+
+        String box_no = iary.getBox_no();
+        String lot_no = iary.getLot_no();
+        if (StringUtil.isSpaceCheck(box_no)) {
+            String findBoxNoSQL = "From Oem_prd_lot where 1=1 and lot_no='" + lot_no + "'";
+            List<Oem_prd_lot> box = oemPrdLot.find(findBoxNoSQL);
+            if(box.isEmpty()){
+                outTrx.setTbl_cnt(0);
+                return _NORMAL;
+            }
+            box_no = box.get(0).getBox_no();
+        }
+
+        //查Box
+        FbpretboxOA fbpretboxOA = new FbpretboxOA();
+        String findBoxSQL = "From Oem_prd_box where 1=1 and box_no ='" + box_no + "'";
+        List<Oem_prd_box> oemPrdBoxList = oemPrdBox.find(findBoxSQL);
+        if(oemPrdBoxList.isEmpty()){
+            outTrx.setTbl_cnt(0);
+            return _NORMAL;
+        }
+        fbpretboxOA.setBox_no(oemPrdBoxList.get(0).getBox_no());
+        fbpretboxOA.setOqc_grade(oemPrdBoxList.get(0).getOqc_grade());
+        fbpretboxOA.setShip_statu(oemPrdBoxList.get(0).getShip_statu());
+
+        //查Lot
+        List<LotInfo> lotInfoList = new ArrayList<>();
+        StringBuffer findLotSQL = new StringBuffer("From Oem_prd_lot where 1=1 and box_no='" + box_no + "'");
+        if (!StringUtil.isSpaceCheck(lot_no)) findLotSQL.append(" and lot_no ='").append(lot_no).append("'");
+        List<Oem_prd_lot> oemPrdLotList = oemPrdLot.find(findLotSQL.toString());
+
+        if (!oemPrdLotList.isEmpty()) {
+            oemPrdLotList.forEach(oem_prd_lot -> {
+                LotInfo lot = FbpretboxMapper.INSTANCE.getLotInfo(oem_prd_lot);
+
+                //查mtrl use
+                List<MtrlUseInfo> mtrlUseInfoList = new ArrayList<>();
+                String findMtrlUseSQL = "From Oem_mtrl_use where 1=1 and lot_no='" + lot.getLot_no() + "'";
+                List<Oem_mtrl_use> oemMtrlUseList = oemMtrlUse.find(findMtrlUseSQL);
+                if (!oemMtrlUseList.isEmpty())
+                    mtrlUseInfoList = FbpretboxMapper.INSTANCE.getMtrlUseInfo(oemMtrlUseList);
+                lot.setMtrlUseList(mtrlUseInfoList);
+
+                //查image path
+                String findImagePathSQL = "From Oem_image_path where 1=1 and lot_no='" + lot.getLot_no() + "'";
+                List<Oem_image_path> oemImagePathList = oemImagePath.find(findImagePathSQL);
+                if (!oemImagePathList.isEmpty())
+                    lot.setImagePathList(FbpretboxMapper.INSTANCE.getImagePathInfo(oemImagePathList.get(0)));
+
+                lotInfoList.add(lot);
+            });
+        }
+        fbpretboxOA.setLotList(lotInfoList);
+
+        oary.add(fbpretboxOA);
+
+        outTrx.setTbl_cnt(oary.size());
+        outTrx.setOary(oary);
+        return _NORMAL;
+
+
     }
 
 }
