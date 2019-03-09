@@ -146,7 +146,7 @@ $(document).ready(function(){
                             usr_id : rowData.usr_id
                         }]
                         var inTrxObj={
-                            trx_id     : VAL.T_FAPUASGRP,
+                            trx_id     : VAL.T_FUPUSRMAGE,
                             action_flg : "D"  ,
                             evt_usr    : VAL.EVT_USR,
                             iaryA       : iary
