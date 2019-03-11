@@ -3,164 +3,195 @@ package com.oem.tx.brm.Fbpretlot;
 import com.oem.base.tx.BaseI;
 import com.oem.tx.brm.Fbpbisfaty.FbpbisfatyIA;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
 public class FbpretlotI extends BaseI {
 
-    private String lot_id;
-    private Double power;
-    private Double isc;
-    private Double voc;
-    private Double imp;
-    private Double vmp;
-    private Double ff;
-    private Double temp;
-    private String cal; //校准版
-    private Timestamp meas_timestamp; //测试时间
-    private String ins_grade;   //终检等级
-    private String ins_power;   //终检功率
-    private String ins_color;   //终检颜色
-    private String pack_box_id;
-    private String evt_usr;
-    private Timestamp evt_timestamp;
-    private String box_id;
 
-    public String getLot_id() {
-        return lot_id;
+    private int id;
+    private String box_no;
+    private String oem_id;
+    private String lot_no;
+    private BigDecimal iv_power;
+    private BigDecimal iv_isc;
+    private BigDecimal iv_voc;
+    private BigDecimal iv_imp;
+    private BigDecimal iv_vmp;
+    private BigDecimal iv_ff;
+    private BigDecimal iv_tmper;
+    private String iv_adj_versioni;
+    private Timestamp iv_timestamp;
+    private String final_grade;
+    private String final_power_lvl;
+    private String final_color_lvl;
+    private Timestamp update_timestamp;
+    private String update_user;
+    private Timestamp db_timestamp;
+    private List<FbpretlotIA> iary;
+
+    public int getId() {
+        return id;
     }
 
-    public void setLot_id(String lot_id) {
-        this.lot_id = lot_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Double getPower() {
-        return power;
+    public String getBox_no() {
+        return box_no;
     }
 
-    public void setPower(Double power) {
-        this.power = power;
+    public void setBox_no(String box_no) {
+        this.box_no = box_no;
     }
 
-    public Double getIsc() {
-        return isc;
+    public String getOem_id() {
+        return oem_id;
     }
 
-    public void setIsc(Double isc) {
-        this.isc = isc;
+    public void setOem_id(String oem_id) {
+        this.oem_id = oem_id;
     }
 
-    public Double getVoc() {
-        return voc;
+    public String getLot_no() {
+        return lot_no;
     }
 
-    public void setVoc(Double voc) {
-        this.voc = voc;
+    public void setLot_no(String lot_no) {
+        this.lot_no = lot_no;
     }
 
-    public Double getImp() {
-        return imp;
+    public BigDecimal getIv_power() {
+        return iv_power;
     }
 
-    public void setImp(Double imp) {
-        this.imp = imp;
+    public void setIv_power(BigDecimal iv_power) {
+        this.iv_power = iv_power;
     }
 
-    public Double getVmp() {
-        return vmp;
+    public BigDecimal getIv_isc() {
+        return iv_isc;
     }
 
-    public void setVmp(Double vmp) {
-        this.vmp = vmp;
+    public void setIv_isc(BigDecimal iv_isc) {
+        this.iv_isc = iv_isc;
     }
 
-    public Double getFf() {
-        return ff;
+    public BigDecimal getIv_voc() {
+        return iv_voc;
     }
 
-    public void setFf(Double ff) {
-        this.ff = ff;
+    public void setIv_voc(BigDecimal iv_voc) {
+        this.iv_voc = iv_voc;
     }
 
-    public Double getTemp() {
-        return temp;
+    public BigDecimal getIv_imp() {
+        return iv_imp;
     }
 
-    public void setTemp(Double temp) {
-        this.temp = temp;
+    public void setIv_imp(BigDecimal iv_imp) {
+        this.iv_imp = iv_imp;
     }
 
-    public String getCal() {
-        return cal;
+    public BigDecimal getIv_vmp() {
+        return iv_vmp;
     }
 
-    public void setCal(String cal) {
-        this.cal = cal;
+    public void setIv_vmp(BigDecimal iv_vmp) {
+        this.iv_vmp = iv_vmp;
     }
 
-    public Timestamp getMeas_timestamp() {
-        return meas_timestamp;
+    public BigDecimal getIv_ff() {
+        return iv_ff;
     }
 
-    public void setMeas_timestamp(Timestamp meas_timestamp) {
-        this.meas_timestamp = meas_timestamp;
+    public void setIv_ff(BigDecimal iv_ff) {
+        this.iv_ff = iv_ff;
     }
 
-    public String getIns_grade() {
-        return ins_grade;
+    public BigDecimal getIv_tmper() {
+        return iv_tmper;
     }
 
-    public void setIns_grade(String ins_grade) {
-        this.ins_grade = ins_grade;
+    public void setIv_tmper(BigDecimal iv_tmper) {
+        this.iv_tmper = iv_tmper;
     }
 
-    public String getIns_power() {
-        return ins_power;
+    public String getIv_adj_versioni() {
+        return iv_adj_versioni;
     }
 
-    public void setIns_power(String ins_power) {
-        this.ins_power = ins_power;
+    public void setIv_adj_versioni(String iv_adj_versioni) {
+        this.iv_adj_versioni = iv_adj_versioni;
     }
 
-    public String getIns_color() {
-        return ins_color;
+    public Timestamp getIv_timestamp() {
+        return iv_timestamp;
     }
 
-    public void setIns_color(String ins_color) {
-        this.ins_color = ins_color;
+    public void setIv_timestamp(Timestamp iv_timestamp) {
+        this.iv_timestamp = iv_timestamp;
     }
 
-    public String getPack_box_id() {
-        return pack_box_id;
+    public String getFinal_grade() {
+        return final_grade;
     }
 
-    public void setPack_box_id(String pack_box_id) {
-        this.pack_box_id = pack_box_id;
+    public void setFinal_grade(String final_grade) {
+        this.final_grade = final_grade;
     }
 
-    @Override
-    public String getEvt_usr() {
-        return evt_usr;
+    public String getFinal_power_lvl() {
+        return final_power_lvl;
     }
 
-    @Override
-    public void setEvt_usr(String evt_usr) {
-        this.evt_usr = evt_usr;
+    public void setFinal_power_lvl(String final_power_lvl) {
+        this.final_power_lvl = final_power_lvl;
     }
 
-    public Timestamp getEvt_timestamp() {
-        return evt_timestamp;
+    public String getFinal_color_lvl() {
+        return final_color_lvl;
     }
 
-    public void setEvt_timestamp(Timestamp evt_timestamp) {
-        this.evt_timestamp = evt_timestamp;
+    public void setFinal_color_lvl(String final_color_lvl) {
+        this.final_color_lvl = final_color_lvl;
     }
 
-    public String getBox_id() {
-        return box_id;
+    public Timestamp getUpdate_timestamp() {
+        return update_timestamp;
     }
 
-    public void setBox_id(String box_id) {
-        this.box_id = box_id;
+    public void setUpdate_timestamp(Timestamp update_timestamp) {
+        this.update_timestamp = update_timestamp;
+    }
+
+    public String getUpdate_user() {
+        return update_user;
+    }
+
+    public void setUpdate_user(String update_user) {
+        this.update_user = update_user;
+    }
+
+    public Timestamp getDb_timestamp() {
+        return db_timestamp;
+    }
+
+    public void setDb_timestamp(Timestamp db_timestamp) {
+        this.db_timestamp = db_timestamp;
+    }
+
+    public List<FbpretlotIA> getIary() {
+        return iary;
+    }
+
+    public void setIary(List<FbpretlotIA> iary) {
+        this.iary = iary;
     }
 }
