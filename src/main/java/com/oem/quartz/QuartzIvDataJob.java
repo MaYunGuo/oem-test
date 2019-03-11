@@ -1,6 +1,9 @@
 package com.oem.quartz;
 
+import com.oem.base.dao.IBaseRepository;
+import com.oem.dao.IOemPrdLotRepository;
 import com.oem.dao.IRetLotInfoRepository;
+import com.oem.entity.Oem_prd_lot;
 import com.oem.entity.Ret_lot_info;
 import com.oem.util.*;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,6 +19,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 
 public class QuartzIvDataJob extends QuartzJobBean {
@@ -23,7 +27,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
     private LogUtils logUtils;
 
     @Autowired
-    private IRetLotInfoRepository retLotInfoRepository;
+    private IOemPrdLotRepository oemPrdLotRepository;
 
     @Override
     @Transactional
@@ -63,18 +67,19 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        if(row == null){
                            continue;
                        }
-                       Ret_lot_info ret_lot_info = new Ret_lot_info();
-                       ret_lot_info.setLot_id(row.getCell(0).getStringCellValue());
-                       ret_lot_info.setPower(Double.valueOf(row.getCell(1).getNumericCellValue()));
-                       ret_lot_info.setIsc(Double.valueOf(row.getCell(2).getNumericCellValue()));
-                       ret_lot_info.setVoc(Double.valueOf(row.getCell(3).getNumericCellValue()));
-                       ret_lot_info.setImp(Double.valueOf(row.getCell(4).getNumericCellValue()));
-                       ret_lot_info.setVmp(Double.valueOf(row.getCell(5).getNumericCellValue()));
-                       ret_lot_info.setFf(Double.valueOf(row.getCell(6).getNumericCellValue()));
-                       ret_lot_info.setTemp(Double.valueOf(row.getCell(7).getNumericCellValue()));
-                       ret_lot_info.setCal(row.getCell(8).getStringCellValue());
-                       ret_lot_info.setMeas_timestamp(DateUtil.Date2Timestamp(row.getCell(9).getDateCellValue()));
-                       retLotInfoRepository.save(ret_lot_info);
+                       Oem_prd_lot oem_prd_lot = new Oem_prd_lot();
+                       oem_prd_lot.setLot_no(row.getCell(0).getStringCellValue());
+                       oem_prd_lot.setIv_power(BigDecimal.valueOf(row.getCell(1).getNumericCellValue()));
+                       oem_prd_lot.setIv_isc(BigDecimal.valueOf(row.getCell(2).getNumericCellValue()));
+                       oem_prd_lot.setIv_voc(BigDecimal.valueOf(row.getCell(3).getNumericCellValue()));
+                       oem_prd_lot.setIv_imp(BigDecimal.valueOf(row.getCell(4).getNumericCellValue()));
+                       oem_prd_lot.setIv_vmp(BigDecimal.valueOf(row.getCell(5).getNumericCellValue()));
+                       oem_prd_lot.setIv_ff(BigDecimal.valueOf(row.getCell(6).getNumericCellValue()));
+                       oem_prd_lot.setIv_tmper(BigDecimal.valueOf(row.getCell(7).getNumericCellValue()));
+                       oem_prd_lot.setIv_adj_versioni(row.getCell(8).getStringCellValue());
+                       oem_prd_lot.setIv_timestamp(DateUtil.Date2Timestamp(row.getCell(9).getDateCellValue()));
+                       oem_prd_lot.setUpdate_timestamp(DateUtil.getCurrentTimestamp());
+                       oemPrdLotRepository.save(oem_prd_lot);
                    }
                    FileUtil.backExcelFile(ivFile);
                } catch (Exception e) {
