@@ -1,6 +1,8 @@
 package com.oem.quartz;
 
+import com.oem.dao.IOemPrdLotRepository;
 import com.oem.dao.IRetLotInfoRepository;
+import com.oem.entity.Oem_prd_lot;
 import com.oem.entity.Ret_lot_info;
 import com.oem.util.*;
 import org.apache.poi.ss.usermodel.Row;
@@ -14,13 +16,14 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.File;
+import java.util.List;
 
 public class QuartzFinInsDataJob extends QuartzJobBean {
 
     private LogUtils logUtils;
 
     @Autowired
-    private IRetLotInfoRepository retLotInfoRepository;
+    private IOemPrdLotRepository oemPrdLotRepository;
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -58,15 +61,16 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
                             continue;
                         }
                         String lot_id = row.getCell(0).getStringCellValue();
-                        Ret_lot_info ret_lot_info = retLotInfoRepository.getWithLock(lot_id);
-                        if(ret_lot_info == null){
+                        List<Oem_prd_lot> oem_prd_lotList = oemPrdLotRepository.listWithLock("From Oem_prd_lot where lot_no = ?", lot_id);
+                        if(oem_prd_lotList == null || oem_prd_lotList.isEmpty()){
                             logUtils.info(task_name + "终检数据解析错误,第" + i +"行数据，批次号[" + lot_id +"]信息不存在，请确认");
                             continue;
                         }
-                        ret_lot_info.setIns_grade(row.getCell(1).getStringCellValue());
-                        ret_lot_info.setIns_power(row.getCell(2).getStringCellValue());
-                        ret_lot_info.setIns_color(row.getCell(3).getStringCellValue());
-                        retLotInfoRepository.update(ret_lot_info);
+
+                        oem_prd_lotList.get(0).setFinal_grade(row.getCell(1).getStringCellValue());
+                        oem_prd_lotList.get(0).setFinal_power_lvl(row.getCell(2).getStringCellValue());
+                        oem_prd_lotList.get(0).setFinal_color_lvl(row.getCell(3).getStringCellValue());
+                        oemPrdLotRepository.update(oem_prd_lotList.get(0));
                     }
                     FileUtil.backExcelFile(finalInsFile);
                 } catch (Exception e) {

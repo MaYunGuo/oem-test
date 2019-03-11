@@ -1,7 +1,11 @@
 package com.oem.quartz;
 
+import com.oem.dao.IOemPrdBoxRepository;
+import com.oem.dao.IOemPrdLotRepository;
 import com.oem.dao.IRetBoxInfoRepository;
 import com.oem.dao.IRetLotInfoRepository;
+import com.oem.entity.Oem_prd_box;
+import com.oem.entity.Oem_prd_lot;
 import com.oem.entity.Ret_box_info;
 import com.oem.entity.Ret_lot_info;
 import com.oem.util.*;
@@ -16,6 +20,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.File;
+import java.util.List;
 
 import static com.oem.comdef.GenericDef._NO;
 import static com.oem.comdef.GenericDef._SPACE;
@@ -25,10 +30,10 @@ public class QuartzPackDataJob extends QuartzJobBean {
     private LogUtils logUtils;
 
     @Autowired
-    private IRetLotInfoRepository retLotInfoRepository;
+    private IOemPrdLotRepository oemPrdLotRepository;
 
     @Autowired
-    private IRetBoxInfoRepository retBoxInfoRepository;
+    private IOemPrdBoxRepository oemPrdBoxRepository;
 
 
     @Override
@@ -69,21 +74,23 @@ public class QuartzPackDataJob extends QuartzJobBean {
                         }
                         String box_id = row.getCell(0).getStringCellValue();
                         String lot_id = row.getCell(1).getStringCellValue();
-                        Ret_lot_info ret_lot_info = retLotInfoRepository.getWithLock(lot_id);
-                        if(ret_lot_info == null){
+                        List<Oem_prd_lot> oem_prd_lotList = oemPrdLotRepository.list("From Oem_prd_lot where lot_no = ?", lot_id);
+                        if(oem_prd_lotList == null || oem_prd_lotList.isEmpty()){
                             logUtils.info(task_name + "包装数据解析错误,第" + i +"行数据，批次号[" + lot_id +"]信息不存在，请确认");
                             continue;
                         }
-                        ret_lot_info.setPack_box_id(box_id);
-                        retLotInfoRepository.update(ret_lot_info);
+                        oem_prd_lotList.get(0).setBox_no(box_id);
+                        oem_prd_lotList.get(0).setUpdate_timestamp(DateUtil.getCurrentTimestamp());
+                        oemPrdLotRepository.update(oem_prd_lotList.get(0));
 
-                        Ret_box_info ret_box_info = retBoxInfoRepository.get(box_id);
-                        if(ret_box_info == null){
-                            ret_box_info = new Ret_box_info();
-                            ret_box_info.setBox_id(box_id);
-                            ret_box_info.setShip_flg(_NO);
-                            ret_box_info.setOqc_grade(_SPACE);
-                            retBoxInfoRepository.save(ret_box_info);
+                        Oem_prd_box oem_prd_box  = oemPrdBoxRepository.queryFirstOne("From Oem_prd_box where box_no ='" + box_id +"'");
+                        if(oem_prd_box == null){
+                            oem_prd_box = new Oem_prd_box();
+                            oem_prd_box.setBox_no(box_id);
+                            oem_prd_box.setShip_statu(_NO);
+                            oem_prd_box.setOqc_grade(_SPACE);
+                            oem_prd_box.setOem_id(task_name);
+                            oemPrdBoxRepository.save(oem_prd_box);
                         }
                     }
                     FileUtil.backExcelFile(ivFile);

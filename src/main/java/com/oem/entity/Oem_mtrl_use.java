@@ -11,7 +11,6 @@ import java.sql.Timestamp;
  * Created by ghost on 2019/3/8.
  */
 @Entity
-@Data
 public class Oem_mtrl_use extends BaseEntity implements Serializable {
     @Id
     @Column(name = "id")

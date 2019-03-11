@@ -11,7 +11,6 @@ import java.sql.Timestamp;
  */
 
 @Entity
-@Data
 public class Oem_prd_box extends BaseEntity implements Serializable {
     @Id
     @Column(name = "id")
