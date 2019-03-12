@@ -37,6 +37,9 @@ public class Bis_user extends BaseEntity implements Serializable {
     @Column(name="VALID_FLG", length = 1)
     private String valid_flg;  //有效标识
 
+    @Column(name="OEM_ID", length = 32)
+    private String oem_id;  //代工厂编号
+
     public String getUnq_seq_id() {
         return unq_seq_id;
     }
@@ -117,5 +120,13 @@ public class Bis_user extends BaseEntity implements Serializable {
 
     public void setUsr_mail(String usr_mail) {
         this.usr_mail = usr_mail;
+    }
+
+    public String getOem_id() {
+        return oem_id;
+    }
+
+    public void setOem_id(String oem_id) {
+        this.oem_id = oem_id;
     }
 }

@@ -3,27 +3,25 @@
 <html xmlns:th="http://www.thymeleaf.org" >
 <head>
     <title th:text="#{M_1300_IV_TAG}"></title>
-	<head th:include="compage/comCss::commCss"></head>
-	<span th:include="compage/comJs :: commJs"></span>
+	<head th:include="compage/comCSS::commCss"></head>
+	<span th:include="compage/comJS :: commJs"></span>
 	<script th:src="@{js/pages/1000/1300.js}"></script>
 	<script th:src="@{js/dialog/bis_data_6300_Dialog.js}"></script>
+	<!--<script th:src="lib/fileinput/js/fileinput.min.js"></script>-->
+	<!--<script th:src="lib/fileinput/js/fileinput_locale_zh.js"></script>-->
 </head>
 <body>
     <div th:include="compage/navbar :: ComTop"></div>
 	<div class="container-fluid">
 		<div class="col-lg-12 btnDivCss">
 
-			<button class="btn btn-info" id="query_btn">
-				查询
+			<button class="btn btn-success btn-lg" id="save_btn">
+				提交
 			</button>
 
-			<button class="btn btn-success" id="save_btn">
-				保存
-			</button>
-
-			<button class="btn btn-warning" id="clear_btn">
-				清空
-			</button>
+			<!--<button class="btn btn-warning" id="clear_btn">-->
+				<!--清空-->
+			<!--</button>-->
 
 			<!--<button class="btn btn-danger" id="del_btn">-->
 				<!--删除-->
@@ -33,45 +31,35 @@
 
 	<div class="col-lg-12 col-md-12 col-sm-12" id="rightDiv">
 		<div class="cardBox cardBoxTable noPosition" style="border: none;">
-			<div class="tab" role="tabpane">
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist" style="border: none;">
-					<li role="presentation" class="active">
-						<a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
-							<i class="fa fa-table"></i>
-							iv电性能测试
-						</a>
-					</li>
-				</ul>
-				<!-- Tab panes -->
 				<div class="tab-content tabs">
 					<div role="tabpane" class="tab-pane fade in active" id="tab3">
 						<form class="form-horizontal">
+							<div class="col-lg-10 col-md-10 col-sm-10 form-group">
 
-							<div class="col-lg-12 col-md-12 col-sm-12">
-
-								<div class="col-lg-3 col-md-3 col-sm-3">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="lotId">批次号</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
-										<input type="text" class="form-control" id="lotId" />
+										<input type="text" class="form-control" id="lotId"/>
 									</div>
 								</div>
 
-								<div class="col-lg-3 col-md-3 col-sm-3">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="power">功率</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
-										<input type="text" class="form-control" id="power" />
+										<input type="text" class="form-control" id="power"/>
 									</div>
 								</div>
+							</div>
 
-								<div class="col-lg-3 col-md-3 col-sm-3">
+							<div class="col-lg-10 col-md-10 col-sm-10 form-group">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="isc">ISC</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
-										<input type="text" class="form-control" id="isc" />
+										<input type="text" class="form-control" id="isc" form-group ="margin-botton"/>
 									</div>
 								</div>
 
-								<div class="col-lg-3 col-md-3 col-sm-3">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="voc">VOC</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
 										<input type="text" class="form-control" id="voc" />
@@ -79,31 +67,31 @@
 								</div>
 							</div>
 
-                            <br>
-
-							<div class="col-lg-12 col-md-12 col-sm-12">
-								<div class="col-lg-3 col-md-3 col-sm-3">
+							<div class="col-lg-10 col-md-10 col-sm-10 form-group">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="imp">IMP</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
 										<input type="text" class="form-control" id="imp" />
 									</div>
 								</div>
 
-								<div class="col-lg-3 col-md-3 col-sm-3">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="vmp">VMP</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
 										<input type="text" class="form-control" id="vmp" />
 									</div>
 								</div>
+							</div>
 
-								<div class="col-lg-3 col-md-3 col-sm-3">
+							<div class="col-lg-10 col-md-10 col-sm-10 form-group">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="vmp">ff</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
 										<input type="text" class="form-control" id="ff" />
 									</div>
 								</div>
 
-								<div class="col-lg-3 col-md-3 col-sm-3">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="temp">温度</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
 										<input type="text" class="form-control" id="temp" />
@@ -111,18 +99,15 @@
 								</div>
 							</div>
 
-                            <br>
-
-							<div class="col-lg-12 col-md-12 col-sm-12">
-
-								<div class="col-lg-3 col-md-3 col-sm-3">
+							<div class="col-lg-10 col-md-10 col-sm-10 form-group">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="cal">校准版</label>
 									<div class="col-lg-8 col-md-8 col-sm-8">
 										<input type="text" class="form-control" id="cal" />
 									</div>
 								</div>
 
-								<div class="col-lg-3 col-md-3 col-sm-3">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
 									<label class="control-label col-sm-4" for="meas_timestamp">
 										测试时间</label>
 									<div class="col-sm-8">
@@ -130,37 +115,20 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="col-lg-10 col-md-10 col-sm-10 form-group">
+								<div class="col-lg-6 col-md-6 col-sm-6 form-group">
+									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="cal">选择图片</label>
+									<div class="col-lg-8 col-md-8 col-sm-8">
+										<input type="file" name="file" id="img"/>
+									</div>
+								</div>
+							</div>
+
 						</form>
 					</div>
 				</div>
-			</div>
 		</div>
 	</div>
-
-	<div class="col-lg-12 col-md-12 col-sm-12 UnderDiv">
-		<div class="cardBox cardBoxTable noPosition" style="border: none;">
-			<div class="tab" role="tabpane">
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist" style="border: none;">
-					<li role="presentation" class="active">
-						<a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
-							<i class="fa fa-table"></i>
-							IV电性能测试列表
-						</a>
-					</li>
-				</ul>
-				<!-- Tab panes -->
-				<div class="tab-content tabs">
-					<div role="tabpane" class="tab-pane fade in active" id="iv">
-						<div id="ivDiv" class="col-lg-12 col-md-12 col-sm-12" style="padding-left: 0; padding-right: 0;">
-							<table id="ivGrd"></table>
-							<div id="ivPg"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
 </body>
 </html>

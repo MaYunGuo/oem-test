@@ -146,10 +146,10 @@ $(document).ready(function(){
                             usr_id : rowData.usr_id
                         }]
                         var inTrxObj={
-                            trx_id     : VAL.T_FAPUASGRP,
+                            trx_id     : VAL.T_FUPUSRMAGE,
                             action_flg : "D"  ,
                             evt_usr    : VAL.EVT_USR,
-                            iary       : iary
+                            iaryA       : iary
                         }
                         var outTrxObj = comTrxSubSendPostJson(inTrxObj);
                         if(outTrxObj.rtn_code === _NORMAL){
@@ -216,7 +216,7 @@ $(document).ready(function(){
                 trx_id : VAL.T_FUPUSRMAGE,
                 action_flg : actionFlg,
                 evt_usr : VAL.EVT_USR,
-                iary : [iary]
+                iaryA : [iary]
             };
             var outObj = comTrxSubSendPostJson(inObj);
             if (outObj.rtn_code == VAL.NORMAL) {

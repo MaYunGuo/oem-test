@@ -1,12 +1,9 @@
 package com.oem.tx.brm.Fbpretlot;
 
-import com.oem.base.tx.BaseI;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class FbpretlotOA extends BaseI {
-
+public class FbpretlotIA {
     private int id;
     private String box_no;
     private String oem_id;
