@@ -73,8 +73,16 @@
         <!-- springboot-log4j -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j</artifactId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
             <version>1.3.8.RELEASE</version>
+        </dependency>
+
+        <!-- log4j2支持异步日志，导入disruptor依赖 -->
+
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.3.6</version>
         </dependency>
 
         <dependency>

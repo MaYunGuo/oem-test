@@ -25,8 +25,13 @@ public class WolcomeController {
     }
 
     @RequestMapping("/pageRedict.do")
-    public String pageRedict(String page){
-        return page;
+    public String pageRedict(String page,HttpServletRequest request, HttpServletResponse response){
+        Subject subject = SecurityUtils.getSubject();
+        Bis_user user= (Bis_user) subject.getPrincipal();
+        if(user != null){
+            return page;
+        }
+        return "login";
     }
 
 }
