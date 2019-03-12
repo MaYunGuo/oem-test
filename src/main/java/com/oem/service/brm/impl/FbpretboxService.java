@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import static com.oem.comdef.GenericDef.*;
+import static java.util.stream.Collectors.groupingBy;
 
 @Service("fbpretboxService")
 public class FbpretboxService implements IFbpretboxService {
@@ -103,7 +104,7 @@ public class FbpretboxService implements IFbpretboxService {
         }
         List<Oem_prd_box> oemPrdBoxInfoList = oemPrdBox.find(hql.toString());
         List<FbpretboxOA> oary = new ArrayList<>();
-        if (oemPrdBoxInfoList != null && !oemPrdBoxInfoList.isEmpty()) {
+        if (!oemPrdBoxInfoList.isEmpty()) {
             for (Oem_prd_box oem_prd_box : oemPrdBoxInfoList) {
                 FbpretboxOA fbpretboxOA = new FbpretboxOA();
                 fbpretboxOA.setBox_no(oem_prd_box.getBox_no());
@@ -141,17 +142,20 @@ public class FbpretboxService implements IFbpretboxService {
     }
 
     public long setShipFunc(FbpretboxI inTrx, FbpretboxO outTrx) {
-        FbpretboxIA iary = inTrx.getIary().get(0);
-        StringBuffer hql = new StringBuffer("From Oem_prd_box where 1=1");
+//        FbpretboxIA iary = inTrx.getIary().get(0);
+        StringBuffer hql = new StringBuffer("From Oem_prd_box where 1=1  and box_no in(");
         if (inTrx.getIary() != null) {
-//            if (!StringUtil.isSpaceCheck(iary.getBox_no())) {
-            hql.append(" and box_no ='").append(iary.getBox_no()).append("'");
-//            }
+            inTrx.getIary().forEach(box->hql.append("'"+box.getBox_no()+"',"));
         }
+        hql.deleteCharAt(hql.length()-1).append(")");
         List<Oem_prd_box> oemPrdBoxInfoList = oemPrdBox.find(hql.toString());
-        oemPrdBoxInfoList.get(0).setShip_statu(iary.getShip_statu());
+
+        oemPrdBoxInfoList.forEach(box->box.setShip_statu("Y"));
+
         List<FbpretboxOA> oary = new ArrayList<>();
-        if (oemPrdBoxInfoList != null && !oemPrdBoxInfoList.isEmpty()) {
+        if (!oemPrdBoxInfoList.isEmpty()) {
+            oemPrdBoxInfoList.forEach(box->box.setShip_statu("Y"));
+
             for (Oem_prd_box oem_prd_box : oemPrdBoxInfoList) {
                 FbpretboxOA fbpretboxOA = new FbpretboxOA();
                 fbpretboxOA.setBox_no(oem_prd_box.getBox_no());
@@ -160,6 +164,12 @@ public class FbpretboxService implements IFbpretboxService {
                 oary.add(fbpretboxOA);
             }
         }
+
+//        //按照原先资料排序
+//        Map<String,List<FbpretboxOA>> map=oary.stream().collect(groupingBy(FbpretboxOA::getBox_no));
+//        List<FbpretboxOA> oary2 = new ArrayList<>();
+//        inTrx.getIary().forEach(box->oary2.add(map.get(box.getBox_no()).get(0)));
+
         outTrx.setTbl_cnt(oary.size());
         outTrx.setOary(oary);
         return _NORMAL;
