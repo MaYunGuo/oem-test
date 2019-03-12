@@ -177,7 +177,16 @@ $(document).ready(function () {
                         return false;
                     }
                     var ivPath=data2.path;
-                    showSuccessDialog(ivPath);
+                    $('#imgDialog').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: false
+                    });
+                    $('#imgDialog').unbind('shown.bs.modal');
+                    $('#imgDialog').bind('shown.bs.modal');
+                    $("#imgPath").attr("src",null);
+                    $("#imgPath").attr("src",ivPath);
+                    $('#imgDialog').modal("show");
                 } else if (iCol == 19) {//显示EL3图片
                     if("null"==$("#"+id+"3").val()){
                         showErrorDialog("","信息为空！");
@@ -188,8 +197,17 @@ $(document).ready(function () {
                         showErrorDialog("", "信息为空！");
                         return false;
                     }
-                    var ivPath=data3.path;
-                    showSuccessDialog(ivPath);
+                    var el3Path=data3.path;
+                    $('#imgDialog').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: false
+                    });
+                    $('#imgDialog').unbind('shown.bs.modal');
+                    $('#imgDialog').bind('shown.bs.modal');
+                    $("#imgPath").attr("src",null);
+                    $("#imgPath").attr("src",el3Path);
+                    $('#imgDialog').modal("show");
 
                 }
             }
@@ -199,9 +217,13 @@ $(document).ready(function () {
 
 
     var btnFunc = {
-        test: function () {
-            $("#data_type").val(1);
-            $("#row_id").val($("#dataListGrd").jqGrid("getGridParam", "selrow"));
+        img_show_func: function (imgPath) {
+
+            if ($("#downForm").length > 0) {
+                $("#downForm").remove();
+            }
+            var str = '<img src="'+imgPath+'">';
+            $(str).appendTo("body");
         },
         query_func: function () {
             $("#dataListGrd").jqGrid("clearGridData");
@@ -256,14 +278,14 @@ $(document).ready(function () {
                         var id=box_no+"_"+lot_no+"_";
 
                         var oem_mtrl_use = (null==outObj.oary[i].lotList[j].mtrlUseList||outObj.oary[i].lotList[j].mtrlUseList.length==0)
-                            ?"<u>查看</u><input id='"+id+"1' value='null'>"
-                            :"<u>查看</u><input id='"+id+"1' value='"+JSON.stringify(outObj.oary[i].lotList[j].mtrlUseList)+"'>";
+                            ?"<u>查看</u><input id='"+id+"1' value='null'hidden>"
+                            :"<u>查看</u><input id='"+id+"1' value='"+JSON.stringify(outObj.oary[i].lotList[j].mtrlUseList)+"'hidden>";
                         var oem_image_path1 = null==outObj.oary[i].lotList[j].imagePathList
-                            ?"<u>查看</u><input id='"+id+"2' value='null'>"
-                            :"<u>查看</u><input id='"+id+"2' value='"+JSON.stringify(outObj.oary[i].lotList[j].imagePathList)+"'>";
+                            ?"<u>查看</u><input id='"+id+"2' value='null'hidden>"
+                            :"<u>查看</u><input id='"+id+"2' value='"+JSON.stringify(outObj.oary[i].lotList[j].imagePathList)+"'hidden>";
                         var oem_image_path2 = null==outObj.oary[i].lotList[j].imagePathList
-                            ?"<u>查看</u><input id='"+id+"3' value='null'>"
-                            :"<u>查看</u><input id='"+id+"3' value='"+JSON.stringify(outObj.oary[i].lotList[j].imagePathList)+"'>";
+                            ?"<u>查看</u><input id='"+id+"3' value='null'hidden>"
+                            :"<u>查看</u><input id='"+id+"3' value='"+JSON.stringify(outObj.oary[i].lotList[j].imagePathList)+"'hidden>";
                         // var oem_mtrl_use=outObj.oary[i].lotList[j].oem_mtrl_use;
                         // var oem_image_path1=outObj.oary[i].lotList[j].oem_image_path1;
                         // var oem_image_path2=outObj.oary[i].lotList[j].oem_image_path2;
