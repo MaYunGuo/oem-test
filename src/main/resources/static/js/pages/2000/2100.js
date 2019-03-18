@@ -2,6 +2,7 @@ $(document).ready(function(){
     var VAL = {
         T_FUPUSRMAGE : "FUPUSRMAGE",
         T_FBPBISDATA : "FBPBISDATA",
+        T_FBPBISFATY : "FBPBISFATY",
         NORMAL : "0000000",
         EVT_USR : $("#userId").text(),
         DISABLED_ATTR : {
@@ -110,6 +111,16 @@ $(document).ready(function(){
             var outTrxObj = comTrxSubSendPostJson(inTrxObj);
             if (outTrxObj.rtn_code == "0000000") {
                 SelectDom.addSelectArr(domObj.$usrTypeSel, outTrxObj.oary, "data_ext", "data_desc", "", true, false);
+            }
+        },
+        iniUsrFtySel :function () {
+            var inTrxObj = {
+                trx_id: VAL.T_FBPBISFATY,
+                action_flg: 'Q',
+            };
+            var outTrxObj = comTrxSubSendPostJson(inTrxObj);
+            if (outTrxObj.rtn_code == "0000000") {
+                SelectDom.addSelectArr(domObj.$usrFtySel, outTrxObj.oary, "faty_id", "faty_name", "", true, false);
             }
         }
     };
@@ -236,6 +247,7 @@ $(document).ready(function(){
                     controlsFunc.selRowFnc(rowid);
                     showSuccessDialog("用户信息更新成功");
                 }
+                domObj.$usrFtySel.attr(VAL.DISABLED_ATTR);
             }
 
         },
@@ -328,6 +340,7 @@ $(document).ready(function(){
         iniDatePicker();
         controlsFunc.iniUsrGrd();
         controlsFunc.iniUsrTypeSel();
+        controlsFunc.iniUsrFtySel();
         iniButtonAction();
         otherActionBind();
     }

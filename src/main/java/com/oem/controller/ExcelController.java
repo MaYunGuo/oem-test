@@ -1,15 +1,19 @@
 package com.oem.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.oem.base.tx.BaseI;
+import com.oem.base.tx.BaseO;
 import com.oem.dao.IOemPrdBoxRepository;
 import com.oem.dao.IRetBoxInfoRepository;
 import com.oem.entity.Oem_prd_box;
+import com.oem.service.ISendMessageService;
 import com.oem.service.brm.IFbpretboxService;
 import com.oem.service.brm.impl.FbpretboxService;
 import com.oem.tx.brm.Fbpretbox.FbpretboxI;
 import com.oem.tx.brm.Fbpretbox.FbpretboxO;
-import com.oem.util.AppContext;
-import com.oem.util.JacksonUtil;
-import com.oem.util.StringUtil;
+import com.oem.tx.brm.Fbpretlot.FbpretlotI;
+import com.oem.tx.brm.Fbpretlot.FbpretlotIA;
+import com.oem.util.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -33,12 +37,14 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import static com.oem.comdef.GenericDef.*;
 import static com.oem.comdef.GenericDef.RETURN_CODE_OK;
 import static com.oem.comdef.GenericDef.RETURN_MESG_OK;
+import static com.oem.comdef.GenericStaticDef.MODEL_PATH;
 
 /**
  * Created by ghost on 2019/3/6.
@@ -46,20 +52,20 @@ import static com.oem.comdef.GenericDef.RETURN_MESG_OK;
 @Controller
 public class ExcelController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private ISendMessageService sendMessageService;
+
+    private LogUtils logUtil = new LogUtils(ExcelController.class);
     @Autowired
     private IOemPrdBoxRepository oemPrdBox;
 
     @RequestMapping(value = "/download.do")
-    public void downloadModel(HttpServletRequest request, HttpServletResponse response, HttpSession session,String filePath,String fileName) throws IOException {
+    public void downloadModel(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
         if (StringUtils.isEmpty(fileName)) {
             fileName = "NameUndefined";
         }
-//        String temp1 = File.separator;//路径分隔符("\\")
-        String url = filePath + "/" + fileName;
-//        String url = session.getServletContext().getRealPath("/") + "excelFile\\机台接触脚位模板.xlsx";
-        System.out.println("filedownload =" + url);
-        export(request, response, url, fileName);
+        String filePath = MODEL_PATH + File.separator + fileName;
+        export(request, response, filePath, fileName);
     }
 
     @RequestMapping(value = "/upload.do")
@@ -71,7 +77,7 @@ public class ExcelController {
         inTrx.setTrx_id(trx_id);
         inTrx.setAction_flg(action_flg);
         inTrx.setFile(file);
-        logger.info("[InTrx:"+inTrx.toString()+"]");
+        logUtil.info("[InTrx:"+inTrx.toString()+"]");
 
         String strOutTrx = null;
         FbpretboxO outTrx = new FbpretboxO();
@@ -91,21 +97,24 @@ public class ExcelController {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         } finally {
             strOutTrx = JacksonUtil.toJSONStr(outTrx);
-            logger.info("[OutTrx:" + strOutTrx + "]");
+            logUtil.info("[OutTrx:" + strOutTrx + "]");
         }
         return strOutTrx;
     }
 
 
-    public void export(HttpServletRequest request, HttpServletResponse response,String url,String fileName) throws IOException {
+    public void export(HttpServletRequest request, HttpServletResponse response,String url,String fileName){
         response.setContentType("application/octet-stream");
-        if (request.getHeader("user-agent").toLowerCase().indexOf("firefox") > -1) {
-            //火狐浏览器自己会对URL进行一次URL转码所以区别处理
-            response.setHeader("Content-Disposition", "attachment;filename="
-                    + new String(fileName.getBytes("utf-8"), "ISO-8859-1"));
-        } else {
-            response.setHeader("Content-Disposition", "attachment;filename="
-                    + URLEncoder.encode(fileName,"utf-8"));        }
+        try{
+            if (request.getHeader("user-agent").toLowerCase().indexOf("firefox") > -1) {
+                //火狐浏览器自己会对URL进行一次URL转码所以区别处理
+                response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("utf-8"), "ISO-8859-1"));
+            } else {
+                response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName,"utf-8"));
+            }
+        }catch (UnsupportedEncodingException e) {
+            logUtil.info(StringUtil.stackTraceToString(e));
+        }
         //新建文件输入输出流
         OutputStream output = null;
         FileInputStream fis = null;
@@ -124,19 +133,22 @@ public class ExcelController {
             output.flush();
         }
         catch(Exception e){
-            e.printStackTrace();
-        }
-        finally
-        {
-            if(fis != null)
-            {
-                fis.close();
-                fis = null;
+            logUtil.info(StringUtil.stackTraceToString(e));
+        }finally {
+            if(fis != null){
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    logUtil.info(StringUtil.stackTraceToString(e));
+                }
             }
-            if(output != null)
-            {
-                output.close();
-                output = null;
+            if(output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    logUtil.info(StringUtil.stackTraceToString(e));
+                }
+
             }
         }
     }
@@ -148,7 +160,7 @@ public class ExcelController {
         if (fileName.matches("^.+\\.(?i)((xls)|(xlsx))$")) {
             try {
                 //读取文件
-                Workbook workbook = readFile(file, fileName);
+                Workbook workbook = ExcelUtil.readExcel(file);
                 //处理数据
                 HashMap<String, String> excelData =new HashMap<>();
                 if("M1600".equals(data_type))excelData=getOqcGradeExcelData(workbook);
@@ -157,7 +169,7 @@ public class ExcelController {
                 if("M1600".equals(data_type)) updateOqcGradeByExcelData(excelData);
                 if("M1601".equals(data_type))updateOqcShipByExcelData(excelData);
             } catch (Exception e) {
-                logger.error(e.getMessage());
+                logUtil.error(StringUtil.stackTraceToString(e));
                 outTrx.setRtn_code(RETURN_CODE_UNKNOWN);
                 outTrx.setRtn_mesg(e.getMessage());
                 return _ERROR;
@@ -165,27 +177,14 @@ public class ExcelController {
         } else {
             outTrx.setRtn_code(RETURN_CODE_UNKNOWN);
             outTrx.setRtn_mesg("文件格式不正确！");
-            logger.error("文件格式不正确！");
+            logUtil.error("文件格式不正确！");
             return _ERROR;
         }
         return _NORMAL;
     }
 
 
-    private Workbook readFile(MultipartFile file, String fileName) throws Exception {
-        Workbook workbook;
-        try {
-            InputStream in;
-            boolean is03Excel = fileName.matches("^.+\\.(?i)(xls)$");
-            in = file.getInputStream();
-            //1、读取工作簿
-            workbook = is03Excel ? new HSSFWorkbook(in) : new XSSFWorkbook(in);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            throw new Exception("文件类型异常");
-        }
-        return workbook;
-    }
+
 
     private HashMap<String, String> getOqcGradeExcelData(Workbook workbook) throws Exception {
         HashMap<String, String> boxGradeList = new HashMap<>();
@@ -306,6 +305,103 @@ public class ExcelController {
                 oemPrdBox.save(oem_prd_box);
             });
         }
+    }
+
+    @RequestMapping("/uploadExcel.do")
+    public String uploadExcel(String trx_id, String action_flg, String evt_usr, String data_type, MultipartFile file){
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("trx_id",trx_id);
+        jsonObject.put("action_flg",action_flg);
+        jsonObject.put("evt_usr",evt_usr);
+        jsonObject.put("data_type",data_type);
+        jsonObject.put("file_name", file.getOriginalFilename());
+        logUtil.info("inTrx:[" + JacksonUtil.toJSONStr(jsonObject) +"]");
+
+        BaseO ouTrx = new BaseO();
+        Workbook workbook = null;
+        try {
+            workbook  = ExcelUtil.readExcel(file);
+            List<String[]> excelData = ExcelUtil.getExcelData(workbook);
+            if(excelData == null || excelData.isEmpty()){
+                ouTrx.setRtn_code(E_EXCEL_ANALY_EXCEL_IS_EMPTY + _SPACE);
+                ouTrx.setRtn_mesg("excel是空的，请确认");
+                return JacksonUtil.toJSONStr(ouTrx);
+            }
+            workbook.close();
+            String rtn_mesg = uploadExcelData(data_type, trx_id, action_flg, evt_usr, excelData);
+            return rtn_mesg;
+        } catch (Exception e) {
+            ouTrx.setRtn_code(E_EXCEL_ANALY_CAN_NOT_GET_WORKBOOK + _SPACE);
+            ouTrx.setRtn_mesg("无法解析EXCEL,请确认excel格式是否正确");
+        }
+        return JacksonUtil.toJSONStr(ouTrx);
+    }
+
+    private String uploadExcelData(String data_typ, String trx_id, String action_flg, String evt_usr, List<String[]> dataList){
+        String inTrxStr = null;
+        switch(data_typ){
+            case "F":  // 终检数据
+                inTrxStr = dealFinData(trx_id, action_flg, evt_usr, dataList);
+                break;
+            case "P":
+                inTrxStr = dealPackData(trx_id, action_flg, evt_usr, dataList);
+                break; //包装
+            case "O" : //OQC
+                break;
+            case "S":  //出货
+                break;
+            case "M":  //扣料信息
+                break;
+            default:
+                break;
+        }
+        if(inTrxStr != null){
+            String evt_no = GUIDGenerator.javaGUID();
+            String rtnMesg = sendMessageService.sendMesage(trx_id, evt_no, inTrxStr);
+            return rtnMesg;
+        }
+        return null;
+    }
+
+    private String dealFinData(String trx_id, String action_flg, String evt_usr, List<String[]> dataList){
+
+
+        FbpretlotI fbpretlotI = new FbpretlotI();
+        fbpretlotI.setTrx_id(trx_id);
+        fbpretlotI.setAction_flg(action_flg);
+        fbpretlotI.setEvt_usr(evt_usr);
+
+        List<FbpretlotIA> iary = new ArrayList<>();
+        for(String[] strings: dataList){
+            FbpretlotIA fbpretlotIA =  new FbpretlotIA();
+            fbpretlotIA.setLot_no(strings[0]);
+            fbpretlotIA.setFinal_grade(strings[1]);
+            fbpretlotIA.setFinal_power(strings[2]);
+            fbpretlotIA.setFinal_color(strings[4]);
+            iary.add(fbpretlotIA);
+        }
+        fbpretlotI.setIary(iary);
+
+        return JacksonUtil.toJSONStr(fbpretlotI);
+    }
+
+    private String dealPackData(String trx_id, String action_flg, String evt_usr, List<String[]> dataList){
+
+        FbpretlotI fbpretlotI = new FbpretlotI();
+        fbpretlotI.setTrx_id(trx_id);
+        fbpretlotI.setAction_flg(action_flg);
+        fbpretlotI.setEvt_usr(evt_usr);
+
+        List<FbpretlotIA> iary = new ArrayList<>();
+        for(String[] strings: dataList){
+            FbpretlotIA fbpretlotIA =  new FbpretlotIA();
+            fbpretlotIA.setBox_no(strings[0]);
+            fbpretlotIA.setLot_no(strings[1]);
+            iary.add(fbpretlotIA);
+        }
+        fbpretlotI.setIary(iary);
+        return JacksonUtil.toJSONStr(fbpretlotI);
     }
 
 }

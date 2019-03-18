@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 
 @Entity
 public class Oem_prd_lot extends BaseEntity implements Serializable {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)

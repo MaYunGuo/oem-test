@@ -1,14 +1,17 @@
 package com.oem.util;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExcelUtil {
 
@@ -27,6 +30,16 @@ public class ExcelUtil {
         }
         return wb;
     }
+    public static Workbook readExcel(MultipartFile file) throws Exception {
+        Workbook workbook  = null;
+        String fileName = file.getOriginalFilename();
+        boolean is03Excel = fileName.matches("^.+\\.(?i)(xls)$");
+        InputStream  in = file.getInputStream();
+        //1、读取工作簿
+        workbook = is03Excel ? new HSSFWorkbook(in) : new XSSFWorkbook(in);
+        return workbook;
+    }
+
 
     public static String getCellValue(Cell cell) {
         String cellValue = "";
@@ -64,5 +77,23 @@ public class ExcelUtil {
         }
         return cellValue.trim();
     }
+
+    public static List<String[]> getExcelData(Workbook wb) throws IOException {
+
+        List<String[]> dataList = new ArrayList<>();
+        Sheet st = wb.getSheetAt(0);
+        int rowCnt = st.getLastRowNum();
+        int columnCnt = st.getRow(0).getPhysicalNumberOfCells();
+        for(int i=1;i<rowCnt;i++){
+              String [] data = new String[columnCnt];
+              Row row = st.getRow(i);
+              for(int j=0;j<columnCnt;i++){
+                  data[j] = getCellValue(row.getCell(j));
+              }
+              dataList.add(data);
+        }
+        return dataList;
+    }
+
 
 }

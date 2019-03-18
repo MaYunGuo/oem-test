@@ -9,16 +9,13 @@ import com.oem.entity.Bis_func_grp;
 import com.oem.entity.Bis_grp_func;
 import com.oem.entity.Bis_grp_funcId;
 import com.oem.service.uas.IFupfncmageService;
-import com.oem.tx.brm.Fbpbisdata.FbpbisdataIA;
-import com.oem.tx.brm.Fbpbisfaty.FbpbisfatyIA;
 import com.oem.tx.uas.Fupfncmage.*;
 import com.oem.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import javax.transaction.Transactional;
-import java.sql.DatabaseMetaData;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;

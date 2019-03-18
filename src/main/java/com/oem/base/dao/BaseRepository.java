@@ -55,7 +55,9 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
 
         final EntityManager entityManager = getEntityManager();
         T t = entityManager.find(clazz, id);
-        entityManager.lock(t, LockModeType.PESSIMISTIC_WRITE);
+        if(t != null){
+            entityManager.lock(t, LockModeType.PESSIMISTIC_WRITE);
+        }
         return t;
     }
 
@@ -79,6 +81,10 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
     @Override
     public T queryFirstOne(String hql) {
         Query query = this.createQuery(hql);
+        if(query.getResultList().size() == 0){
+            return null;
+        }
+
         query.setMaxResults(1);
         return (T) query.getSingleResult();
     }
@@ -141,7 +147,10 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
             query.setParameter(i + 1, params[i]);
         }
         final List list = query.getResultList();
-        list.forEach(entity -> getEntityManager().lock(entity, LockModeType.PESSIMISTIC_WRITE));
+        if(list != null && !list.isEmpty()){
+            list.forEach(entity -> getEntityManager().lock(entity, LockModeType.PESSIMISTIC_WRITE));
+        }
+
         return list;
     }
 
@@ -153,7 +162,9 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
             query.setParameter(i + 1, params[i]);
         }
         final T entity = (T) query.getSingleResult();
-        getEntityManager().lock(entity, LockModeType.PESSIMISTIC_WRITE);
+        if(entity != null){
+            getEntityManager().lock(entity, LockModeType.PESSIMISTIC_WRITE);
+        }
         return entity;
     }
 

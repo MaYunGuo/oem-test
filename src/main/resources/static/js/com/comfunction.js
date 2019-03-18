@@ -729,24 +729,6 @@ function checkUserFunc(funCode,chkAdmFlg) {
     });
     return authoryResult;
 }
-/**
- * 所有button都执行权限检查
- */
-$(":button").click(function(event){
-//	var pageNo = window.location.search;
-    var pageNo = $.query.get("opeID");
-    var btnId = this.id;
-    var key ="p_"+pageNo+"_"+btnId;
-    var funcCode = AuthObj[key];
-    if(funcCode != undefined){
-        if(checkUserFunc(funcCode,"Y")==false){
-            showErrorDialog("","你没有这个按钮的权限！");
-            event.stopImmediatePropagation();
-        }else{
-
-        }
-    }
-});
 
 function comInitSize($w,$fatherDiv){
 
@@ -933,5 +915,32 @@ function CreateRouteBean(){
         }
     };
     return Bean;
+}
+
+function comUplaod(url, inTrx){
+
+    var data = new FormData();
+    $.each(anObject,function(name,value) {
+        data.append(name, value);
+    });
+
+    var outTrx = null;
+    $.ajax({
+        type : "POST",
+        url : url,
+        async : false,// 同步
+        dataType : 'json',
+        data : data,
+        cache: false,
+        contentType: false,    //不可缺
+        processData: false,    //不可缺
+        success:function (data) {
+            outTrx = JSON.parse(data);
+        },
+        error : function(xhr, stat, e){
+            console.error(xhr);
+        }
+    })
+    return outTrx;
 }
 

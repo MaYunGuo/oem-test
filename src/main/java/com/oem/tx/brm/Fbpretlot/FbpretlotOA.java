@@ -21,11 +21,10 @@ public class FbpretlotOA extends BaseI {
     private String iv_adj_versioni;
     private Timestamp iv_timestamp;
     private String final_grade;
-    private String final_power_lvl;
-    private String final_color_lvl;
-    private Timestamp update_timestamp;
+    private String final_power;
+    private String final_color;
     private String update_user;
-    private Timestamp db_timestamp;
+    private Timestamp update_timestamp;
 
     public int getId() {
         return id;
@@ -139,28 +138,20 @@ public class FbpretlotOA extends BaseI {
         this.final_grade = final_grade;
     }
 
-    public String getFinal_power_lvl() {
-        return final_power_lvl;
+    public String getFinal_power() {
+        return final_power;
     }
 
-    public void setFinal_power_lvl(String final_power_lvl) {
-        this.final_power_lvl = final_power_lvl;
+    public void setFinal_power(String final_power) {
+        this.final_power = final_power;
     }
 
-    public String getFinal_color_lvl() {
-        return final_color_lvl;
+    public String getFinal_color() {
+        return final_color;
     }
 
-    public void setFinal_color_lvl(String final_color_lvl) {
-        this.final_color_lvl = final_color_lvl;
-    }
-
-    public Timestamp getUpdate_timestamp() {
-        return update_timestamp;
-    }
-
-    public void setUpdate_timestamp(Timestamp update_timestamp) {
-        this.update_timestamp = update_timestamp;
+    public void setFinal_color(String final_color) {
+        this.final_color = final_color;
     }
 
     public String getUpdate_user() {
@@ -171,11 +162,11 @@ public class FbpretlotOA extends BaseI {
         this.update_user = update_user;
     }
 
-    public Timestamp getDb_timestamp() {
-        return db_timestamp;
+    public Timestamp getUpdate_timestamp() {
+        return update_timestamp;
     }
 
-    public void setDb_timestamp(Timestamp db_timestamp) {
-        this.db_timestamp = db_timestamp;
+    public void setUpdate_timestamp(Timestamp update_timestamp) {
+        this.update_timestamp = update_timestamp;
     }
 }

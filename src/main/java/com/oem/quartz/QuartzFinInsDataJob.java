@@ -13,10 +13,15 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.List;
+
+import static com.oem.comdef.GenericDef._SPACE;
+import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 
 public class QuartzFinInsDataJob extends QuartzJobBean {
 
@@ -26,12 +31,17 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
     private IOemPrdLotRepository oemPrdLotRepository;
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    @Transactional
+    public void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
         logUtils = new LogUtils(QuartzIvDataJob.class);
+        AppContext.setCurrEventNumber(GUIDGenerator.javaGUID());
+        AppContext.setCurrServiceName(QuartzFinInsDataJob.class.getSimpleName());
+
+
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         String task_name = (String) dataMap.get("task_name");
-        String task_path = (String) dataMap.get("task_path");
+        String task_path = FTP_PATH  + File.separator + task_name + File.separator + "EXCEL" + File.separator + "FIN";
         long startTimes = System.currentTimeMillis();
         logUtils.info(task_name + "终检数据解析开始执行---------------------------");
 
@@ -40,6 +50,7 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
         Workbook wb = null;
         Sheet sheet = null;
         Row row = null;
+        Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
         if(filePath.exists() && filePath.isDirectory()){
             File[] allFiles =  filePath.listFiles();
             for(File finalInsFile : allFiles){
@@ -55,6 +66,10 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
                     //获取最大行数
                     int rownum = sheet.getPhysicalNumberOfRows();
                     //获取最大列数
+                    String fin_grade = _SPACE;
+                    String fin_power = _SPACE;
+                    String fin_color = _SPACE;
+
                     for (int i = 1; i<rownum; i++) {
                         row = sheet.getRow(i);
                         if(row == null){
@@ -67,9 +82,17 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
                             continue;
                         }
 
-                        oem_prd_lotList.get(0).setFinal_grade(row.getCell(1).getStringCellValue());
-                        oem_prd_lotList.get(0).setFinal_power_lvl(row.getCell(2).getStringCellValue());
-                        oem_prd_lotList.get(0).setFinal_color_lvl(row.getCell(3).getStringCellValue());
+                        fin_grade = row.getCell(1).getStringCellValue();
+                        fin_power = row.getCell(2).getStringCellValue();
+                        fin_color = row.getCell(3).getStringCellValue();
+                        if(StringUtil.isSpaceCheck(fin_grade) && StringUtil.isSpaceCheck(fin_power)&& StringUtil.isSpaceCheck(fin_color)){
+                            continue;
+                        }
+                        oem_prd_lotList.get(0).setFinal_grade(fin_grade);
+                        oem_prd_lotList.get(0).setFinal_power_lvl(fin_power);
+                        oem_prd_lotList.get(0).setFinal_color_lvl(fin_color);
+                        oem_prd_lotList.get(0).setUpdate_user("FIN_TASK");
+                        oem_prd_lotList.get(0).setUpdate_timestamp(cr_timestamp);
                         oemPrdLotRepository.update(oem_prd_lotList.get(0));
                     }
                     FileUtil.backExcelFile(finalInsFile);

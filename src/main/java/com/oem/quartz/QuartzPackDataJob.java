@@ -17,13 +17,18 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.File;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import static com.oem.comdef.GenericDef._NO;
 import static com.oem.comdef.GenericDef._SPACE;
+import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 
 public class QuartzPackDataJob extends QuartzJobBean {
 
@@ -37,12 +42,16 @@ public class QuartzPackDataJob extends QuartzJobBean {
 
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    @Transactional
+    public void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+
         logUtils = new LogUtils(QuartzPackDataJob.class);
+        AppContext.setCurrEventNumber(GUIDGenerator.javaGUID());
+        AppContext.setCurrServiceName(QuartzPackDataJob.class.getSimpleName());
 
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         String task_name = (String) dataMap.get("task_name");
-        String task_path = (String) dataMap.get("task_path");
+        String task_path = FTP_PATH  + File.separator + task_name + File.separator + "EXCEL" + File.separator + "PACK";
 
         long startTimes = System.currentTimeMillis();
         logUtils.info(task_name + "包装数据解析开始执行---------------------------");
@@ -52,6 +61,7 @@ public class QuartzPackDataJob extends QuartzJobBean {
         Workbook wb = null;
         Sheet sheet = null;
         Row row = null;
+        Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
         if(filePath.exists() && filePath.isDirectory()){
             File[] allFiles =  filePath.listFiles();
             for(File ivFile : allFiles){
@@ -67,13 +77,19 @@ public class QuartzPackDataJob extends QuartzJobBean {
                     //获取最大行数
                     int rownum = sheet.getPhysicalNumberOfRows();
                     //获取最大列数
+
+                    String box_id = _SPACE;
+                    String lot_id = _SPACE;
                     for (int i = 1; i<rownum; i++) {
                         row = sheet.getRow(i);
                         if(row == null){
                             continue;
                         }
-                        String box_id = row.getCell(0).getStringCellValue();
-                        String lot_id = row.getCell(1).getStringCellValue();
+                        box_id = row.getCell(0).getStringCellValue();
+                        lot_id = row.getCell(1).getStringCellValue();
+                        if(StringUtil.isSpaceCheck(box_id) || StringUtil.isSpaceCheck(lot_id)){
+                            continue;
+                        }
                         List<Oem_prd_lot> oem_prd_lotList = oemPrdLotRepository.list("From Oem_prd_lot where lot_no = ?", lot_id);
                         if(oem_prd_lotList == null || oem_prd_lotList.isEmpty()){
                             logUtils.info(task_name + "包装数据解析错误,第" + i +"行数据，批次号[" + lot_id +"]信息不存在，请确认");

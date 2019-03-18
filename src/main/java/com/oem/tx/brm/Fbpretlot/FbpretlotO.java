@@ -1,16 +1,14 @@
 package com.oem.tx.brm.Fbpretlot;
 
 import com.oem.base.tx.BaseI;
+import com.oem.base.tx.BaseO;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-public class FbpretlotO extends BaseI {
+public class FbpretlotO extends BaseO {
        private List<FbpretlotOA> oary;
        private List<FbpretlotOB> oaryB;
-
-       private String rtn_code;
-       private String rtn_mesg;
 
     public List<FbpretlotOA> getOary() {
         return oary;
@@ -20,21 +18,6 @@ public class FbpretlotO extends BaseI {
         this.oary = oary;
     }
 
-    public String getRtn_code() {
-        return rtn_code;
-    }
-
-    public void setRtn_code(String rtn_code) {
-        this.rtn_code = rtn_code;
-    }
-
-    public String getRtn_mesg() {
-        return rtn_mesg;
-    }
-
-    public void setRtn_mesg(String rtn_mesg) {
-        this.rtn_mesg = rtn_mesg;
-    }
 
     public List<FbpretlotOB> getOaryB() {
         return oaryB;

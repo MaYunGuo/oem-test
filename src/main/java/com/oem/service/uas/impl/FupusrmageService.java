@@ -12,9 +12,9 @@ import com.oem.tx.uas.Fupusrmage.*;
 import com.oem.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -224,7 +224,7 @@ public class FupusrmageService implements IFupusrmageService {
             bis_user.setAdmin_flg(fupusrmageIA.getAdmin_flg());
             bisUserRepository.save(bis_user);
         }
-        return _ERROR;
+        return _NORMAL;
 
     }
 

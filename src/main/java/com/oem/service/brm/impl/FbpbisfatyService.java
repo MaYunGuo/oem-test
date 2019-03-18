@@ -2,6 +2,7 @@ package com.oem.service.brm.impl;
 
 import com.oem.dao.IBisFactoryRepository;
 import com.oem.entity.Bis_factory;
+import com.oem.quartz.QuartzFinInsDataJob;
 import com.oem.quartz.QuartzIvDataJob;
 import com.oem.quartz.QuartzService;
 import com.oem.service.brm.IFbpbisfatyService;
@@ -14,9 +15,9 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +141,9 @@ public class FbpbisfatyService implements IFbpbisfatyService {
             bisFactoryRepository.save(bis_factory);
 
             String conExcepssion = getConExpession(fbpbisfatyIA.getAnls_rate(), fbpbisfatyIA.getAnls_unit());
-            quartzService.addJob(QuartzIvDataJob.class, fbpbisfatyIA.getFaty_id(), Scheduler.DEFAULT_GROUP, conExcepssion, fbpbisfatyIA.getFaty_id());
+            quartzService.addJob(QuartzIvDataJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_IV, conExcepssion, fbpbisfatyIA.getFaty_id());
+            quartzService.addJob(QuartzFinInsDataJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_FIN, conExcepssion, fbpbisfatyIA.getFaty_id());
+            quartzService.addJob(QuartzFinInsDataJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_PACK, conExcepssion, fbpbisfatyIA.getFaty_id());
 
             FbpbisfatyOA fbpbisfatyOA = new FbpbisfatyOA();
             fbpbisfatyOA.setFaty_id(fbpbisfatyIA.getFaty_id());
@@ -178,7 +181,9 @@ public class FbpbisfatyService implements IFbpbisfatyService {
         bisFactoryRepository.update(bis_factory);
 
         String conExcepssion = getConExpession(fbpbisfatyIA.getAnls_rate(), fbpbisfatyIA.getAnls_unit());
-        quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), Scheduler.DEFAULT_GROUP, conExcepssion);
+        quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_IV, conExcepssion);
+        quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_FIN, conExcepssion);
+        quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_PACK, conExcepssion);
 
         return _NORMAL;
     }
@@ -196,7 +201,9 @@ public class FbpbisfatyService implements IFbpbisfatyService {
                 bis_factory.setEvt_usr(inTrx.getEvt_usr());
                 bis_factory.setEvt_timestamp(DateUtil.getCurrentTimestamp());
                 bisFactoryRepository.delete(bis_factory);
-                quartzService.deleteJob(bis_factory.getFaty_id(), Scheduler.DEFAULT_GROUP);
+                quartzService.deleteJob(bis_factory.getFaty_id(), QUARTZ_GROUP_IV);
+                quartzService.deleteJob(bis_factory.getFaty_id(), QUARTZ_GROUP_FIN);
+                quartzService.deleteJob(bis_factory.getFaty_id(), QUARTZ_GROUP_PACK);
             }
         }
         return _NORMAL;

@@ -10,7 +10,13 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
+
+import static com.oem.comdef.GenericDef.QUARTZ_GROUP_FIN;
+import static com.oem.comdef.GenericDef.QUARTZ_GROUP_IV;
+import static com.oem.comdef.GenericDef.QUARTZ_GROUP_PACK;
+import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 
 @Component
 @Order(value = 1)
@@ -29,7 +35,9 @@ public class QuartzListener implements ApplicationRunner {
            for(int i=0;i<bisFactoryList.size();i++){
                Bis_factory bis_factory = bisFactoryList.get(i);
               String conEcepssion = getConExpession(bis_factory.getAnls_rate(),bis_factory.getAnls_unit(),i+1);
-              quartzService.addJob(QuartzIvDataJob.class, bis_factory.getFaty_id(), Scheduler.DEFAULT_GROUP, conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzIvDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_IV, conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzFinInsDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_FIN, conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzPackDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_PACK, conEcepssion, bis_factory.getFaty_id());
            }
         }
 

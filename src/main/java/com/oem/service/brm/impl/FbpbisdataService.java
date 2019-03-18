@@ -6,14 +6,12 @@ import com.oem.service.brm.IFbpbisdataService;
 import com.oem.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import com.oem.tx.brm.Fbpbisdata.FbpbisdataI;
 import com.oem.tx.brm.Fbpbisdata.FbpbisdataIA;
 import com.oem.tx.brm.Fbpbisdata.FbpbisdataO;
 import com.oem.tx.brm.Fbpbisdata.FbpbisdataOA;
-
-import javax.transaction.Transactional;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;

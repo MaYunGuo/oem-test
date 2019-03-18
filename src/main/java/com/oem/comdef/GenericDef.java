@@ -1,6 +1,9 @@
 package com.oem.comdef;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class GenericDef {
+
     public static final long _NORMAL = 0;
     public static final long _ERROR = -1;
     public static final String _YES = "Y";
@@ -12,6 +15,10 @@ public class GenericDef {
 
     public static final String TRX_TYPE_IN = "I";
     public static final String TRX_TYPE_OUT = "O";
+
+    public static final String QUARTZ_GROUP_IV = "QUARTZ_GROUP_IV";
+    public static final String QUARTZ_GROUP_FIN = "QUARTZ_GROUP_FIN";
+    public static final String QUARTZ_GROUP_PACK = "QUARTZ_GROUP_PACK";
 
 
     public static final String RETURN_CODE_OK = "0000000";
@@ -35,6 +42,7 @@ public class GenericDef {
     public static final char ACTON_FLG_DELETE_NEW_CATE='C'; //删除
     public static final char ACTION_FLG_CREAT = 'C';
     public static final char ACTION_FLG_BIND ='B';
+    public static final char ACTION_FLG_PACK = 'P';
 
 
 
@@ -56,6 +64,7 @@ public class GenericDef {
     public static final String TX_FBPBISDATA = "FBPBISDATA";
     public static final String TX_FBPBISFATY = "FBPBISFATY";
     public static final String TX_FBPRETBOX = "FBPRETBOX";
+    public static final String TX_FBPRETLOT = "FBPRETLOT";
 
 
 
@@ -74,6 +83,10 @@ public class GenericDef {
 
     public static final long E_FUPFNCMAGE = 1000400;
     public static final long E_FUPFNCMAGE_INVALID_INPUT = E_FUPFNCMAGE + 1;
+
+    public static final long E_FBPRETLOT = 1000500;
+    public static final long E_FBPRETLOT_IMG_UPLOAD_ERR = E_FBPRETLOT + 1;
+    public static final long E_FBPRETLOT_LOT_HAVE_PACKED = E_FBPRETLOT + 2;
 
 
 
@@ -100,6 +113,21 @@ public class GenericDef {
     public static final long E_BIS_FUNC_CODE = 3000500;
     public static final long E_BIS_GRP_FUNC = 3000600;
     public static final long E_BIS_USR_GRP = 3000700;
+    public static final long E_OEM_PRD_LOT = 3000800;
+    public static final long E_OEM_PRD_BOX = 3000900;
+
+
+
+
+
+
+
+
+
+
+    public static final long E_EXCEL_ANALY = 4000100;
+    public static final long E_EXCEL_ANALY_CAN_NOT_GET_WORKBOOK = E_EXCEL_ANALY +1;
+    public static final long E_EXCEL_ANALY_EXCEL_IS_EMPTY = E_EXCEL_ANALY +2;
 
 
 

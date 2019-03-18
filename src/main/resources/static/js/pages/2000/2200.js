@@ -49,9 +49,7 @@ $(document).ready(function(){
 				var itemInfoCM =
                     [   {  name  : 'group_id'    ,  index : 'group_id', 	 label :  GROUP_ID_TAG  ,width : 190 },
                         {  name  : 'group_name'  ,  index : 'group_name',    label : GROUP_NAME_TAG,width : 190 },
-                        {  name  : 'system_id'   ,  index : 'system_id',     label : SYSTEM_ID_TAG,width : 130 },
-                        {  name  : 'admin_flg'   ,  index : 'admin_flg',     label : ADMIN_FLG_TAG,width : 100 },
-                        {  name  : 'access_flg'  ,  index : 'access_flg',    label : ACCESS_FLG_TAG,width : 100 }
+                        {  name  : 'system_id'   ,  index : 'system_id',     label : SYSTEM_ID_TAG,width : 130 }
                     ];
                 //调用封装的ddGrid方法
                 var options2 = {

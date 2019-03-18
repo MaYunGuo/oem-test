@@ -65,6 +65,12 @@ public class FileUtil {
 
     @SuppressWarnings("resource")
     public static void copyFile(File source, File dest) throws IOException {
+
+        if(!dest.exists()){
+            dest.createNewFile();
+            dest = new File(dest.getAbsolutePath());
+        }
+
         FileChannel inputChannel = null;
         FileChannel outputChannel = null;
 
@@ -74,6 +80,17 @@ public class FileUtil {
         outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
         inputChannel.close();
         outputChannel.close();
+    }
+
+    public static void copyFile(InputStream in, File destFile) throws Exception {
+        OutputStream os = new FileOutputStream(destFile);
+        int bytesRead = 0;
+        byte[] buffer = new byte[8192];
+        while ((bytesRead = in.read(buffer, 0, 8192)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+        os.close();
+        in.close();
     }
 
     public static File findFile(String fileName) {
