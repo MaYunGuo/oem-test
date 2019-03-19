@@ -160,6 +160,7 @@ public class FupusrmageService implements IFupusrmageService {
             oary.setUsr_id(bis_user.getUsr_id());
             oary.setUsr_name(bis_user.getUsr_name());
             oary.setUsr_type(bis_user.getUsr_type());
+            oary.setUsr_fty(bis_user.getUsr_fty());
             oary.setUsr_mail(bis_user.getUsr_mail());
             oary.setUsr_phone(bis_user.getUsr_phone());
             oary.setAdmin_flg(bis_user.getAdmin_flg());

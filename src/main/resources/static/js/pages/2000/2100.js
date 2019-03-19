@@ -59,6 +59,8 @@ $(document).ready(function(){
         },
         selRowFnc : function (id){
             var rowData, inObj, outObj, oary, oaryF;
+            $("input").val(_SPACE);
+            SelectDom.setSelect($("select"), _SPACE);
             $("input").attr(VAL.DISABLED_ATTR);
             $("select").attr(VAL.DISABLED_ATTR);
 
@@ -86,6 +88,7 @@ $(document).ready(function(){
                 domObj.$mailTxt.val(oary.usr_mail);
                 SelectDom.setSelect(domObj.$usrTypeSel, oary.usr_type);
                 SelectDom.setSelect(domObj.$usrFtySel, oary.usr_fty);
+                domObj.$usrFtySel.attr(VAL.DISABLED_ATTR);
                 if (oary.valid_flg === "Y") {
                     domObj.$validFlg.attr('checked','checked');
                 }else {
@@ -258,8 +261,7 @@ $(document).ready(function(){
                 return false;
             }
             $("input:not(#usrIdTxt)").attr(VAL.ENABLED_ATTR);
-            domObj.$deptSel.attr(VAL.ENABLED_ATTR);
-//				$("#select").attr(VAL.ENABLED_ATTR);
+            domObj.$usrTypeSel.attr(VAL.ENABLED_ATTR);
         }
     };
     function dialogUsrFnc(usr_id){
@@ -309,6 +311,7 @@ $(document).ready(function(){
         });
         domObj.$usrTypeSel.change(function () {
             var usr_type = domObj.$usrTypeSel.find("option:selected").val();
+            var usr_faty = domObj.$usrFtySel.find("option:selected").val();
             if(usr_type == "O"){
                 domObj.$usrFtySel.attr(VAL.ENABLED_ATTR);
             }
