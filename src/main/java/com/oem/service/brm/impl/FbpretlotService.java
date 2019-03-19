@@ -105,8 +105,12 @@ public class FbpretlotService implements IFbpretlotService {
         if(inTrx.getIary() != null && !inTrx.getIary().isEmpty()) {
             FbpretlotIA fbpretlotIA = inTrx.getIary().get(0);
             String lot_no = fbpretlotIA.getLot_no();
+            String box_no = fbpretlotIA.getBox_no();
             if (!StringUtil.isSpaceCheck(lot_no)) {
                 hql.append(" and lot_no ='").append(lot_no).append("'");
+            }
+            if(!StringUtil.isSpaceCheck(box_no)){
+                hql.append(" and box_no ='").append(box_no).append("'");
             }
         }
         Bis_user bis_user = bisUserRepository.get(evt_usr);
@@ -170,7 +174,7 @@ public class FbpretlotService implements IFbpretlotService {
             outTrx.setRtn_mesg("用户[" + evt_usr +"]的所属的工厂信息为空,请确认");
             return _ERROR;
         }
-        String lotHql = "From Oem_prd_lot where oem_id=? and lot_no =?0";
+        String lotHql = "From Oem_prd_lot where oem_id=?0 and lot_no =?1";
         List<FbpretlotOA> oary = new ArrayList<>();
         for(FbpretlotIA iary : iaryList){
             Oem_prd_lot oem_prd_lot = oemPrdLotRepository.uniqueResult(lotHql, usr_faty, iary.getLot_no());
@@ -243,6 +247,8 @@ public class FbpretlotService implements IFbpretlotService {
             outTrx.setRtn_mesg("用户[" + evt_usr +"]的所属的工厂信息为空,请确认");
             return _ERROR;
         }
+        List<FbpretlotOA> oary = new ArrayList<>();
+
         String lotHql = "From Oem_prd_lot where oem_id=?0 and lot_no =?1";
         for(FbpretlotIA iary : iaryList){
             Oem_prd_lot oem_prd_lot = oemPrdLotRepository.uniqueResult(lotHql, usr_faty, iary.getLot_no());
@@ -257,7 +263,26 @@ public class FbpretlotService implements IFbpretlotService {
             oem_prd_lot.setUpdate_user(evt_usr);
             oem_prd_lot.setUpdate_timestamp(cr_timestamp);
             oemPrdLotRepository.update(oem_prd_lot);
+
+            FbpretlotOA fbpretlotOA = new FbpretlotOA();
+            fbpretlotOA.setOem_id(usr_faty);
+            fbpretlotOA.setLot_no(iary.getLot_no());
+            fbpretlotOA.setIv_power(oem_prd_lot.getIv_power());
+            fbpretlotOA.setIv_isc(oem_prd_lot.getIv_isc());
+            fbpretlotOA.setIv_voc(oem_prd_lot.getIv_voc());
+            fbpretlotOA.setIv_imp(oem_prd_lot.getIv_imp());
+            fbpretlotOA.setIv_vmp(oem_prd_lot.getIv_vmp());
+            fbpretlotOA.setIv_ff(oem_prd_lot.getIv_ff());
+            fbpretlotOA.setIv_tmper(oem_prd_lot.getIv_tmper());
+            fbpretlotOA.setIv_adj_versioni(oem_prd_lot.getIv_adj_versioni());
+            fbpretlotOA.setIv_timestamp(oem_prd_lot.getIv_timestamp());
+            fbpretlotOA.setFinal_grade(oem_prd_lot.getFinal_grade());
+            fbpretlotOA.setFinal_color(oem_prd_lot.getFinal_color_lvl());
+            fbpretlotOA.setFinal_power(oem_prd_lot.getFinal_power_lvl());
+            fbpretlotOA.setBox_no(oem_prd_lot.getBox_no());
+            oary.add(fbpretlotOA);
         }
+        outTrx.setOary(oary);
         return _NORMAL;
     }
 

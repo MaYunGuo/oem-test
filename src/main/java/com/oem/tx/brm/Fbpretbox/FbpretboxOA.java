@@ -10,9 +10,7 @@ public class FbpretboxOA {
     private String box_no;
     private String oqc_grade;
     private String ship_statu;
-
-    //oem_prd_lot 根据Box_no 串lot 一对多
-    private List<LotInfo> lotList;
+    private List<FbpretboxOB> oaryB;
 
     public String getBox_no() {
         return box_no;
@@ -38,11 +36,11 @@ public class FbpretboxOA {
         this.ship_statu = ship_statu;
     }
 
-    public List<LotInfo> getLotList() {
-        return lotList;
+    public List<FbpretboxOB> getOaryB() {
+        return oaryB;
     }
 
-    public void setLotList(List<LotInfo> lotList) {
-        this.lotList = lotList;
+    public void setOaryB(List<FbpretboxOB> oaryB) {
+        this.oaryB = oaryB;
     }
 }

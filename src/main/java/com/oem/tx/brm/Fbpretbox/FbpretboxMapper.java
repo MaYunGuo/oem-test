@@ -17,8 +17,8 @@ import java.util.List;
 public interface FbpretboxMapper {
     FbpretboxMapper INSTANCE = Mappers.getMapper(FbpretboxMapper.class);
 
-    LotInfo getLotInfo(Oem_prd_lot lot);
-    List<LotInfo> getLotInfo(List<Oem_prd_lot> list);
+    FbpretboxOB getLotInfo(Oem_prd_lot lot);
+    List<FbpretboxOB> getLotInfo(List<Oem_prd_lot> list);
 
 
     ImagePathInfo getImagePathInfo(Oem_image_path image);

@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{M_3400_OQC_GRADE_TAG}"></title>
+    <title th:text="#{M_3600_OEM_DATA_TAG}"></title>
     <head th:include="compage/comCSS::commCss"></head>
     <span th:include="compage/comJS :: commJs"></span>
-    <script th:src="@{js/pages/1000/3400.js}"></script>
-    <script th:src="@{js/jQuery-File-Upload-9.19.1/js/jquery.fileupload.js}"></script>
-    <!--<script th:src="@{js/dialog/bis_data_6300_Dialog.js?v=2017040701}"></script>-->
+    <script th:src="@{js/pages/3000/3600.js}"></script>
 </head>
 <body>
 <div th:include="compage/navbar :: ComTop"></div>
 <div class="container-fluid">
     <div class="col-lg-12 btnDivCss">
         <button class="btn btn-info" id="query_btn" th:text="#{QUERY_BTN_TAG}"></button>
-        <button class="btn btn-primary" id="ok_btn" th:text="#{OK_BTN_TAG}"></button>
-        <button class="btn btn-primary" id="ng_btn" th:text="#{NG_BTN_TAG}"></button>
-        <button class="btn btn-warning" id="import_btn" th:text="#{IMPORT_EXC_BTN_TAG}"></button>
-        <button class="btn btn-danger" id="download_btn" th:text="#{DOWNLOAD_OQC_EXC_BTN_TAG}"></button>
     </div>
     <div class="col-lg-12">
         <div class="cardBox cardBoxTable noPosition" style="border: none;">
@@ -32,7 +26,7 @@
                 <!-- Tab panes -->
                 <div class="tab-content tabs">
                     <div role="tabpane" class="tab-pane fade in active" id="tab1">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
 								<span id="dataForm" class="form-horizontal">
 									<div class="form-group">
 										<label class="control-label col-lg-2" for="box_no" th:text="箱号"></label>
@@ -42,15 +36,19 @@
 									</div>
 								</span>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
 								<span id="dataForm2" class="form-horizontal">
 									<div class="form-group">
-										<label class="control-label col-lg-2" for="judge_code" th:text="判定结果"></label>
+										<label class="control-label col-lg-2" for="lot_no" th:text="批次号"></label>
 										<div class="col-lg-3">
-											<input id="judge_code" class="form-control" disabled>
+											<input id="lot_no" class="form-control">
 										</div>
 									</div>
 								</span>
+                        </div>
+                        <div id="dataListDiv" class="col-lg-12" style="padding-left: 0; padding-right: 0;">
+                            <table id="dataListGrd"></table>
+                            <div id="dataListPg"></div>
                         </div>
                     </div>
                 </div>
@@ -59,55 +57,64 @@
     </div>
 </div>
 <!-- file 选择 模态框 -->
-<div id="uploadDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
-    <div class="modal-dialog" style="width:480px;">
+<div id="mtrlDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+    <div class="modal-dialog" style="width:850px;">
         <div class="modal-content">
             <!-- 模框头部 -->
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"
                         aria-hidden="true">×
                 </button>
-                <h4 class="modal-title">请选择上传文件</h4>
+                <h4 class="modal-title">扣料详细信息</h4>
             </div>
             <!-- 模框主体 -->
             <div class="modal-body">
-
                 <div class="row">
                     <div class="form_group">
-                        <span class="input-group">
-                            <span class="input-group-addon">文件名</span>
-                            <input id="uploadFileName" class="form-control" readonly>
-                        </span>
-                        <span style="float: right">
-                                <span class="btn btn-success fileinput-button" id ="upload_btn">
-                                <i class="glyphicon glyphicon-plus"></i>
-                                <span id="uploadSpan">添加附件</span>
-                                <input type="file" name="file" id="fileinput" style="display: none">
-
-                                </span>
-                        </span>
-                        <div class="row">
-                            <div class="col-lg-10">
-                                <div class="col-lg-4"></div>
-                                <div class="col-lg-4">
-                                    <div id="process"></div>
-                                </div>
-                                <div class="col-lg-4"></div>
-                            </div>
+                        <div id="mtrlListDiv" class="col-lg-12" style="padding-left: 0; padding-right: 0;">
+                            <table id="mtrlListGrd"></table>
+                            <div id="mtrlListPg"></div>
                         </div>
                     </div>
-                    <!--<input type="file" name="file" id="fileinput" >-->
                 </div>
             </div>
             <!-- 模框底部 -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"
-                        id="uploadDialog_cancelBtn">
+                        id="mtrlDialog_cancelBtn">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary"
-                        id="uploadDialog_sureBtn">
-                    上传
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 图片显示 模态框 -->
+<div id="imgDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+    <div class="modal-dialog" style="width:1150px;">
+        <div class="modal-content">
+            <!-- 模框头部 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h4 class="modal-title">图片显示</h4>
+            </div>
+            <!-- 模框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form_group">
+                        <div id="imgDiv" class="col-lg-12" style="padding-left: 0; padding-right: 0;">
+                            <img id="imgPath">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 模框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"
+                        id="imgDialog_cancelBtn">
+                    关闭
                 </button>
             </div>
         </div>

@@ -30,7 +30,6 @@ public class GenericDef {
 
 
     public static final char ACTION_FLG_QUERY = 'Q';
-    public static final char ACTION_FLG_SEARCH = 'S';
     public static final char ACTION_FLG_UPDATE = 'U';
     public static final char ACTION_FLG_MODIFY = 'M';
     public static final char ACTION_FLG_ADD = 'A';
@@ -43,6 +42,8 @@ public class GenericDef {
     public static final char ACTION_FLG_CREAT = 'C';
     public static final char ACTION_FLG_BIND ='B';
     public static final char ACTION_FLG_PACK = 'P';
+    public static final char ACTION_FLG_SHIP = 'S';
+    public static final char ACTION_FLG_OQC = 'O';
 
 
 
@@ -88,6 +89,10 @@ public class GenericDef {
     public static final long E_FBPRETLOT_IMG_UPLOAD_ERR = E_FBPRETLOT + 1;
     public static final long E_FBPRETLOT_LOT_HAVE_PACKED = E_FBPRETLOT + 2;
 
+    public static final long E_FBTRETBOX = 1000600;
+    public static final long E_FBPRETBOX_INVALID_INPUT = E_FBTRETBOX + 1;
+
+
 
 
     /**
@@ -128,6 +133,10 @@ public class GenericDef {
     public static final long E_EXCEL_ANALY = 4000100;
     public static final long E_EXCEL_ANALY_CAN_NOT_GET_WORKBOOK = E_EXCEL_ANALY +1;
     public static final long E_EXCEL_ANALY_EXCEL_IS_EMPTY = E_EXCEL_ANALY +2;
+
+
+    public static final long E_IMAGE_ANALY = 5000100;
+    public static final long E_IMAGE_ANALY_NOT_FOUND =  E_IMAGE_ANALY + 1;
 
 
 

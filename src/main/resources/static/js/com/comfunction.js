@@ -920,7 +920,7 @@ function CreateRouteBean(){
 function comUplaod(url, inTrx){
 
     var data = new FormData();
-    $.each(anObject,function(name,value) {
+    $.each(inTrx,function(name,value) {
         data.append(name, value);
     });
 
@@ -929,7 +929,6 @@ function comUplaod(url, inTrx){
         type : "POST",
         url : url,
         async : false,// 同步
-        dataType : 'json',
         data : data,
         cache: false,
         contentType: false,    //不可缺

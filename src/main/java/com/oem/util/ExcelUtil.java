@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +51,8 @@ public class ExcelUtil {
                     if (DateUtil.isCellDateFormatted(cell)) {
                         cellValue = formatter.formatCellValue(cell);
                     } else {
-                        double value = cell.getNumericCellValue();
-                        int intValue = (int) value;
-                        cellValue = value - intValue == 0 ? String.valueOf(intValue) : String.valueOf(value);
+                        DecimalFormat df = new DecimalFormat("0");
+                        cellValue = df.format(cell.getNumericCellValue());
                     }
                     break;
                 case Cell.CELL_TYPE_STRING:
@@ -84,11 +84,11 @@ public class ExcelUtil {
         Sheet st = wb.getSheetAt(0);
         int rowCnt = st.getLastRowNum();
         int columnCnt = st.getRow(0).getPhysicalNumberOfCells();
-        for(int i=1;i<rowCnt;i++){
+        for(int i=1;i<=rowCnt;i++){
               String [] data = new String[columnCnt];
               Row row = st.getRow(i);
-              for(int j=0;j<columnCnt;i++){
-                  data[j] = getCellValue(row.getCell(j));
+              for(int j=0;j<columnCnt;j++){
+                  data[j] =getCellValue(row.getCell(j));
               }
               dataList.add(data);
         }

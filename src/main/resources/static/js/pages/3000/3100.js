@@ -19,9 +19,11 @@ $(document).ready(function () {
 
     var domObj = {
         W: $(window),
-        $query_btn : $("#query_btn"),
-        $add_btn   : $("#add_btn"),
-        $lotIdText : $("#lotIdText"),
+        $query_btn    : $("#query_btn"),
+        $add_btn      : $("#add_btn"),
+        $import_btn   : $("#import_btn"),
+        $downLoad_btn : $("#downLoad_btn"),
+        $lotIdText    : $("#lotIdText"),
         jgird :{
             $lotInfoDiv  : $("#lotInfoListDiv"),
             $lotInfoGrid : $("#lotInfoListGrd"),
@@ -42,6 +44,10 @@ $(document).ready(function () {
             $addImgFile       : $("#addImgFile"),
             $addCancelBtn     : $("#addCancelBtn"),
             $addSureBtn       : $("#addSureBtn"),
+
+            $uploadDialog  : $("#uploadDialog"),
+            $uploadFile    : $("#uploadFile"),
+            $uploadSureBtn : $("#uploadSureBtn")
         },
     };
 
@@ -223,21 +229,69 @@ $(document).ready(function () {
                 domObj.dialog.$addLotInfoDialog.modal('hide');
                 buttonFnc.queryFnc(lot_id);
             }
+        },
+        importBtnFnc : function () {
+            domObj.dialog.$uploadFile.val(_SPACE);
+            domObj.dialog.$uploadDialog.modal('show');
+        },
+        importSureFnc :function () {
+            var excel_file = document.getElementById("uploadFile").files[0]; // js 获取文件对象
+            if (!excel_file) {
+                showErrorDialog("","请选择要上传的文件");
+                return false;
+            }
+            var inObj ={
+                trx_id      : VAL.FBPRETLOT,
+                action_flg  : "A",
+                data_type   : "I",
+                evt_usr     : VAL.EVT_USR,
+                upload_file : excel_file
+            }
+            var outObj = comUplaod("uploadExcel.do", inObj);
+            if(outObj.rtn_code != _NORMAL){
+                showErrorDialog(outObj.rtn_code, outObj.rtn_mesg);
+                return false;
+            }
+            setGridInfo(outObj.oary, domObj.jgird.$lotInfoGrid);
+            domObj.dialog.$uploadDialog.modal('hide');
+        },
+        downLoadFnc :function () {
+            if ($("#downForm").length > 0) {
+                $("#downForm").remove();
+            }
+            var str = '<form id="downForm" action="download.do" method="post">';
+            str = str + '<input type="hidden" name="fileName" id= "fileName" />';
+            str = str + "</form>";
+            $(str).appendTo("body");
+            $("#fileName").val("IV数据模板.xlsx");
+            $("#downForm").submit();
         }
+
+
     };
 
     var iniButtonAction = function () {
         domObj.$query_btn.click(function () {
             var lot_id = domObj.$lotIdText.val();
-            buttonFnc.queryFnc();
-        })
+            buttonFnc.queryFnc(lot_id);
+        });
         domObj.$add_btn.click(function () {
             buttonFnc.addFnc();
-        })
+        });
+        domObj.$import_btn.click(function () {
+            buttonFnc.importBtnFnc();
+        });
         domObj.dialog.$addSureBtn.click(function () {
             buttonFnc.saveFnc();
-        })
+        });
+        domObj.dialog.$uploadSureBtn.click(function () {
+            buttonFnc.importSureFnc();
+        });
+        domObj.$downLoad_btn.click(function () {
+           buttonFnc.downLoadFnc();
+        });
     };
+
 
     function init(){
         initFnc.initLotInfoGrd();

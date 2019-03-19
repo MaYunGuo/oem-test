@@ -40,4 +40,11 @@ var LOT_IV_TIMESTAMP = "量测时间";
 var LOT_FIN_COLOR_TAG = "终检颜色";
 var LOT_FIN_GRADE_TAG = "终检等级";
 var LOT_FIN_POWER_TAG = "终检功率";
+var BOX_OQC_GRADE_TAG = "OQC等级";
+var BOX_SHIP_STAT_TAG = "出货状态";
+var GROUP_ID_TAG = "权限群组";
+var GROUP_NAME_TAG = "权限群组名称";
+var SYSTEM_ID_TAG ="系统代码";
+var FUNC_ID_TAG ="权限代码";
+var FUNC_NAME_TAG ="权限名称";
 

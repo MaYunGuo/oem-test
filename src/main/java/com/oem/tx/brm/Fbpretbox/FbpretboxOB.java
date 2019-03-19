@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @Data
-public class LotInfo {
+public class FbpretboxOB {
     private int id;
     private String box_no;
     private String oem_id;
@@ -27,8 +27,8 @@ public class LotInfo {
     private String iv_adj_versioni;
     private Timestamp iv_timestamp;
     private String final_grade;
-    private String final_power_lvl;
-    private String final_color_lvl;
+    private String final_power;
+    private String final_color;
     private Timestamp update_timestamp;
     private String update_user;
     private Timestamp db_timestamp;
@@ -152,20 +152,20 @@ public class LotInfo {
         this.final_grade = final_grade;
     }
 
-    public String getFinal_power_lvl() {
-        return final_power_lvl;
+    public String getFinal_power() {
+        return final_power;
     }
 
-    public void setFinal_power_lvl(String final_power_lvl) {
-        this.final_power_lvl = final_power_lvl;
+    public void setFinal_power(String final_power) {
+        this.final_power = final_power;
     }
 
-    public String getFinal_color_lvl() {
-        return final_color_lvl;
+    public String getFinal_color() {
+        return final_color;
     }
 
-    public void setFinal_color_lvl(String final_color_lvl) {
-        this.final_color_lvl = final_color_lvl;
+    public void setFinal_color(String final_color) {
+        this.final_color = final_color;
     }
 
     public Timestamp getUpdate_timestamp() {

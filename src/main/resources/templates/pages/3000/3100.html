@@ -11,8 +11,10 @@
     <div th:include="compage/navbar :: ComTop"></div>
 	<div class="container-fluid col-lg-12 col-md-12 col-sm-12" id="divTotal">
 		<div class="btnDivCss col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
-			<button class="btn btn-info"    id="query_btn"  th:text="#{QUERY_BTN_TAG}"></button>
-			<button class="btn btn-primary" id="add_btn"    th:text="#{UPLOAD_LOT_IV_DATA_TAG}"></button>
+			<button class="btn btn-info"    id="query_btn"    th:text="#{QUERY_BTN_TAG}"></button>
+			<button class="btn btn-primary" id="add_btn"      th:text="#{UPLOAD_LOT_IV_DATA_TAG}"></button>
+			<button class="btn btn-primary" id="import_btn"   th:text="#{UPLOAD_LOT_EXCEL_TAG}"></button>
+			<button class="btn btn-warning" id="downLoad_btn" th:text="#{DOWNLOAD_EXCEL_MODEL_BTN_TAG}"></button>
 		</div>
 		<div class="col-lg-12 col-md-12 col-sm-12">
 			<div class="cardBox cardBoxTable noPosition" style="border: none;">
@@ -161,6 +163,38 @@
 				<div class="modal-footer">
 					<a id="addCancelBtn" class="btn" data-dismiss="modal" th:text="#{CANCEL_BTN_TAG}"></a>
 					<a id="addSureBtn" class="btn btn-primary" th:text="#{SAVE_BTN_TAG}"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- file 选择 模态框 -->
+	<div id="uploadDialog" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true" >
+		<div class="modal-dialog" style="width:480px;">
+			<div class="modal-content">
+				<!-- 模框头部 -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title" th:text="#{SELECT_UNOLAD_FILE_TAG}"></h4>
+				</div>
+				<!-- 模框主体 -->
+				<div class="modal-body">
+					<div class="row">
+						<form class="form-horizontal">
+							<div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 4px;">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="uploadFile" th:text="#{ADD_FILE_TAG}"></label>
+									<div class="col-lg-8">
+										<input id="uploadFile" type="file" accept=".xls,.xlsx" class="form-control" style="width: 100%"/>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- 模框底部 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancelBtn" th:text="#{CANCEL_BTN_TAG}"></button>
+					<button type="button" class="btn btn-primary" id="uploadSureBtn" th:text="#{UPLOAD_BTN_TAG}"></button>
 				</div>
 			</div>
 		</div>

@@ -136,12 +136,13 @@ $(document).ready(function () {
             if (outObj.rtn_code === _NORMAL) {
                 // buttonFnc.clearFnc();
                 $("input").val("");
-                buttonFnc.queryFnc();
+                buttonFnc.queryFnc(box_id);
                 showSuccessDialog("保存成功");
             }
         },
 
         importBtnFnc :function () {
+            domObj.dialog.$uploadFile.val(_SPACE);
             domObj.dialog.$uploadDialog.modal('show');
         },
 
@@ -164,6 +165,7 @@ $(document).ready(function () {
                 return false;
             }
             setGridInfo(outObj.oary, domObj.grid.$pcikListGrid);
+            domObj.dialog.$uploadDialog.modal('hide');
         },
 
         downLoadFnc :function () {
@@ -207,6 +209,16 @@ $(document).ready(function () {
                    if(data == null){
                        showErrorDialog("","没有找到批次号[" +lot_no +"]的信息，请确认");
                        return false;
+                   }
+                   var rowIds = domObj.grid.$pcikListGrid.getDataIDs(); //获取当前显示的记录
+                   if(rowIds.length > 0){
+                      for(var i=0;i<rowIds.length;i++){
+                          var rowData = domObj.grid.$pcikListGrid.jqGrid("getRowData", rowIds[i]);
+                         if(rowData.lot_no == lot_no){
+                             domObj.grid.$pcikListGrid.jqGrid("delRowData", rowIds[i]);
+                             i = i-1;
+                         }
+                      }
                    }
                    domObj.grid.$pcikListGrid.jqGrid("addRowData", data[0].id,data[0],"last");
                    domObj.grid.$pcikListGrid.jqGrid('setSelection',data[0].id);
