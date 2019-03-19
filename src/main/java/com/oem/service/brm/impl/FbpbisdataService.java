@@ -244,7 +244,7 @@ public class FbpbisdataService implements IFbpbisdataService {
                 bis_data = bisDataRepository.get(data_seq_id);
                 bis_data.setData_id(data_id);
             } else {
-                String hql = " from Bis_data where data_cate=?" + " and data_id= ? and data_ext=?";
+                String hql = " from Bis_data where data_cate=?0 and data_id= ?1 and data_ext= ?2";
                 bis_data = bisDataRepository.uniqueResultWithLock(hql, data_cate, data_id, data_ext);
             }
             if (bis_data == null) {
@@ -306,7 +306,7 @@ public class FbpbisdataService implements IFbpbisdataService {
                 String data_cate = iary.getData_cate();
                 String data_id = iary.getData_id();
                 String data_ext = iary.getData_ext();
-                String hql = "from Bis_data where data_cate = ? and data_id = ? and data_ext = ?";
+                String hql = "from Bis_data where data_cate = ?0 and data_id = ?1 and data_ext = ?2";
                 Bis_data bis_data = bisDataRepository.uniqueResult(hql, data_cate, data_id, data_ext);
                 if (bis_data == null) {
                     outTrx.setRtn_code(E_BIS_DATA + E_READ_NOT_FOUND + "");

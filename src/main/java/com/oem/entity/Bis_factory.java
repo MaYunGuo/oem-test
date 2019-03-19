@@ -25,6 +25,9 @@ public class Bis_factory extends BaseEntity implements Serializable {
     @Column(name = "ANLS_UNIT", length = 1)
     private String  anls_unit;  //解析单位 H:小时,M:分钟,S:秒
 
+    @Column(name = "FATY_MAIL", length = 50)
+    private String faty_mail;
+
     @Column(name = "EVT_USR", length = 10)
     private String evt_usr;
 
@@ -71,6 +74,14 @@ public class Bis_factory extends BaseEntity implements Serializable {
 
     public void setAnls_unit(String anls_unit) {
         this.anls_unit = anls_unit;
+    }
+
+    public String getFaty_mail() {
+        return faty_mail;
+    }
+
+    public void setFaty_mail(String faty_mail) {
+        this.faty_mail = faty_mail;
     }
 
     public String getEvt_usr() {

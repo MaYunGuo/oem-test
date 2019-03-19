@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class TestJob {
 
-    @Autowired
+   /* @Autowired
     private IRetLotInfoRepository retLotInfoRepository;
 
 
@@ -57,7 +57,7 @@ public class TestJob {
                 retLotInfoRepository.update(ret_lot_info);
            }
         }
-    }
+    }*/
 
     /* @Scheduled(cron="40/60 * * * * ?")
     public void updatePack(){

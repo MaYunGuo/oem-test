@@ -108,6 +108,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
                 fbpbisfatyOA.setFaty_name(bis_factory.getFaty_name());
                 fbpbisfatyOA.setAnls_rate(bis_factory.getAnls_rate());
                 fbpbisfatyOA.setAnls_unit(bis_factory.getAnls_unit());
+                fbpbisfatyOA.setFaty_mail(bis_factory.getFaty_mail());
                 oary.add(fbpbisfatyOA);
             }
             outTrx.setTbl_cnt(bisFactoryList.size());
@@ -136,6 +137,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
             bis_factory.setFaty_name(fbpbisfatyIA.getFaty_name());
             bis_factory.setAnls_rate(fbpbisfatyIA.getAnls_rate());
             bis_factory.setAnls_unit(fbpbisfatyIA.getAnls_unit());
+            bis_factory.setFaty_mail(fbpbisfatyIA.getFaty_mail());
             bis_factory.setEvt_usr(inTrx.getEvt_usr());
             bis_factory.setEvt_timestamp(DateUtil.getCurrentTimestamp());
             bisFactoryRepository.save(bis_factory);
@@ -176,6 +178,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
         bis_factory.setFaty_name(fbpbisfatyIA.getFaty_name());
         bis_factory.setAnls_rate(fbpbisfatyIA.getAnls_rate());
         bis_factory.setAnls_unit(fbpbisfatyIA.getAnls_unit());
+        bis_factory.setFaty_mail(fbpbisfatyIA.getFaty_mail());
         bis_factory.setEvt_usr(inTrx.getEvt_usr());
         bis_factory.setEvt_timestamp(DateUtil.getCurrentTimestamp());
         bisFactoryRepository.update(bis_factory);

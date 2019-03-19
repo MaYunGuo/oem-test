@@ -35,8 +35,8 @@ $(document).ready(function() {
 		$fatyIdText   : $("#fatyIdText"),
 		$fatyNameText : $("#fatyNameText"),
 		$anlsRateText : $("#anlsRateText"),
+		$fatyMailText : $("#fatyMailText"),
 		$anlsUnitSel  : $("#anlsUnitSel"),
-
 		mainGrd   :{
             grdId     : $("#fatyListGrd")   ,
             grdPgText : "#fatyListPg"       ,
@@ -87,6 +87,7 @@ $(document).ready(function() {
 				controlsQuery.mainGrd.grdId.setSelection(rowIds[0], true);
 			}
 		},
+
 		opeGridSelRowFnc : function(rowId) {
             $("input").val("");
             SelectDom.setSelect($("select"), "","");

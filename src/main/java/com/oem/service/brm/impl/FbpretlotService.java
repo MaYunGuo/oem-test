@@ -170,7 +170,7 @@ public class FbpretlotService implements IFbpretlotService {
             outTrx.setRtn_mesg("用户[" + evt_usr +"]的所属的工厂信息为空,请确认");
             return _ERROR;
         }
-        String lotHql = "From Oem_prd_lot where oem_id=? and lot_no =?";
+        String lotHql = "From Oem_prd_lot where oem_id=? and lot_no =?0";
         List<FbpretlotOA> oary = new ArrayList<>();
         for(FbpretlotIA iary : iaryList){
             Oem_prd_lot oem_prd_lot = oemPrdLotRepository.uniqueResult(lotHql, usr_faty, iary.getLot_no());
@@ -243,7 +243,7 @@ public class FbpretlotService implements IFbpretlotService {
             outTrx.setRtn_mesg("用户[" + evt_usr +"]的所属的工厂信息为空,请确认");
             return _ERROR;
         }
-        String lotHql = "From Oem_prd_lot where oem_id=? and lot_no =?";
+        String lotHql = "From Oem_prd_lot where oem_id=?0 and lot_no =?1";
         for(FbpretlotIA iary : iaryList){
             Oem_prd_lot oem_prd_lot = oemPrdLotRepository.uniqueResult(lotHql, usr_faty, iary.getLot_no());
             if(oem_prd_lot == null){
@@ -285,7 +285,7 @@ public class FbpretlotService implements IFbpretlotService {
         }
 
         Map<String, List<FbpretlotIA>> boxInfoMap = iaryList.stream().collect(Collectors.groupingBy(iaryItem -> iaryItem.getBox_no()));
-        String boxHql = "From Oem_prd_box where oem_id = ? and box_no = ?";
+        String boxHql = "From Oem_prd_box where oem_id = ?0 and box_no = ?1";
         for(String box_no : boxInfoMap.keySet()){
             Oem_prd_box oem_prd_box = oemPrdBoxRepository.uniqueResult(boxHql, usr_faty, box_no);
             if(oem_prd_box ==null){
@@ -298,7 +298,7 @@ public class FbpretlotService implements IFbpretlotService {
             }
         }
         List<FbpretlotOA> oary = new ArrayList<>();
-        String lotHql = "From Oem_prd_lot where oem_id=? and lot_no =?";
+        String lotHql = "From Oem_prd_lot where oem_id=?0 and lot_no =?1";
         for(FbpretlotIA iary : iaryList){
             Oem_prd_lot oem_prd_lot = oemPrdLotRepository.uniqueResult(lotHql, usr_faty, iary.getLot_no());
             if(oem_prd_lot == null){
