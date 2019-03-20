@@ -11,19 +11,45 @@
 /*                                                                        */
 /**************************************************************************/
 
+
+
+
+/**
+ * All controls's jquery object/text
+ * 所有控件的jquery对象文本
+ * @type {Object}
+ */
+
+
+function showImg(img_typ, lot_no, oem_id){
+    var imgInObj ={
+        lot_no  : lot_no,
+        oem_id  : oem_id,
+        img_typ : img_typ
+    }
+    var imgOutObj = comUplaod("checkImg.do", imgInObj);
+    if(imgOutObj.rtn_code !=  _NORMAL){
+        showErrorDialog("","没有找到批次[" + lot_no +"]的" + img_typ +"图片");
+        return false;
+    }
+    var img_path = imgOutObj.rtn_mesg;
+    $("#imgPath").attr("src", _SPACE);
+    $("#titleSpan").text(_SPACE);
+
+    $("#imgPath").attr("src", "showImg.do?imgPath=" + img_path);
+    $("#titleSpan").text(img_typ + "图片展示");
+    $("#imgDialog").modal('show');
+};
+
+
 $(document).ready(function () {
 
     var VAL = { //val
-        T_FBPRETBOX: "FBPRETBOX",
+        T_FBPRETLOT: "FBPRETLOT",
         EVT_USR: $("#userId").text(), //evt_usr
         NORMAL: "0000000", //normal
     };
 
-    /**
-     * All controls's jquery object/text
-     * 所有控件的jquery对象文本
-     * @type {Object}
-     */
     var domObj = {
         W: $(window),
         $box_no: $("#box_no"),
@@ -37,12 +63,17 @@ $(document).ready(function () {
         grid: {
             $dataListDiv: $("#dataListDiv"),
             $dataListGrd: $("#dataListGrd"),
-            $dataListPg: $("#dataListPg"),
-
-
+            $dataListPg: "#dataListPg",
+        },
+        dialog :{
+            $mtrlDialog : $("#mtrlDialog"),
+            $mtrlListGrd : $("#mtrlListGrd"),
             $mtrlListDiv: $("#mtrlListDiv"),
-            $mtrlListGrd: $("#mtrlListGrd"),
-            $mtrlListPg: $("#mtrlListPg"),
+            $mtrlListPg: "#mtrlListPg",
+
+            $imgDialog : $("#imgDialog"),
+            $titleSpan : $("#titleSpan"),
+            $imgPath   : $("#imgPath")
         }
     };
 
@@ -58,7 +89,7 @@ $(document).ready(function () {
             {name: 'update_user', index: 'update_user', label: "修改用户User_id", sortable: false, width: 80},
             {name: 'db_timestamp', index: 'db_timestamp', label: "解析插入时间", sortable: false, width: 80}];
 
-        domObj.grid.$mtrlListGrd.jqGrid({
+        domObj.dialog.$mtrlListGrd.jqGrid({
             datatype: "local",
             autoheight: true,
             mtype: "POST",
@@ -72,150 +103,58 @@ $(document).ready(function () {
             viewrecords: true,
             colModel: colModel,
 //				multiselect : true,
-            pager: domObj.grid.$mtrlListPg,
+            pager: domObj.dialog.$mtrlListPg,
         });
     };
-
-
 
     var iniGridInfo = function () {
-        var colModel = [{name: 'box_no', index: 'box_no', label: "箱号", sortable: false, width: 60},
-            {name: 'lot_no', index: 'lot_no', label: "批次号", sortable: false, width: 60},
-            {name: 'iv_power', index: 'iv_power', label: "功率", sortable: false, width: 80,},
-            {name: 'iv_isc', index: 'iv_isc', label: "ISC", sortable: false, width: 80},
-            {name: 'iv_voc', index: 'iv_voc', label: "VOC", sortable: false, width: 80},
-            {name: 'iv_imp', index: 'iv_imp', label: "IMP", sortable: false, width: 80},
-            {name: 'iv_vmp', index: 'iv_vmp', label: "VMP", sortable: false, width: 80},
-            {name: 'iv_ff', index: 'iv_ff', label: "FF", sortable: false, width: 80},
-            {name: 'iv_tmper', index: 'iv_tmper', label: "温度", sortable: false, width: 80},
-            {name: 'iv_adj_versioni', index: 'iv_adj_versioni', label: "校准版", sortable: false, width: 80},
-            {name: 'iv_timestamp', index: 'Iv_timestamp', label: "IV测试时间", sortable: false, width: 200},
-            {name: 'final_grade', index: 'Final_grade', label: "等级", sortable: false, width: 80},
-            {name: 'final_power_lvl', index: 'Final_power_lvl', label: "功率档", sortable: false, width: 80},
-            {name: 'final_color_lvl', index: 'Final_color_lvl', label: "颜色档", sortable: false, width: 80},
-            {name: 'oqc_grade', index: 'oqc_grade', label: "OQC", sortable: false, width: 80},
-            {name: 'ship_statu', index: 'ship_statu', label: "出货", sortable: false, width: 80},
-            {name: 'oem_mtrl_use', index: 'oem_mtrl_use', label: "扣料信息", sortable: false, width: 60,},
-            {name: 'oem_image_path1', index: 'oem_image_path1', label: "IV图片", sortable: false, width: 60},
-            {name: 'oem_image_path2', index: 'oem_image_path2', label: "EL3图片", sortable: false, width: 60}];
-
-        domObj.grid.$dataListGrd.jqGrid({
-            datatype: "local",
-            autoheight: true,
-            mtype: "POST",
-            height: 370,
-            autowidth: true,//宽度根据父元素自适应
-            shrinkToFit: false,
-            scroll: true,
-            resizable: true,
-            rownumbers: true,
-            loadonce: true,
-            viewrecords: true,
-            colModel: colModel,
-//				multiselect : true,
-            pager: domObj.grid.$dataListPg,
-            gridComplete: function () {
+        var colModel = [
+            {name: 'box_no',          index: 'box_no',          label: BOX_ID_TAG,        sortable: false, width: 120},
+            {name: 'lot_no',          index: 'lot_no',          label: LOT_ID_TAG,        sortable: false, width: 120},
+            {name: 'oem_id',          index: 'oem_id',          label: LOT_OEM_ID_TAG ,   sortable: false, width: 120},
+            {name: 'iv_power',        index: 'iv_power',        label: LOT_IV_POWER_TAG,  sortable: false, width: 80,},
+            {name: 'iv_isc',          index: 'iv_isc',          label: LOT_IV_ISC_TAG,    sortable: false, width: 80},
+            {name: 'iv_voc',          index: 'iv_voc',          label: LOT_IV_VOC_TAG,    sortable: false, width: 80},
+            {name: 'iv_imp',          index: 'iv_imp',          label: LOT_IV_IMP_TAG,    sortable: false, width: 80},
+            {name: 'iv_vmp',          index: 'iv_vmp',          label: LOT_IV_VMP_TAG,    sortable: false, width: 80},
+            {name: 'iv_ff',           index: 'iv_ff',           label: LOT_IV_FF_TAG,     sortable: false, width: 80},
+            {name: 'iv_tmper',        index: 'iv_tmper',        label: LOT_IV_TEMPER_RAG, sortable: false, width: 80},
+            {name: 'iv_adj_versioni', index: 'iv_adj_versioni', label:LOT_IV_CAL_TAG,     sortable: false, width: 80},
+            {name: 'iv_timestamp',    index: 'Iv_timestamp',    label: LOT_IV_TIMESTAMP,  sortable: false, width: 130},
+            {name: 'final_grade',     index: 'Final_grade',     label: LOT_FIN_GRADE_TAG, sortable: false, width: 80},
+            {name: 'final_power',     index: 'Final_power',     label: LOT_FIN_POWER_TAG, sortable: false, width: 80},
+            {name: 'final_color',     index: 'Final_color',     label: LOT_FIN_COLOR_TAG, sortable: false, width: 80},
+            {name: 'oqc_grade',       index: 'oqc_grade',       label: BOX_OQC_GRADE_TAG, sortable: false, width: 80},
+            {name: 'ship_statu',      index: 'ship_statu',      label: BOX_SHIP_STAT_TAG, sortable: false, width: 80},
+            {name: 'oem_mtrl_use',    index: 'oem_mtrl_use',    label: "扣料信息",         sortable: false, width: 60},
+            {name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,    width: 55, formatter:function (value, grid, rows, stat) {
+                    var img_typ = "IV";
+                    return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
+                }
             },
-            // onSelectRow: function (id) {
-            // },
-            onCellSelect: function (rowid, iCol, cellcontent, e) {
-                $("#mtrlListGrd").jqGrid("clearGridData");
-                var rowData =  $("#"+rowid+">td");
-                var id=rowData[1].innerHTML+"_"+rowData[2].innerHTML+"_";
-                if (iCol == 17) {//显示扣料信息
-                    if("null"==$("#"+id+"1").val()){
-                        showErrorDialog("","信息为空！");
-                        return false;
-                    }
-                    var data1=JSON.parse($("#"+id+"1").val());
-                    for(var i=0;i<data1.length;i++){
-                        var lot_no=data1[i].lot_no;
-                        var mtrl_no=data1[i].mtrl_no;
-                        var oem_id=data1[i].oem_id;
-                        var vender=data1[i].vender;
-                        var power=data1[i].power;
-                        var color=data1[i].color;
-                        var model_no=data1[i].model_no;
-                        var update_timestamp=data1[i].update_timestamp;
-                        var update_user=data1[i].update_user;
-                        var db_timestamp=data1[i].db_timestamp;
-
-                        var dataGrid = {
-                        lot_no:lot_no,
-                        mtrl_no:mtrl_no,
-                        oem_id:oem_id,
-                        vender:vender,
-                         power:power,
-                        color:color,
-                        model_no:model_no,
-                        update_timestamp:update_timestamp,
-                        update_user:update_user,
-                        db_timestamp:db_timestamp,
-                        };
-                        var newRowID = getGridNewRowID("#mtrlListGrd");
-                        $("#mtrlListGrd").jqGrid("addRowData", newRowID, dataGrid);
-                    };
-
-                    //显示弹窗
-                    $('#mtrlDialog').modal({
-                        backdrop: 'static',
-                        keyboard: false,
-                        show: false
-                    });
-                    $('#mtrlDialog').unbind('shown.bs.modal');
-                    $('#mtrlDialog').bind('shown.bs.modal');
-                    $('#mtrlDialog').modal("show");
-
-                } else if (iCol == 18) {//显示IV图片
-                    if("null"==$("#"+id+"2").val()){
-                        showErrorDialog("","信息为空！");
-                        return false;
-                    };
-                    var data2=JSON.parse($("#"+id+"2").val());
-                    if(data2.img_ope!="IV") {
-                        showErrorDialog("", "信息为空！");
-                        return false;
-                    }
-                    var ivPath=data2.path;
-                    $('#imgDialog').modal({
-                        backdrop: 'static',
-                        keyboard: false,
-                        show: false
-                    });
-                    $('#imgDialog').unbind('shown.bs.modal');
-                    $('#imgDialog').bind('shown.bs.modal');
-                    $("#imgPath").attr("src",null);
-                    $("#imgPath").attr("src",ivPath);
-                    $('#imgDialog').modal("show");
-                } else if (iCol == 19) {//显示EL3图片
-                    if("null"==$("#"+id+"3").val()){
-                        showErrorDialog("","信息为空！");
-                        return false;
-                    };
-                    var data3=JSON.parse($("#"+id+"3").val());
-                    if(data3.img_ope!="EL3") {
-                        showErrorDialog("", "信息为空！");
-                        return false;
-                    }
-                    var el3Path=data3.path;
-                    $('#imgDialog').modal({
-                        backdrop: 'static',
-                        keyboard: false,
-                        show: false
-                    });
-                    $('#imgDialog').unbind('shown.bs.modal');
-                    $('#imgDialog').bind('shown.bs.modal');
-                    $("#imgPath").attr("src",null);
-                    $("#imgPath").attr("src",el3Path);
-                    $('#imgDialog').modal("show");
-
+            {
+                name: 'oem_el3_img', index: 'oem_el3_img',     label: LOT_EL3_IMG_TAG,   width: 55, formatter: function (value, grid, rows, stat) {
+                    var img_typ = "EL3";
+                    return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\"" + rows.oem_id + "\")'>查看</button>";
                 }
             }
+        ];
 
-        });
+        //调用封装的ddGrid方法
+        var options = {
+            datatype: "local",
+            height: 370,
+            autowidth: true,//宽度根据父元素自适应
+            scroll: true,   //支持滚动条
+            fixed: true,
+            shrinkToFit: true,
+            viewrecords: true,
+            colModel: colModel,
+            pager: domObj.grid.$dataListPg
+        }
+        domObj.grid.$dataListGrd.ddGrid(options);
+
     };
-
-
     var btnFunc = {
         img_show_func: function (imgPath) {
 
@@ -226,95 +165,33 @@ $(document).ready(function () {
             $(str).appendTo("body");
         },
         query_func: function () {
-            $("#dataListGrd").jqGrid("clearGridData");
-            var box_id = domObj.$box_no.val();
-            var lot_id = domObj.$lot_no.val();
-            if (!box_id && !lot_id) {
-                showErrorDialog("", "请输入箱号或批次号！");
-                return false;
-            }
-            ;
-            var iary = {
-                box_no: box_id,
-                lot_no: lot_id,
-            };
+
             var inObj = {
-                trx_id: VAL.T_FBPRETBOX,
-                action_flg: 'A',
-                iary: [iary]
+                trx_id     : VAL.T_FBPRETLOT,
+                action_flg : 'I',
+                evt_usr    : VAL.EVT_USR
             };
+
+            var box_no = domObj.$box_no.val();
+            var lot_no = domObj.$lot_no.val();
+            var iary = {};
+            if(box_no){
+                iary.box_no =box_no;
+            }
+            if(lot_no){
+                iary.lot_no=lot_no;
+            }
+            if(!$.isEmptyObject(iary)){
+                inObj.iary = [iary];
+            }
+
             var outObj = comTrxSubSendPostJson(inObj);
             if (outObj.rtn_code == _NORMAL) {
                 if (0 == outObj.tbl_cnt) {
                     showErrorDialog("", "请输入正确的箱号或批次号！");
                     return false;
                 }
-                ;
-                //更新表格
-                for (var i = 0; i < outObj.tbl_cnt; i++) {
-                    //box 信息
-                    var box_no = outObj.oary[i].box_no;
-                    var oqc_grade = outObj.oary[i].oqc_grade;
-                    var ship_statu = outObj.oary[i].ship_statu;
-
-                    for (var j = 0; j < outObj.oary[i].lotList.length; j++) {
-                        //lot 信息
-                        var lot_no = outObj.oary[i].lotList[j].lot_no;
-                        var iv_power = outObj.oary[i].lotList[j].iv_power;
-                        var iv_isc = outObj.oary[i].lotList[j].iv_isc;
-                        var iv_voc = outObj.oary[i].lotList[j].iv_voc;
-                        var iv_imp = outObj.oary[i].lotList[j].iv_imp;
-                        var iv_vmp = outObj.oary[i].lotList[j].iv_vmp;
-                        var iv_ff = outObj.oary[i].lotList[j].iv_ff;
-                        var iv_tmper = outObj.oary[i].lotList[j].iv_tmper;
-                        var iv_adj_versioni = outObj.oary[i].lotList[j].iv_adj_versioni;
-                        var iv_timestamp = outObj.oary[i].lotList[j].iv_timestamp;
-                        var final_grade = outObj.oary[i].lotList[j].final_grade;
-                        var final_power_lvl = outObj.oary[i].lotList[j].final_power_lvl;
-                        var final_color_lvl = outObj.oary[i].lotList[j].final_color_lvl;
-                        // var oqc_grade=outObj.oary[i].lotList[j].oqc_grade;
-                        // var ship_statu=outObj.oary[i].lotList[j].ship_statu;
-
-                        var id=box_no+"_"+lot_no+"_";
-
-                        var oem_mtrl_use = (null==outObj.oary[i].lotList[j].mtrlUseList||outObj.oary[i].lotList[j].mtrlUseList.length==0)
-                            ?"<u>查看</u><input id='"+id+"1' value='null'hidden>"
-                            :"<u>查看</u><input id='"+id+"1' value='"+JSON.stringify(outObj.oary[i].lotList[j].mtrlUseList)+"'hidden>";
-                        var oem_image_path1 = null==outObj.oary[i].lotList[j].imagePathList
-                            ?"<u>查看</u><input id='"+id+"2' value='null'hidden>"
-                            :"<u>查看</u><input id='"+id+"2' value='"+JSON.stringify(outObj.oary[i].lotList[j].imagePathList)+"'hidden>";
-                        var oem_image_path2 = null==outObj.oary[i].lotList[j].imagePathList
-                            ?"<u>查看</u><input id='"+id+"3' value='null'hidden>"
-                            :"<u>查看</u><input id='"+id+"3' value='"+JSON.stringify(outObj.oary[i].lotList[j].imagePathList)+"'hidden>";
-                        // var oem_mtrl_use=outObj.oary[i].lotList[j].oem_mtrl_use;
-                        // var oem_image_path1=outObj.oary[i].lotList[j].oem_image_path1;
-                        // var oem_image_path2=outObj.oary[i].lotList[j].oem_image_path2;
-
-                        var data = {
-                            box_no: box_no,
-                            lot_no: lot_no,
-                            iv_power: iv_power,
-                            iv_isc: iv_isc,
-                            iv_voc: iv_voc,
-                            iv_imp: iv_imp,
-                            iv_vmp: iv_vmp,
-                            iv_ff: iv_ff,
-                            iv_tmper: iv_tmper,
-                            iv_adj_versioni: iv_adj_versioni,
-                            iv_timestamp: iv_timestamp,
-                            final_grade: final_grade,
-                            final_power_lvl: final_power_lvl,
-                            final_color_lvl: final_color_lvl,
-                            oqc_grade: oqc_grade,
-                            ship_statu: ship_statu,
-                            oem_mtrl_use: oem_mtrl_use,
-                            oem_image_path1: oem_image_path1,
-                            oem_image_path2: oem_image_path2,
-                        };
-                        var newRowID = getGridNewRowID("#dataListGrd");
-                        $("#dataListGrd").jqGrid("addRowData", newRowID, data);
-                    }
-                }
+                setGridInfo(outObj.oary, domObj.grid.$dataListGrd);
             }
         },
     }
@@ -337,23 +214,42 @@ $(document).ready(function () {
     };
 
     initFunc();
-
-    //表格自适应
-    function resizeFnc() {
-        var offsetBottom, grdDivWidth,
-            offsetBottom1, grdDivWidth1;
-        grdDivWidth = $("#tab1").width();
-        offsetBottom = $(window).height() - $("#tab1").offset().top;
-
-        $("#dataListDiv").width(grdDivWidth * 0.98);
-        $("#dataListDiv").height(offsetBottom * 0.99);
-        $("#dataListGrd").setGridWidth(grdDivWidth * 0.97);
-        $("#dataListGrd").setGridHeight(offsetBottom * 0.95 - 51);
-
-
-    };
     resizeFnc();
+
     $(window).resize(function () {
         resizeFnc();
     });
+
+
+    //表格自适应
+    function resizeFnc() {
+        //表格自适应
+        function resizeFnc(){
+            domObj.dialog.$mtrlDialog.changeTableLocation({
+                widthOffset: 50,     //调整表格宽度
+                heightOffset: 153,   //调整表格高度
+            });
+
+            domObj.grid.$dataListGrd.changeTableLocation({
+                widthOffset: 50,     //调整表格宽度
+                heightOffset: 153,   //调整表格高度
+            });
+
+            var tabs = ['.cardBoxForm']
+            tabs.forEach(function(v) {
+                $(v).changeTabHeight({
+                    heightOffset: 60   //合并表格边框线
+                });
+            });
+        };
+        $(window).resize(function() {
+            resizeFnc();
+        });
+
+        var nodeNames = ['.ui-jqgrid-bdiv'];
+        nodeNames.forEach(function(v) {
+            $(v).setNiceScrollType({});   //设置滚动条样式
+        });
+    };
 });
+

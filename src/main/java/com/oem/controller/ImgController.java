@@ -67,33 +67,30 @@ public class ImgController {
         return JacksonUtil.toJSONStr(baseO);
     }
 
-    @RequestMapping("/showImg.do")
-    public String showImg(String evt_usr, String img_typ, String lot_no, HttpServletResponse response) {
+    @RequestMapping("/checkImg.do")
+    public String checkImg(String lot_no, String oem_id, String img_typ ) {
         logUtils = new LogUtils(ImgController.class);
         BaseO baseO = new BaseO();
-        Bis_user bis_user = bisUserRepository.get(evt_usr);
-        if(bis_user == null){
-            baseO.setRtn_code(E_BIS_USER + E_READ_NOT_FOUND + _SPACE);
-            baseO.setRtn_mesg("没有找到用户[" +evt_usr +"]的信息");
-            return JacksonUtil.toJSONStr(baseO);
-        }
-        String usr_faty = bis_user.getUsr_fty();
-        if(StringUtil.isSpaceCheck(usr_faty)){
-            baseO.setRtn_code(E_BIS_USER + E_READ_NOT_FOUND + _SPACE);
-            baseO.setRtn_mesg("用户[" +evt_usr +"]没有绑定代工厂信息");
-            return JacksonUtil.toJSONStr(baseO);
-        }
-        String targetFiilePath = FTP_PATH + File.separator + usr_faty + File.separator + "IMAGE" + File.separator + img_typ + File.separator + lot_no;
+        String targetFiilePath = FTP_PATH + File.separator + oem_id + File.separator + "IMAGE" + File.separator + img_typ + File.separator + lot_no + ".jpg";
         File file = new File(targetFiilePath);
         if(!file.exists()){
             baseO.setRtn_code(E_IMAGE_ANALY_NOT_FOUND + _SPACE);
             baseO.setRtn_mesg("没有找到批次号[" +lot_no + "]的" + img_typ + "图片");
             return JacksonUtil.toJSONStr(baseO);
         }
+        baseO.setRtn_code(RETURN_CODE_OK);
+        baseO.setRtn_mesg(targetFiilePath);
+        return JacksonUtil.toJSONStr(baseO);
+    }
+    @RequestMapping("/showImg.do")
+    public void showImg(String imgPath, HttpServletResponse response){
+
+        logUtils = new LogUtils(ImgController.class);
+
         FileInputStream inputStream = null;
-        OutputStream out = null;
+        OutputStream out= null;
         try {
-            inputStream = new FileInputStream(file.getAbsolutePath());
+            inputStream = new FileInputStream(imgPath);
             int i = inputStream.available();
             //byte数组用于存放图片字节数据
             byte[] buff = new byte[i];
@@ -107,12 +104,7 @@ public class ImgController {
             //关闭响应输出流
             out.close();
         } catch (Exception e) {
-            baseO.setRtn_code(RETURN_CODE_UNKNOWN);
-            baseO.setRtn_mesg("显示图片发生异常");
-            return JacksonUtil.toJSONStr(baseO);
+            logUtils.info("图片显示异常,原因[" + StringUtil.stackTraceToString(e));
         }
-        baseO.setRtn_code(RETURN_CODE_OK);
-        baseO.setRtn_mesg(RETURN_MESG_OK);
-        return JacksonUtil.toJSONStr(baseO);
     }
 }

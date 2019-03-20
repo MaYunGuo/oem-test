@@ -119,7 +119,7 @@ public class FbpretboxService implements IFbpretboxService {
                 FbpretboxOA fbpretboxOA = new FbpretboxOA();
                 fbpretboxOA.setBox_no(box_no);
                 fbpretboxOA.setOqc_grade(oem_prd_box.getOqc_grade());
-                fbpretboxOA.setShip_statu(oem_prd_box.getShip_statu());
+                fbpretboxOA.setShip_statu(_YES.equals(oem_prd_box.getShip_statu()) ? "已出货" : "未出货");
 
                 List<Oem_prd_lot> oem_prd_lots = oemPrdLotRepository.list(lotHql, box_no, usr_faty);
                 if(oem_prd_lots != null && !oem_prd_lots.isEmpty()){
@@ -192,7 +192,7 @@ public class FbpretboxService implements IFbpretboxService {
             oemPrdBoxRepository.update(oem_prd_box);
 
             FbpretboxOA fbpretboxOA = new FbpretboxOA();
-            fbpretboxIA.setBox_no(oem_prd_box.getBox_no());
+            fbpretboxOA.setBox_no(oem_prd_box.getBox_no());
             fbpretboxOA.setOqc_grade(oem_prd_box.getOqc_grade());
             fbpretboxOA.setShip_statu(oem_prd_box.getShip_statu());
             oary.add(fbpretboxOA);
@@ -233,6 +233,11 @@ public class FbpretboxService implements IFbpretboxService {
                 outTrx.setRtn_mesg("没有找到箱号[" + box_no +"]的信息，请确认");
                 return _ERROR;
             }
+            if(_YES.equals(oem_prd_box.getShip_statu())){
+                outTrx.setRtn_code(E_FBPRETBOX_BOX_HAD_SHIPED + _SPACE);
+                outTrx.setRtn_mesg("箱号[" + oem_prd_box.getBox_no() + "已经出货，请确认");
+                return _ERROR;
+            }
             oem_prd_box.setShip_statu(_YES);
             oem_prd_box.setUpdate_user(evt_usr);
             oem_prd_box.setUpdate_timestamp(cr_timestamp);
@@ -241,12 +246,11 @@ public class FbpretboxService implements IFbpretboxService {
             FbpretboxOA fbpretboxOA = new FbpretboxOA();
             fbpretboxIA.setBox_no(oem_prd_box.getBox_no());
             fbpretboxOA.setOqc_grade(oem_prd_box.getOqc_grade());
-            fbpretboxOA.setShip_statu(oem_prd_box.getShip_statu());
+            fbpretboxOA.setShip_statu(_YES.equals(oem_prd_box.getShip_statu()) ? "已出货" : "未出货");
             oary.add(fbpretboxOA);
         }
         outTrx.setTbl_cnt(oary.size());
         outTrx.setOary(oary);
         return _NORMAL;
-
     }
 }

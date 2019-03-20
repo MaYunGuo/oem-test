@@ -26,6 +26,9 @@ public class FbpretlotOA extends BaseI {
     private String update_user;
     private Timestamp update_timestamp;
 
+    private String oqc_grade;
+    private String ship_stat;
+
     public int getId() {
         return id;
     }
@@ -168,5 +171,21 @@ public class FbpretlotOA extends BaseI {
 
     public void setUpdate_timestamp(Timestamp update_timestamp) {
         this.update_timestamp = update_timestamp;
+    }
+
+    public String getOqc_grade() {
+        return oqc_grade;
+    }
+
+    public void setOqc_grade(String oqc_grade) {
+        this.oqc_grade = oqc_grade;
+    }
+
+    public String getShip_stat() {
+        return ship_stat;
+    }
+
+    public void setShip_stat(String ship_stat) {
+        this.ship_stat = ship_stat;
     }
 }

@@ -91,7 +91,7 @@ public class GenericDef {
 
     public static final long E_FBTRETBOX = 1000600;
     public static final long E_FBPRETBOX_INVALID_INPUT = E_FBTRETBOX + 1;
-
+    public static final long E_FBPRETBOX_BOX_HAD_SHIPED = E_FBTRETBOX + 2;
 
 
 

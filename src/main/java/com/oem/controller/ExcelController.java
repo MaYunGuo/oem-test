@@ -317,6 +317,10 @@ public class ExcelController {
     @RequestMapping("/uploadExcel.do")
     public String uploadExcel(String trx_id, String action_flg, String evt_usr, String data_type, MultipartFile upload_file){
 
+        String evt_no = GUIDGenerator.javaGUID();
+        AppContext.setCurrEventNumber(evt_no);
+        AppContext.setCurrServiceName(ExcelController.class.getSimpleName());
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("trx_id",trx_id);
         jsonObject.put("action_flg",action_flg);
@@ -380,8 +384,7 @@ public class ExcelController {
                 break;
         }
         if(inTrxStr != null){
-            String evt_no = GUIDGenerator.javaGUID();
-            String rtnMesg = sendMessageService.sendMesage(trx_id, evt_no, inTrxStr);
+            String rtnMesg = sendMessageService.sendMesage(trx_id, AppContext.getCurrEventNumber(), inTrxStr);
             return rtnMesg;
         }
         return null;

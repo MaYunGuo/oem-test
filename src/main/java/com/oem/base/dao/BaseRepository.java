@@ -144,7 +144,7 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
         Query query = this.createQuery(hql);
 
         for (int i = 0; i < params.length; i++) {
-            query.setParameter(i + 1, params[i]);
+            query.setParameter(i , params[i]);
         }
         final List list = query.getResultList();
         if(list != null && !list.isEmpty()){
@@ -159,7 +159,7 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
         Query query = this.createQuery(hql);
 
         for (int i = 0; i < params.length; i++) {
-            query.setParameter(i + 1, params[i]);
+            query.setParameter(i, params[i]);
         }
         final T entity = (T) query.getSingleResult();
         if(entity != null){

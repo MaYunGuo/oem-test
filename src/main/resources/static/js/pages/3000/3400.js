@@ -86,7 +86,7 @@ $(document).ready(function () {
             }
             var inObj2 = {
                 trx_id     : VAL.T_FBPRETBOX,
-                action_flg : 'G',
+                action_flg : 'O',
                 evt_usr    : VAL.EVT_USR,
                 iary       : [iary]
             };
@@ -107,7 +107,7 @@ $(document).ready(function () {
             }
             var inObj ={
                 trx_id      : VAL.T_FBPRETBOX,
-                action_flg  : "G",
+                action_flg  : "O",
                 evt_usr     : VAL.EVT_USR,
                 data_type   : "O",
                 upload_file : excel_file
@@ -117,6 +117,10 @@ $(document).ready(function () {
                 showErrorDialog(outObj.rtn_code, outObj.rtn_mesg);
                 return false;
             }
+            var oary = $.isArray(outObj.oary) ? outObj.oary : [outObj.oary];
+            domObj.$box_no.val(oary[0].box_no);
+            domObj.$judge_code.val(oary[0].oqc_grade);
+            domObj.dialog.$uploadDialog.modal('hide');
         },
         download_func: function () {
             if ($("#downForm").length > 0) {

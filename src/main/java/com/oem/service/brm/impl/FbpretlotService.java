@@ -15,8 +15,10 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,6 +36,9 @@ public class FbpretlotService implements IFbpretlotService {
 
     @Autowired
     private IOemPrdLotRepository oemPrdLotRepository;
+
+    @Autowired
+    private IBisFactoryRepository bisFactoryRepository;
 
     @Autowired
     private IBisUserRepository bisUserRepository;
@@ -89,6 +94,9 @@ public class FbpretlotService implements IFbpretlotService {
                 break;
             case ACTION_FLG_PACK:
                 rtn_code = lotPackFnc(inTrx, outTrx);
+                break;
+            case ACTION_FLG_INQUIRE:
+                rtn_code = queryOeMFnc(inTrx, outTrx);
                 break;
             default:
                 outTrx.setRtn_code(INVALID_ACTION_FLG);
@@ -361,7 +369,78 @@ public class FbpretlotService implements IFbpretlotService {
         }
         outTrx.setOary(oary);
         return _NORMAL;
+    }
 
+    public long queryOeMFnc(FbpretlotI inTrx, FbpretlotO outTrx){
+        StringBuffer hql = new StringBuffer(" where 1=1");
+        String evt_usr = inTrx.getEvt_usr();
+        Bis_user bis_user = bisUserRepository.get(evt_usr);
+        if(bis_user == null){
+            outTrx.setRtn_code(E_BIS_USER + E_READ_NOT_FOUND + _SPACE);
+            outTrx.setRtn_mesg("没有找到用户[" + evt_usr +"]的信息，情确认");
+            return _ERROR;
+        }
+        String usr_faty = bis_user.getUsr_fty();
+        if(!StringUtil.isSpaceCheck(usr_faty)){
+            hql.append(" and A.oem_id ='").append(usr_faty).append("'");
+        }
+
+        List<FbpretlotIA> iary = inTrx.getIary();
+        if(iary != null && !iary.isEmpty()){
+            String box_no = iary.get(0).getBox_no();
+            String lot_no = iary.get(0).getLot_no();
+            if(!StringUtil.isSpaceCheck(box_no)){
+                hql.append(" and A.box_no ='").append(box_no).append("'");
+            }
+            if(!StringUtil.isSpaceCheck(lot_no)){
+                hql.append(" and A.lot_no ='").append(lot_no).append("'");
+            }
+        }
+
+        String sql = "select A.lot_no, A.box_no, A.oem_id, A.iv_power, A.iv_isc, A.iv_voc,A.iv_imp, A.iv_vmp, " +
+                "A.iv_ff, A.iv_tmper,A.iv_adj_versioni, A.iv_timestamp, A.final_power_lvl, " +
+                "A.final_grade, A.final_color_lvl,A.update_user, A.update_timestamp, B.oqc_grade,B.ship_statu " +
+                "from oem_prd_lot A left join oem_prd_box B on B.oem_id = A.oem_id and B.box_no = A.box_no";
+        if(!StringUtil.isSpaceCheck(hql.toString())){
+            sql += hql.toString();
+        }
+
+        List<Object[]> objectList = oemPrdLotRepository.findBySQL(sql);
+        if(objectList != null && !objectList.isEmpty()){
+            Map<String, Bis_factory>  factoryMap = new HashMap<>();
+            List<Bis_factory> bisFactoryList =bisFactoryRepository.find("From Bis_factory where 1=1");
+            if(bisFactoryList!= null && !bisFactoryList.isEmpty()){
+                for(Bis_factory bis_factory : bisFactoryList){
+                    factoryMap.put(bis_factory.getFaty_id(), bis_factory);
+                }
+            }
+            List<FbpretlotOA> oary = new ArrayList<>();
+            for(Object[] obj : objectList) {
+                FbpretlotOA fbpretlotOA = new FbpretlotOA();
+                fbpretlotOA.setLot_no(obj[0] == null ? _SPACE : obj[0].toString());
+                fbpretlotOA.setBox_no(obj[1] == null ? _SPACE : obj[1].toString());
+                fbpretlotOA.setOem_id(obj[2] == null ? _SPACE : factoryMap.get(obj[2].toString())==null ? _SPACE :factoryMap.get(obj[2].toString()).getFaty_name());
+                fbpretlotOA.setIv_power(obj[3] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[3].toString())));
+                fbpretlotOA.setIv_isc(obj[4] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[4].toString())));
+                fbpretlotOA.setIv_voc(obj[5] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[5].toString())));
+                fbpretlotOA.setIv_imp(obj[6] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[6].toString())));
+                fbpretlotOA.setIv_vmp(obj[7] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[7].toString())));
+                fbpretlotOA.setIv_ff(obj[8] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[8].toString())));
+                fbpretlotOA.setIv_tmper(obj[9] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[9].toString())));
+                fbpretlotOA.setIv_adj_versioni(obj[10] == null ? _SPACE : obj[10].toString());
+                fbpretlotOA.setIv_timestamp(obj[11] == null ? null : Timestamp.valueOf(obj[11].toString()));
+                fbpretlotOA.setFinal_power(obj[12] == null ? _SPACE : obj[12].toString());
+                fbpretlotOA.setFinal_grade(obj[13] == null ? _SPACE : obj[13].toString());
+                fbpretlotOA.setFinal_color(obj[14] == null ? _SPACE : obj[14].toString());
+                fbpretlotOA.setUpdate_user(obj[15] == null ? _SPACE : obj[15].toString());
+                fbpretlotOA.setUpdate_timestamp(obj[16] == null ? null : Timestamp.valueOf(obj[16].toString()));
+                fbpretlotOA.setOqc_grade(obj[17] == null ? _SPACE : obj[17].toString());
+                fbpretlotOA.setShip_stat(obj[18] == null ? "未出货" : _YES.equals(obj[18].toString()) ? "已出货" : "为出货");
+                oary.add(fbpretlotOA);
+            }
+            outTrx.setOary(oary);
+        }
+        return _NORMAL;
     }
 
 

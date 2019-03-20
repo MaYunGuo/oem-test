@@ -42,9 +42,13 @@ var LOT_FIN_GRADE_TAG = "终检等级";
 var LOT_FIN_POWER_TAG = "终检功率";
 var BOX_OQC_GRADE_TAG = "OQC等级";
 var BOX_SHIP_STAT_TAG = "出货状态";
+var LOT_IV_IMG_TAG ="IV图片";
+var LOT_EL3_IMG_TAG = "EL3图片";
+var LOT_OEM_ID_TAG = "代工厂名称";
 var GROUP_ID_TAG = "权限群组";
 var GROUP_NAME_TAG = "权限群组名称";
 var SYSTEM_ID_TAG ="系统代码";
 var FUNC_ID_TAG ="权限代码";
 var FUNC_NAME_TAG ="权限名称";
+
 

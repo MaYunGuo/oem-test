@@ -30,6 +30,7 @@ $(document).ready(function () {
 
             button: {
                 $query_btn    : $("#query_btn"),
+                $ship_btn     : $("#ship_btn"),
                 $import_btn   : $("#import_btn"),
                 $download_btn : $("#download_btn"),
             },
@@ -74,11 +75,12 @@ $(document).ready(function () {
             query_func: function (box_no) {
 
                 var inObj = {
-                    trx_id: VAL.T_FBPRETBOX,
-                    action_flg: 'Q',
+                    trx_id     : VAL.T_FBPRETBOX,
+                    action_flg : 'Q',
+                    evt_usr    : VAL.EVT_USR,
 
                 }
-                if(!box_no){
+                if(box_no){
                    var iary ={
                        box_no : box_no
                    };
@@ -87,7 +89,7 @@ $(document).ready(function () {
                 return comTrxSubSendPostJson(inObj);
 
             },
-            set_ship_func: function (ship_statu) {
+            set_ship_func: function () {
                 //获取选中行的id数组
                 var ids = $("#shipListGrd").jqGrid("getGridParam", "selarrrow");
                 if(ids.length==0){
@@ -138,6 +140,9 @@ $(document).ready(function () {
                     showErrorDialog(outObj.rtn_code, outObj.rtn_mesg);
                     return false;
                 }
+                var oary = $.isArray(outObj.oary) ? outObj.oary : [outObj.oary];
+                setGridInfo(oary, domObj.grid.$shipListGrd);
+                domObj.dialog.$uploadDialog.modal('hide');
             },
             download_func: function () {
                 if ($("#downForm").length > 0) {
@@ -169,6 +174,9 @@ $(document).ready(function () {
                     setGridInfo(outObj.oary, domObj.grid.$shipListGrd);
                 }
             });
+            domObj.button.$ship_btn.click(function () {
+                btnFunc.set_ship_func();
+            });
             domObj.button.$import_btn.click(function () {
                 btnFunc.import_func();
             });
@@ -190,6 +198,7 @@ $(document).ready(function () {
                            }
                            var oary = $.isArray(outObj.oary)? outObj.oary :[outObj.oary];
                            domObj.grid.$shipListGrd.jqGrid("addRowData", oary[0].box_no, oary[0], "last");
+                           domObj.grid.$shipListGrd.jqGrid('setSelection',oary[0].box_no);
                        }
                    }
                 }
