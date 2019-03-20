@@ -90,7 +90,7 @@ public class FbpretboxService implements IFbpretboxService {
         if (inTrx.getIary() != null && !inTrx.getIary().isEmpty()) {
             String box_no = inTrx.getIary().get(0).getBox_no();
             if(!StringUtil.isSpaceCheck(box_no)){
-                hql.append(" and box_no ='").append(box_no).append("'");
+                hql.append(" and box_no like '").append(box_no).append("%'");
             }
         }
         String evt_usr = inTrx.getEvt_usr();
