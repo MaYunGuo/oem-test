@@ -11,6 +11,7 @@ public class FbpretlotOA extends BaseI {
     private String box_no;
     private String oem_id;
     private String lot_no;
+    private String oem_name;
     private BigDecimal iv_power;
     private BigDecimal iv_isc;
     private BigDecimal iv_voc;
@@ -187,5 +188,13 @@ public class FbpretlotOA extends BaseI {
 
     public void setShip_stat(String ship_stat) {
         this.ship_stat = ship_stat;
+    }
+
+    public String getOem_name() {
+        return oem_name;
+    }
+
+    public void setOem_name(String oem_name) {
+        this.oem_name = oem_name;
     }
 }

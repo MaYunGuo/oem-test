@@ -111,7 +111,8 @@ $(document).ready(function () {
         var colModel = [
             {name: 'box_no',          index: 'box_no',          label: BOX_ID_TAG,        sortable: false, width: 120},
             {name: 'lot_no',          index: 'lot_no',          label: LOT_ID_TAG,        sortable: false, width: 120},
-            {name: 'oem_id',          index: 'oem_id',          label: LOT_OEM_ID_TAG ,   sortable: false, width: 120},
+            {name: 'oem_id',          index: 'oem_id',          hiden:true                                          },
+            {name: 'oem_name',        index: 'oem_name',        label: LOT_OEM_ID_TAG ,   sortable: false, width: 120},
             {name: 'iv_power',        index: 'iv_power',        label: LOT_IV_POWER_TAG,  sortable: false, width: 80,},
             {name: 'iv_isc',          index: 'iv_isc',          label: LOT_IV_ISC_TAG,    sortable: false, width: 80},
             {name: 'iv_voc',          index: 'iv_voc',          label: LOT_IV_VOC_TAG,    sortable: false, width: 80},

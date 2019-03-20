@@ -419,7 +419,8 @@ public class FbpretlotService implements IFbpretlotService {
                 FbpretlotOA fbpretlotOA = new FbpretlotOA();
                 fbpretlotOA.setLot_no(obj[0] == null ? _SPACE : obj[0].toString());
                 fbpretlotOA.setBox_no(obj[1] == null ? _SPACE : obj[1].toString());
-                fbpretlotOA.setOem_id(obj[2] == null ? _SPACE : factoryMap.get(obj[2].toString())==null ? _SPACE :factoryMap.get(obj[2].toString()).getFaty_name());
+                fbpretlotOA.setOem_id(obj[2] == null ? _SPACE : obj[2].toString());
+                fbpretlotOA.setOem_name(factoryMap.get(fbpretlotOA.getOem_id())== null ? _SPACE :factoryMap.get(fbpretlotOA.getOem_id()).getFaty_name());
                 fbpretlotOA.setIv_power(obj[3] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[3].toString())));
                 fbpretlotOA.setIv_isc(obj[4] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[4].toString())));
                 fbpretlotOA.setIv_voc(obj[5] == null ? BigDecimal.valueOf(0.0) : BigDecimal.valueOf(Double.valueOf(obj[5].toString())));
