@@ -194,7 +194,7 @@ $(document).ready(function() {
     		var faty_name = controlsQuery.$fatyNameText.val().trim();
     		var anls_rate = controlsQuery.$anlsRateText.val().trim();
     		var anls_unit = controlsQuery.$anlsUnitSel.val().trim();
-    		var faty_mail = controlsQuery.$fatyMailText.cal().trim();
+    		var faty_mail = controlsQuery.$fatyMailText.val().trim();
     		if (!faty_id) {
 				showErrorDialog("", "工厂代码不能为空");
 				return false;
