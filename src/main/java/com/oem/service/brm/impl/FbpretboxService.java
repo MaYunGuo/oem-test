@@ -29,11 +29,6 @@ public class FbpretboxService implements IFbpretboxService {
     private IOemPrdBoxRepository oemPrdBoxRepository;
     @Autowired
     private IOemPrdLotRepository oemPrdLotRepository;
-    @Autowired
-    private IOemMtrlUseRepository oemMtrlUse;
-    @Autowired
-    private IOemImagePathRepository oemImagePath;
-
 
     @Override
     @Transactional

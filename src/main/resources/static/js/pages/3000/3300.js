@@ -136,7 +136,10 @@ $(document).ready(function () {
             if (outObj.rtn_code === _NORMAL) {
                 // buttonFnc.clearFnc();
                 $("input").val("");
-                buttonFnc.queryFnc(box_id);
+                var data = buttonFnc.queryFnc(box_id);
+                if(data != null){
+                   setGridInfo(data, domObj.grid.$pcikListGrid);
+                }
                 showSuccessDialog("保存成功");
             }
         },

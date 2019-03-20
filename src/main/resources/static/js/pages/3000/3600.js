@@ -94,22 +94,21 @@ $(document).ready(function () {
 
     var iniMtrlGridInfo = function () {
         var colModel = [
-            {name: 'lot_no',           index: 'lot_no',           label: LOT_ID_TAG,     sortable: false, width: 60},
-            {name: 'mtrl_no',          index: 'mtrl_no',          label: MTRL_ID_TAG,    sortable: false, width: 60},
+            {name: 'lot_no',           index: 'lot_no',           label: LOT_ID_TAG,     sortable: false, width: 100},
+            {name: 'mtrl_no',          index: 'mtrl_no',          label: MTRL_ID_TAG,    sortable: false, width: 100},
             {name: 'oem_id',           index: 'oem_id',           hidden:true                                      },
-            {name: 'oem_name',         index: 'oem_name',         label: LOT_OEM_ID_TAG, sortable: false, width: 80,},
-            {name: 'mtrl_vender',      index: 'mtrl_vender',      label: CUS_ID_TAG,     sortable: false, width: 80},
-            {name: 'mtrl_power',       index: 'mtrl_power',       label: EFFC_TAG,       sortable: false, width: 80},
-            {name: 'mtrl_color',       index: 'mtrl_color',       label: COLOR_TAG,      sortable: false, width: 80},
-            {name: 'mtrl_model',       index: 'mtrl_model',       label: MODEL_TAG,      sortable: false, width: 80},
-            {name: 'update_user',      index: 'update_user',      label: UPDATE_USR_TAG, sortable: false, width: 80},
-            {name: 'update_timestamp', index: 'update_timestamp', label: UPDATE_TIMESTAMP_TAG, sortable: false, width: 80},
+            {name: 'oem_name',         index: 'oem_name',         label: LOT_OEM_ID_TAG, sortable: false, width: 120,},
+            {name: 'mtrl_vender',      index: 'mtrl_vender',      label: CUS_ID_TAG,     sortable: false, width: 100},
+            {name: 'mtrl_power',       index: 'mtrl_power',       label: EFFC_TAG,       sortable: false, width: 100},
+            {name: 'mtrl_color',       index: 'mtrl_color',       label: COLOR_TAG,      sortable: false, width: 100},
+            {name: 'mtrl_model',       index: 'mtrl_model',       label: MODEL_TAG,      sortable: false, width: 100},
+            {name: 'update_user',      index: 'update_user',      label: UPDATE_USR_TAG, sortable: false, width: 100},
+            {name: 'update_timestamp', index: 'update_timestamp', label: UPDATE_TIMESTAMP_TAG, sortable: false, width: 100},
 
         ];
         //调用封装的ddGrid方法
         var options = {
             datatype: "local",
-            height: 370,
             autowidth: true,//宽度根据父元素自适应
             scroll: true,   //支持滚动条
             fixed: true,
@@ -161,7 +160,6 @@ $(document).ready(function () {
         //调用封装的ddGrid方法
         var options = {
             datatype: "local",
-            height: 370,
             autowidth: true,//宽度根据父元素自适应
             scroll: true,   //支持滚动条
             fixed: true,
@@ -238,36 +236,31 @@ $(document).ready(function () {
         resizeFnc();
     });
 
-
     //表格自适应
-    function resizeFnc() {
-        //表格自适应
-        function resizeFnc(){
-            domObj.dialog.$mtrlDialog.changeTableLocation({
-                widthOffset: 50,     //调整表格宽度
-                heightOffset: 153,   //调整表格高度
-            });
+    function resizeFnc(){
+        var grdDivWidth = domObj.dialog.$mtrlDialog.width();
+        var grdDivHeight = domObj.dialog.$mtrlDialog.height();
+        domObj.dialog.$mtrlListDiv.width(grdDivWidth * 0.66);
+        domObj.dialog.$mtrlListDiv.height(grdDivHeight * 0.4);
+        domObj.dialog.$mtrlListGrd.setGridWidth(domObj.dialog.$mtrlListDiv.width() * 0.9);
+        domObj.dialog.$mtrlListGrd.setGridHeight(domObj.dialog.$mtrlListDiv.height() * 0.7);
 
-            domObj.grid.$dataListGrd.changeTableLocation({
-                widthOffset: 50,     //调整表格宽度
-                heightOffset: 153,   //调整表格高度
-            });
-
-            var tabs = ['.cardBoxForm']
-            tabs.forEach(function(v) {
-                $(v).changeTabHeight({
-                    heightOffset: 60   //合并表格边框线
-                });
-            });
-        };
-        $(window).resize(function() {
-            resizeFnc();
+        domObj.grid.$dataListGrd.changeTableLocation({
+            widthOffset: 50,     //调整表格宽度
+            heightOffset: 153,   //调整表格高度
         });
 
-        var nodeNames = ['.ui-jqgrid-bdiv'];
-        nodeNames.forEach(function(v) {
-            $(v).setNiceScrollType({});   //设置滚动条样式
+        var tabs = ['.cardBoxForm']
+        tabs.forEach(function(v) {
+            $(v).changeTabHeight({
+                heightOffset: 60   //合并表格边框线
+            });
         });
     };
+
+    var nodeNames = ['.ui-jqgrid-bdiv'];
+    nodeNames.forEach(function(v) {
+        $(v).setNiceScrollType({});   //设置滚动条样式
+    });
 });
 

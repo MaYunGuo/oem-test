@@ -84,16 +84,19 @@ $(document).ready(function () {
                 box_no: box_no,
                 oqc_grade: oqc_grade,
             }
-            var inObj2 = {
+            var inObj = {
                 trx_id     : VAL.T_FBPRETBOX,
                 action_flg : 'O',
                 evt_usr    : VAL.EVT_USR,
                 iary       : [iary]
             };
-            var outObj2 = comTrxSubSendPostJson(inObj2);
-            if (outObj2.rtn_code == _NORMAL) {
+            var outObj = comTrxSubSendPostJson(inObj);
+            if (outObj.rtn_code == _NORMAL) {
                 showSuccessDialog("判定成功!");
-                }
+                var oary = $.isArray(outObj.oary)? outObj.oary :[outObj.oary];
+                domObj.$box_no.val(oary[0].box_no);
+                domObj.$judge_code.val(oary[0].oqc_grade);
+            }
         },
         import_func: function () {
              domObj.dialog.$uploadFile.val(_SPACE);
