@@ -40,6 +40,21 @@ function showImg(img_typ, lot_no, oem_id){
     $("#titleSpan").text(img_typ + "图片展示");
     $("#imgDialog").modal('show');
 };
+function showMtrl(lot_no, oem_id){
+   var inObj = {
+       trx_id : "FBPRETMTRL",
+       action_flg : "Q",
+       iary : [{
+           lot_no : lot_no,
+           oem_id : oem_id,
+       }]
+   }
+   var outObj = comTrxSubSendPostJson(inObj);
+   if(outObj.rtn_code == _NORMAL){
+       setGridInfo(outObj.oary, $("#mtrlListGrd"));
+   }
+   $("#mtrlDialog").modal('show');
+}
 
 
 $(document).ready(function () {
@@ -78,40 +93,39 @@ $(document).ready(function () {
     };
 
     var iniMtrlGridInfo = function () {
-        var colModel = [{name: 'lot_no', index: 'lot_no', label: "批次号", sortable: false, width: 60},
-            {name: 'mtrl_no', index: 'mtrl_no', label: "物料号", sortable: false, width: 60},
-            {name: 'oem_id', index: 'oem_id', label: "代工厂编号", sortable: false, width: 80,},
-            {name: 'vender', index: 'vender', label: "厂家", sortable: false, width: 80},
-            {name: 'power', index: 'power', label: "效率", sortable: false, width: 80},
-            {name: 'color', index: 'color', label: "颜色", sortable: false, width: 80},
-            {name: 'model_no', index: 'model_no', label: "型号", sortable: false, width: 80},
-            {name: 'update_timestamp', index: 'update_timestamp', label: "修改时间", sortable: false, width: 80},
-            {name: 'update_user', index: 'update_user', label: "修改用户User_id", sortable: false, width: 80},
-            {name: 'db_timestamp', index: 'db_timestamp', label: "解析插入时间", sortable: false, width: 80}];
+        var colModel = [
+            {name: 'lot_no',           index: 'lot_no',           label: LOT_ID_TAG,     sortable: false, width: 60},
+            {name: 'mtrl_no',          index: 'mtrl_no',          label: MTRL_ID_TAG,    sortable: false, width: 60},
+            {name: 'oem_id',           index: 'oem_id',           hidden:true                                      },
+            {name: 'oem_name',         index: 'oem_name',         label: LOT_OEM_ID_TAG, sortable: false, width: 80,},
+            {name: 'mtrl_vender',      index: 'mtrl_vender',      label: CUS_ID_TAG,     sortable: false, width: 80},
+            {name: 'mtrl_power',       index: 'mtrl_power',       label: EFFC_TAG,       sortable: false, width: 80},
+            {name: 'mtrl_color',       index: 'mtrl_color',       label: COLOR_TAG,      sortable: false, width: 80},
+            {name: 'mtrl_model',       index: 'mtrl_model',       label: MODEL_TAG,      sortable: false, width: 80},
+            {name: 'update_user',      index: 'update_user',      label: UPDATE_USR_TAG, sortable: false, width: 80},
+            {name: 'update_timestamp', index: 'update_timestamp', label: UPDATE_TIMESTAMP_TAG, sortable: false, width: 80},
 
-        domObj.dialog.$mtrlListGrd.jqGrid({
+        ];
+        //调用封装的ddGrid方法
+        var options = {
             datatype: "local",
-            autoheight: true,
-            mtype: "POST",
             height: 370,
             autowidth: true,//宽度根据父元素自适应
-            shrinkToFit: false,
-            scroll: true,
-            resizable: true,
-            rownumbers: true,
-            loadonce: true,
+            scroll: true,   //支持滚动条
+            fixed: true,
+            shrinkToFit: true,
             viewrecords: true,
             colModel: colModel,
-//				multiselect : true,
-            pager: domObj.dialog.$mtrlListPg,
-        });
+            pager: domObj.dialog.$mtrlListPg
+        }
+        domObj.dialog.$mtrlListGrd.ddGrid(options);
     };
 
     var iniGridInfo = function () {
         var colModel = [
             {name: 'box_no',          index: 'box_no',          label: BOX_ID_TAG,        sortable: false, width: 120},
             {name: 'lot_no',          index: 'lot_no',          label: LOT_ID_TAG,        sortable: false, width: 120},
-            {name: 'oem_id',          index: 'oem_id',          hiden:true                                          },
+            {name: 'oem_id',          index: 'oem_id',          hidden:true                                          },
             {name: 'oem_name',        index: 'oem_name',        label: LOT_OEM_ID_TAG ,   sortable: false, width: 120},
             {name: 'iv_power',        index: 'iv_power',        label: LOT_IV_POWER_TAG,  sortable: false, width: 80,},
             {name: 'iv_isc',          index: 'iv_isc',          label: LOT_IV_ISC_TAG,    sortable: false, width: 80},
@@ -120,15 +134,18 @@ $(document).ready(function () {
             {name: 'iv_vmp',          index: 'iv_vmp',          label: LOT_IV_VMP_TAG,    sortable: false, width: 80},
             {name: 'iv_ff',           index: 'iv_ff',           label: LOT_IV_FF_TAG,     sortable: false, width: 80},
             {name: 'iv_tmper',        index: 'iv_tmper',        label: LOT_IV_TEMPER_RAG, sortable: false, width: 80},
-            {name: 'iv_adj_versioni', index: 'iv_adj_versioni', label:LOT_IV_CAL_TAG,     sortable: false, width: 80},
+            {name: 'iv_adj_versioni', index: 'iv_adj_versioni', label: LOT_IV_CAL_TAG,    sortable: false, width: 80},
             {name: 'iv_timestamp',    index: 'Iv_timestamp',    label: LOT_IV_TIMESTAMP,  sortable: false, width: 130},
             {name: 'final_grade',     index: 'Final_grade',     label: LOT_FIN_GRADE_TAG, sortable: false, width: 80},
             {name: 'final_power',     index: 'Final_power',     label: LOT_FIN_POWER_TAG, sortable: false, width: 80},
             {name: 'final_color',     index: 'Final_color',     label: LOT_FIN_COLOR_TAG, sortable: false, width: 80},
             {name: 'oqc_grade',       index: 'oqc_grade',       label: BOX_OQC_GRADE_TAG, sortable: false, width: 80},
             {name: 'ship_statu',      index: 'ship_statu',      label: BOX_SHIP_STAT_TAG, sortable: false, width: 80},
-            {name: 'oem_mtrl_use',    index: 'oem_mtrl_use',    label: "扣料信息",         sortable: false, width: 60},
-            {name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,    width: 55, formatter:function (value, grid, rows, stat) {
+            {name: 'oem_mtrl_use',    index: 'oem_mtrl_use',    label: MTRL_USE_INFO_TAG, width: 80,formatter:function (value, grid, rows, stat) {
+                return "<button class='btn btn-default' onclick='showMtrl(" + "\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
+                }
+            },
+            {name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,     width: 55, formatter:function (value, grid, rows, stat) {
                     var img_typ = "IV";
                     return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
                 }
