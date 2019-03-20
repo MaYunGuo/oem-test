@@ -119,6 +119,7 @@ $(document).ready(function() {
 				controlsQuery.$fatyIdText.val(oary.faty_id.trim());
                 controlsQuery.$fatyNameText.val(oary.faty_name.trim());
                 controlsQuery.$anlsRateText.val(oary.anls_rate);
+                controlsQuery.$fatyMailText.val(oary.faty_mail);
                 SelectDom.setSelect(controlsQuery.$anlsUnitSel, oary.anls_unit.trim());
 			}
 		}
