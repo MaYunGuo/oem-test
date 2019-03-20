@@ -196,6 +196,7 @@ $(document).ready(function () {
             var imgInObj ={
                 usr_id  : VAL.EVT_USR,
                 img_typ  : "IV",
+                lot_no   : lot_id,
                 img_file : lot_img
             }
             var imgOutObj = comUplaod("uploadImg.do", imgInObj);

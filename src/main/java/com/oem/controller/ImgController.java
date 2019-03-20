@@ -30,7 +30,7 @@ public class ImgController {
     private IBisUserRepository bisUserRepository;
 
     @RequestMapping("/uploadImg.do")
-    public String uploadImg(String usr_id, String img_typ, MultipartFile img_file){
+    public String uploadImg(String usr_id, String img_typ, String lot_no, MultipartFile img_file){
 
         logUtils = new LogUtils(ImgController.class);
 
@@ -49,7 +49,7 @@ public class ImgController {
         }
 
         String fileName = img_file.getOriginalFilename();
-        String targetFiilePath = FTP_PATH + File.separator + usr_faty + File.separator + "IMAGE" + File.separator + img_typ + File.separator + fileName;
+        String targetFiilePath = FTP_PATH + File.separator + usr_faty + File.separator + "IMAGE" + File.separator + img_typ + File.separator + lot_no + ".jpg";
         try {
             File targeFile = new File(targetFiilePath);
             if(!targeFile.exists()){
