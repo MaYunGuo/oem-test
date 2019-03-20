@@ -4,6 +4,7 @@ import com.oem.dao.IBisFactoryRepository;
 import com.oem.entity.Bis_factory;
 import com.oem.quartz.QuartzFinInsDataJob;
 import com.oem.quartz.QuartzIvDataJob;
+import com.oem.quartz.QuartzMtrlUseDatJob;
 import com.oem.quartz.QuartzService;
 import com.oem.service.brm.IFbpbisfatyService;
 import com.oem.tx.brm.Fbpbisfaty.FbpbisfatyI;
@@ -144,9 +145,9 @@ public class FbpbisfatyService implements IFbpbisfatyService {
 
             String conExcepssion = getConExpession(fbpbisfatyIA.getAnls_rate(), fbpbisfatyIA.getAnls_unit());
             quartzService.addJob(QuartzIvDataJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_IV, conExcepssion, fbpbisfatyIA.getFaty_id());
-            quartzService.addJob(QuartzFinInsDataJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_FIN, conExcepssion, fbpbisfatyIA.getFaty_id());
-            quartzService.addJob(QuartzFinInsDataJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_PACK, conExcepssion, fbpbisfatyIA.getFaty_id());
-
+            quartzService.addJob(QuartzFinInsDataJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_FIN,  conExcepssion,  fbpbisfatyIA.getFaty_id());
+            quartzService.addJob(QuartzFinInsDataJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_PACK, conExcepssion,  fbpbisfatyIA.getFaty_id());
+            quartzService.addJob(QuartzMtrlUseDatJob.class, fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_MTRL, conExcepssion,  fbpbisfatyIA.getFaty_id());
             FbpbisfatyOA fbpbisfatyOA = new FbpbisfatyOA();
             fbpbisfatyOA.setFaty_id(fbpbisfatyIA.getFaty_id());
             fbpbisfatyOA.setFaty_name(fbpbisfatyIA.getFaty_name());
@@ -187,6 +188,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
         quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_IV, conExcepssion);
         quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_FIN, conExcepssion);
         quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_PACK, conExcepssion);
+        quartzService.modifyJob(fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_MTRL, conExcepssion);
 
         return _NORMAL;
     }
@@ -207,6 +209,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
                 quartzService.deleteJob(bis_factory.getFaty_id(), QUARTZ_GROUP_IV);
                 quartzService.deleteJob(bis_factory.getFaty_id(), QUARTZ_GROUP_FIN);
                 quartzService.deleteJob(bis_factory.getFaty_id(), QUARTZ_GROUP_PACK);
+                quartzService.deleteJob(bis_factory.getFaty_id(), QUARTZ_GROUP_MTRL);
             }
         }
         return _NORMAL;

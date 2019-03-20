@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.util.List;
 
-import static com.oem.comdef.GenericDef.QUARTZ_GROUP_FIN;
-import static com.oem.comdef.GenericDef.QUARTZ_GROUP_IV;
-import static com.oem.comdef.GenericDef.QUARTZ_GROUP_PACK;
+import static com.oem.comdef.GenericDef.*;
 import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 
 @Component
@@ -38,6 +36,7 @@ public class QuartzListener implements ApplicationRunner {
               quartzService.addJob(QuartzIvDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_IV, conEcepssion, bis_factory.getFaty_id());
               quartzService.addJob(QuartzFinInsDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_FIN, conEcepssion, bis_factory.getFaty_id());
               quartzService.addJob(QuartzPackDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_PACK, conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzMtrlUseDatJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_MTRL, conEcepssion, bis_factory.getFaty_id());
            }
         }
 

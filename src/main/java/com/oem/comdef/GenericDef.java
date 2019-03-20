@@ -19,6 +19,7 @@ public class GenericDef {
     public static final String QUARTZ_GROUP_IV = "QUARTZ_GROUP_IV";
     public static final String QUARTZ_GROUP_FIN = "QUARTZ_GROUP_FIN";
     public static final String QUARTZ_GROUP_PACK = "QUARTZ_GROUP_PACK";
+    public static final String QUARTZ_GROUP_MTRL = "QUARTZ_GROUP_MTRL";
 
 
     public static final String RETURN_CODE_OK = "0000000";

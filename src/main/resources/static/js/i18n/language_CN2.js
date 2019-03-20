@@ -28,6 +28,7 @@ var FATY_ID_TAG="工厂代码";
 var FATY_NAME_TAG="工厂名称";
 var LOT_ID_TAG = "批次号";
 var BOX_ID_TAG = "箱号";
+var MTRL_ID_TAG = "物料号";
 var LOT_IV_POWER_TAG = "IV_功率";
 var LOT_IV_ISC_TAG = "IV_ISC";
 var LOT_IV_VOC_TAG = "IV_VOC";
@@ -42,6 +43,7 @@ var LOT_FIN_GRADE_TAG = "终检等级";
 var LOT_FIN_POWER_TAG = "终检功率";
 var BOX_OQC_GRADE_TAG = "OQC等级";
 var BOX_SHIP_STAT_TAG = "出货状态";
+var MTRL_USE_INFO_TAG = "扣料信息";
 var LOT_IV_IMG_TAG ="IV图片";
 var LOT_EL3_IMG_TAG = "EL3图片";
 var LOT_OEM_ID_TAG = "代工厂名称";
@@ -50,5 +52,12 @@ var GROUP_NAME_TAG = "权限群组名称";
 var SYSTEM_ID_TAG ="系统代码";
 var FUNC_ID_TAG ="权限代码";
 var FUNC_NAME_TAG ="权限名称";
+var CUS_ID_TAG ="厂家";
+var EFFC_TAG = "效率";
+var COLOR_TAG = "颜色";
+var MODEL_TAG = "型号";
+var UPDATE_USR_TAG = "更新用户";
+var UPDATE_TIMESTAMP_TAG = "更新时间";
+
 
 
