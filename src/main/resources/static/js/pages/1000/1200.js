@@ -194,6 +194,7 @@ $(document).ready(function() {
     		var faty_name = controlsQuery.$fatyNameText.val().trim();
     		var anls_rate = controlsQuery.$anlsRateText.val().trim();
     		var anls_unit = controlsQuery.$anlsUnitSel.val().trim();
+    		var faty_mail = controlsQuery.$fatyMailText.cal().trim();
     		if (!faty_id) {
 				showErrorDialog("", "工厂代码不能为空");
 				return false;
@@ -210,12 +211,18 @@ $(document).ready(function() {
 				showErrorDialog("", "请选择接戏频率单位");
 				return false;
 			}
+			if(!faty_mail){
+                showErrorDialog("", "请输入邮箱地址");
+                return false;
+			}
+
 
     		var iary = {
     			faty_id   : faty_id,
     			faty_name : faty_name,
     			anls_rate : anls_rate,
     			anls_unit : anls_unit,
+				faty_mail : faty_mail,
     		}
     		var inObj = {
     				trx_id : VAL.T_FBPBISFATY,
