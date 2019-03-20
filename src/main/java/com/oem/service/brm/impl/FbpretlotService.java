@@ -115,10 +115,10 @@ public class FbpretlotService implements IFbpretlotService {
             String lot_no = fbpretlotIA.getLot_no();
             String box_no = fbpretlotIA.getBox_no();
             if (!StringUtil.isSpaceCheck(lot_no)) {
-                hql.append(" and lot_no ='").append(lot_no).append("'");
+                hql.append(" and lot_no like '").append(lot_no).append("%'");
             }
             if(!StringUtil.isSpaceCheck(box_no)){
-                hql.append(" and box_no ='").append(box_no).append("'");
+                hql.append(" and box_no like'").append(box_no).append("%'");
             }
         }
         Bis_user bis_user = bisUserRepository.get(evt_usr);
@@ -390,10 +390,10 @@ public class FbpretlotService implements IFbpretlotService {
             String box_no = iary.get(0).getBox_no();
             String lot_no = iary.get(0).getLot_no();
             if(!StringUtil.isSpaceCheck(box_no)){
-                hql.append(" and A.box_no ='").append(box_no).append("'");
+                hql.append(" and A.box_no like '").append(box_no).append("%'");
             }
             if(!StringUtil.isSpaceCheck(lot_no)){
-                hql.append(" and A.lot_no ='").append(lot_no).append("'");
+                hql.append(" and A.lot_no like '").append(lot_no).append("%'");
             }
         }
 
