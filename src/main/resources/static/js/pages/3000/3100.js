@@ -198,7 +198,7 @@ $(document).ready(function () {
                 img_typ  : "IV",
                 img_file : lot_img
             }
-            var imgOutObj = comImgUplaod("uploadImg.do", imgInObj);
+            var imgOutObj = comUplaod("uploadImg.do", imgInObj);
             if(imgOutObj.rtn_code !=  _NORMAL){
                 showErrorDialog("","IV图片上传失败");
                 return false;
