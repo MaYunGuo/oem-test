@@ -64,7 +64,7 @@ public class QuartzOqcDataJob extends QuartzJobBean {
 
                     wb = ExcelUtil.readExcel(realPath);
                     if(wb == null){
-                        logUtils.info(task_name +"解析终检数据,文件:["+ realPath +"]不存在");
+                        logUtils.info(task_name +"解析OQC数据,文件:["+ realPath +"]不存在");
                         continue;
                     }
                     //获取第一个sheet
@@ -82,7 +82,7 @@ public class QuartzOqcDataJob extends QuartzJobBean {
                         String box_no = ExcelUtil.getCellValue(row.getCell(0));
                         Oem_prd_box oem_prd_box = oemPrdBoxRepository.uniqueResultWithLock("From Oem_prd_box where box_no = ?0", box_no);
                         if(oem_prd_box == null ){
-                            logUtils.info(task_name + "终检数据解析错误,第" + i +"行数据，批次号[" + box_no +"]信息不存在，请确认");
+                            logUtils.info(task_name + "OQC数据解析错误,第" + i +"行数据，批次号[" + box_no +"]信息不存在，请确认");
                             continue;
                         }
 
