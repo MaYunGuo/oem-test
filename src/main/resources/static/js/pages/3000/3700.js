@@ -144,7 +144,7 @@ $(document).ready(function () {
             {name: 'final_power',     index: 'Final_power',     label: LOT_FIN_POWER_TAG, sortable: false, width: 80},
             {name: 'final_color',     index: 'Final_color',     label: LOT_FIN_COLOR_TAG, sortable: false, width: 80},
             {name: 'oqc_grade',       index: 'oqc_grade',       label: BOX_OQC_GRADE_TAG, sortable: false, width: 80},
-            {name: 'ship_statu',      index: 'ship_statu',      label: BOX_SHIP_STAT_TAG, sortable: false, width: 80},
+            {name: 'ship_stat',       index: 'ship_stat',       label: BOX_SHIP_STAT_TAG, sortable: false, width: 80},
             {name: 'oem_mtrl_use',    index: 'oem_mtrl_use',    label: MTRL_USE_INFO_TAG, width: 80,formatter:function (value, grid, rows, stat) {
                 return "<button class='btn btn-default' onclick='showMtrl(" + "\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
                 }
