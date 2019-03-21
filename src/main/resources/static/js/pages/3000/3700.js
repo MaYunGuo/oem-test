@@ -99,16 +99,16 @@ $(document).ready(function () {
 
     var iniMtrlGridInfo = function () {
         var colModel = [
-            {name: 'lot_no',           index: 'lot_no',           label: LOT_ID_TAG,     sortable: false, width: 100},
-            {name: 'mtrl_no',          index: 'mtrl_no',          label: MTRL_ID_TAG,    sortable: false, width: 100},
+            {name: 'lot_no',           index: 'lot_no',           label: LOT_ID_TAG,     sortable: false, width: 120},
+            {name: 'mtrl_no',          index: 'mtrl_no',          label: MTRL_ID_TAG,    sortable: false, width: 120},
             {name: 'oem_id',           index: 'oem_id',           hidden:true                                      },
             {name: 'oem_name',         index: 'oem_name',         label: LOT_OEM_ID_TAG, sortable: false, width: 120,},
-            {name: 'mtrl_vender',      index: 'mtrl_vender',      label: CUS_ID_TAG,     sortable: false, width: 100},
+            {name: 'mtrl_vender',      index: 'mtrl_vender',      label: CUS_ID_TAG,     sortable: false, width: 120},
             {name: 'mtrl_power',       index: 'mtrl_power',       label: EFFC_TAG,       sortable: false, width: 100},
             {name: 'mtrl_color',       index: 'mtrl_color',       label: COLOR_TAG,      sortable: false, width: 100},
             {name: 'mtrl_model',       index: 'mtrl_model',       label: MODEL_TAG,      sortable: false, width: 100},
-            {name: 'update_user',      index: 'update_user',      label: UPDATE_USR_TAG, sortable: false, width: 100},
-            {name: 'update_timestamp', index: 'update_timestamp', label: UPDATE_TIMESTAMP_TAG, sortable: false, width: 100},
+            {name: 'update_usr',      index: 'update_usr',      label: UPDATE_USR_TAG, sortable: false, width:   100},
+            {name: 'update_timestamp', index: 'update_timestamp', label: UPDATE_TIMESTAMP_TAG, sortable: false, width: 120},
 
         ];
         //调用封装的ddGrid方法
