@@ -117,7 +117,7 @@ public class QuartzMtrlUseDatJob extends QuartzJobBean {
                         }
                         Oem_mtrl_use oem_mtrl_use = new Oem_mtrl_use();
                         oem_mtrl_use.setLot_no(lot_no);
-                        oem_mtrl_use.setModel_no(mtrl_no);
+                        oem_mtrl_use.setMtrl_no(mtrl_no);
                         oem_mtrl_use.setOem_id(task_name);
                         oem_mtrl_use.setVender(mtrl_vender);
                         oem_mtrl_use.setPower(BigDecimal.valueOf(Double.valueOf(mtrl_power)));
