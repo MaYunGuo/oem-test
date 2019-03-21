@@ -47,6 +47,9 @@ public class QuartzMtrlUseDatJob extends QuartzJobBean {
         logUtils.info(task_name + "物料使用数据解析开始执行---------------------------");
         try {
             File filePath = new File(task_path);
+            if(!filePath.exists()){
+                filePath.mkdirs();
+            }
             String realPath = null;
             Workbook wb = null;
             Sheet sheet = null;
@@ -140,6 +143,6 @@ public class QuartzMtrlUseDatJob extends QuartzJobBean {
             logUtils.info(task_name +"解析物料使用数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
         }
         long endTimes = System.currentTimeMillis();
-        logUtils.info(task_name +"IV数据解析完成，总耗时:" +(endTimes -startTimes));
+        logUtils.info(task_name +"物料使用数据解析完成，总耗时:" +(endTimes -startTimes));
     }
 }

@@ -46,6 +46,9 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
         logUtils.info(task_name + "终检数据解析开始执行---------------------------");
         try {
             File filePath = new File(task_path);
+            if(!filePath.exists()){
+                filePath.mkdirs();
+            }
             String realPath = null;
             Workbook wb = null;
             Sheet sheet = null;

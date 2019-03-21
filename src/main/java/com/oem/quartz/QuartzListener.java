@@ -33,10 +33,12 @@ public class QuartzListener implements ApplicationRunner {
            for(int i=0;i<bisFactoryList.size();i++){
                Bis_factory bis_factory = bisFactoryList.get(i);
               String conEcepssion = getConExpession(bis_factory.getAnls_rate(),bis_factory.getAnls_unit(),i+1);
-              quartzService.addJob(QuartzIvDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_IV, conEcepssion, bis_factory.getFaty_id());
-              quartzService.addJob(QuartzFinInsDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_FIN, conEcepssion, bis_factory.getFaty_id());
-              quartzService.addJob(QuartzPackDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_PACK, conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzIvDataJob.class,     bis_factory.getFaty_id(), QUARTZ_GROUP_IV,   conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzFinInsDataJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_FIN,  conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzPackDataJob.class,   bis_factory.getFaty_id(), QUARTZ_GROUP_PACK, conEcepssion, bis_factory.getFaty_id());
               quartzService.addJob(QuartzMtrlUseDatJob.class, bis_factory.getFaty_id(), QUARTZ_GROUP_MTRL, conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzOqcDataJob.class,    bis_factory.getFaty_id(), QUARTZ_GROUP_OQC,  conEcepssion, bis_factory.getFaty_id());
+              quartzService.addJob(QuartzShipDataJob.class,   bis_factory.getFaty_id(), QUARTZ_GROUP_SHIP, conEcepssion, bis_factory.getFaty_id());
            }
         }
 

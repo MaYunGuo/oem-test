@@ -58,6 +58,9 @@ public class QuartzPackDataJob extends QuartzJobBean {
 
         try {
             File filePath = new File(task_path);
+            if(!filePath.exists()){
+                filePath.mkdirs();
+            }
             String realPath = null;
             Workbook wb = null;
             Sheet sheet = null;
@@ -109,6 +112,8 @@ public class QuartzPackDataJob extends QuartzJobBean {
                             oem_prd_box.setShip_statu(_NO);
                             oem_prd_box.setOqc_grade(_SPACE);
                             oem_prd_box.setOem_id(task_name);
+                            oem_prd_box.setUpdate_user("PACK_TASK");
+                            oem_prd_box.setUpdate_timestamp(cr_timestamp);
                             oemPrdBoxRepository.save(oem_prd_box);
                         }
                     }
