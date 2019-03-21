@@ -161,6 +161,10 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
         for (int i = 0; i < params.length; i++) {
             query.setParameter(i, params[i]);
         }
+        if(query.getResultList().size() == 0){
+            return null;
+        }
+
         final T entity = (T) query.getSingleResult();
         if(entity != null){
             getEntityManager().lock(entity, LockModeType.PESSIMISTIC_WRITE);
