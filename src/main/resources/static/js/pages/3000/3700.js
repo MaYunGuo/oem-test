@@ -247,8 +247,8 @@ $(document).ready(function () {
         var grdDivHeight = domObj.dialog.$mtrlDialog.height();
         domObj.dialog.$mtrlListDiv.width(grdDivWidth * 0.66);
         domObj.dialog.$mtrlListDiv.height(grdDivHeight * 0.4);
-        domObj.dialog.$mtrlListGrd.setGridWidth(domObj.dialog.$mtrlListDiv.width() * 0.9);
-        domObj.dialog.$mtrlListGrd.setGridHeight(domObj.dialog.$mtrlListDiv.height() * 0.7);
+        domObj.dialog.$mtrlListGrd.setGridWidth(domObj.dialog.$mtrlListDiv.width() * 0.94);
+        domObj.dialog.$mtrlListGrd.setGridHeight(domObj.dialog.$mtrlListDiv.height() * 0.8);
 
         domObj.grid.$dataListGrd.changeTableLocation({
             widthOffset: 50,     //调整表格宽度
