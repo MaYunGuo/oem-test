@@ -120,10 +120,12 @@ $(document).ready(function () {
                 showErrorDialog(outObj.rtn_code, outObj.rtn_mesg);
                 return false;
             }
+            domObj.dialog.$uploadDialog.modal('hide');
+            showSuccessDialog("数据上传成功");
             var oary = $.isArray(outObj.oary) ? outObj.oary : [outObj.oary];
             domObj.$box_no.val(oary[0].box_no);
             domObj.$judge_code.val(oary[0].oqc_grade);
-            domObj.dialog.$uploadDialog.modal('hide');
+
         },
         download_func: function () {
             if ($("#downForm").length > 0) {

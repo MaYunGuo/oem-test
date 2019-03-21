@@ -82,6 +82,7 @@ $(document).ready(function () {
 
     var buttonFnc = {
         queryFnc : function () {
+            domObj.jgird.$mtrlInfoGrid.jqGrid("clearGirdData");
             var inObj ={
                  trx_id  : VAL.FBPRETMTRL,
                  evt_usr : VAL.EVT_USR,

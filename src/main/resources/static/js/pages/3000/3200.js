@@ -177,8 +177,10 @@ $(document).ready(function () {
                 showErrorDialog(outObj.rtn_code, outObj.rtn_mesg);
                 return false;
             }
-            setGridInfo(outObj.oary, domObj.jgird.$lotInfoGrid);
             domObj.dialog.$uploadDialog.modal('hide');
+            showSuccessDialog("数据上传成功");
+            setGridInfo(outObj.oary, domObj.jgird.$lotInfoGrid);
+
         },
         downLoadFnc :function () {
             if ($("#downForm").length > 0) {
@@ -196,6 +198,7 @@ $(document).ready(function () {
 
     var iniButtonAction = function () {
         domObj.$query_btn.click(function () {
+            domObj.jgird.$lotInfoGrid.jqGrid("clearGridData");
             var lot_id = domObj.$lotIdText.val();
             var dataObj = buttonFnc.queryFnc(lot_id);
             if(dataObj.rtn_code == _NORMAL){

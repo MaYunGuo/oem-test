@@ -107,41 +107,44 @@ public class FbpretboxService implements IFbpretboxService {
 
         List<Oem_prd_box> oemPrdBoxInfoList = oemPrdBoxRepository.find(hql.toString());
         List<FbpretboxOA> oary = new ArrayList<>();
-        if (!oemPrdBoxInfoList.isEmpty()) {
-            String lotHql = "From Oem_prd_lot where box_no = ?0 and oem_id = ?1";
-            for (Oem_prd_box oem_prd_box : oemPrdBoxInfoList) {
-                String box_no = oem_prd_box.getBox_no();
-                FbpretboxOA fbpretboxOA = new FbpretboxOA();
-                fbpretboxOA.setBox_no(box_no);
-                fbpretboxOA.setOqc_grade(oem_prd_box.getOqc_grade());
-                fbpretboxOA.setShip_statu(_YES.equals(oem_prd_box.getShip_statu()) ? "已出货" : "未出货");
+        if (oemPrdBoxInfoList == null || oemPrdBoxInfoList.isEmpty()) {
+            outTrx.setRtn_code(E_OEM_PRD_BOX + E_READ_NOT_FOUND +_SPACE);
+            outTrx.setRtn_mesg("没有找到箱号信息");
+            return _ERROR;
+        }
+        String lotHql = "From Oem_prd_lot where box_no = ?0 and oem_id = ?1";
+        for (Oem_prd_box oem_prd_box : oemPrdBoxInfoList) {
+            String box_no = oem_prd_box.getBox_no();
+            FbpretboxOA fbpretboxOA = new FbpretboxOA();
+            fbpretboxOA.setBox_no(box_no);
+            fbpretboxOA.setOqc_grade(oem_prd_box.getOqc_grade());
+            fbpretboxOA.setShip_statu(_YES.equals(oem_prd_box.getShip_statu()) ? "已出货" : "未出货");
 
-                List<Oem_prd_lot> oem_prd_lots = oemPrdLotRepository.list(lotHql, box_no, usr_faty);
-                if(oem_prd_lots != null && !oem_prd_lots.isEmpty()){
-                    List<FbpretboxOB> oaryB = new ArrayList<>();
-                    for(Oem_prd_lot oem_prd_lot : oem_prd_lots){
-                        FbpretboxOB fbpretboxOB = new FbpretboxOB();
-                        fbpretboxOB.setOem_id(usr_faty);
-                        fbpretboxOB.setLot_no(oem_prd_lot.getLot_no());
-                        fbpretboxOB.setIv_power(oem_prd_lot.getIv_power());
-                        fbpretboxOB.setIv_isc(oem_prd_lot.getIv_isc());
-                        fbpretboxOB.setIv_voc(oem_prd_lot.getIv_voc());
-                        fbpretboxOB.setIv_imp(oem_prd_lot.getIv_imp());
-                        fbpretboxOB.setIv_vmp(oem_prd_lot.getIv_vmp());
-                        fbpretboxOB.setIv_ff(oem_prd_lot.getIv_ff());
-                        fbpretboxOB.setIv_tmper(oem_prd_lot.getIv_tmper());
-                        fbpretboxOB.setIv_adj_versioni(oem_prd_lot.getIv_adj_versioni());
-                        fbpretboxOB.setIv_timestamp(oem_prd_lot.getIv_timestamp());
-                        fbpretboxOB.setFinal_grade(oem_prd_lot.getFinal_grade());
-                        fbpretboxOB.setFinal_color(oem_prd_lot.getFinal_color_lvl());
-                        fbpretboxOB.setFinal_power(oem_prd_lot.getFinal_power_lvl());
-                        fbpretboxOB.setBox_no(oem_prd_lot.getBox_no());
-                        oaryB.add(fbpretboxOB);
-                    }
-                    fbpretboxOA.setOaryB(oaryB);
+            List<Oem_prd_lot> oem_prd_lots = oemPrdLotRepository.list(lotHql, box_no, usr_faty);
+            if(oem_prd_lots != null && !oem_prd_lots.isEmpty()){
+                List<FbpretboxOB> oaryB = new ArrayList<>();
+                for(Oem_prd_lot oem_prd_lot : oem_prd_lots){
+                    FbpretboxOB fbpretboxOB = new FbpretboxOB();
+                    fbpretboxOB.setOem_id(usr_faty);
+                    fbpretboxOB.setLot_no(oem_prd_lot.getLot_no());
+                    fbpretboxOB.setIv_power(oem_prd_lot.getIv_power());
+                    fbpretboxOB.setIv_isc(oem_prd_lot.getIv_isc());
+                    fbpretboxOB.setIv_voc(oem_prd_lot.getIv_voc());
+                    fbpretboxOB.setIv_imp(oem_prd_lot.getIv_imp());
+                    fbpretboxOB.setIv_vmp(oem_prd_lot.getIv_vmp());
+                    fbpretboxOB.setIv_ff(oem_prd_lot.getIv_ff());
+                    fbpretboxOB.setIv_tmper(oem_prd_lot.getIv_tmper());
+                    fbpretboxOB.setIv_adj_versioni(oem_prd_lot.getIv_adj_versioni());
+                    fbpretboxOB.setIv_timestamp(oem_prd_lot.getIv_timestamp());
+                    fbpretboxOB.setFinal_grade(oem_prd_lot.getFinal_grade());
+                    fbpretboxOB.setFinal_color(oem_prd_lot.getFinal_color_lvl());
+                    fbpretboxOB.setFinal_power(oem_prd_lot.getFinal_power_lvl());
+                    fbpretboxOB.setBox_no(oem_prd_lot.getBox_no());
+                    oaryB.add(fbpretboxOB);
                 }
-                oary.add(fbpretboxOA);
+                fbpretboxOA.setOaryB(oaryB);
             }
+            oary.add(fbpretboxOA);
         }
         outTrx.setTbl_cnt(oary.size());
         outTrx.setOary(oary);

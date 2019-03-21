@@ -133,6 +133,12 @@ public class FbpretlotService implements IFbpretlotService {
         }
 
         List<Oem_prd_lot> oemPrdLotList = oemPrdLotRepository.find(hql.toString());
+        if(oemPrdLotList == null || oemPrdLotList.isEmpty()){
+            outTrx.setRtn_code(E_OEM_PRD_LOT + E_READ_NOT_FOUND + _SPACE);
+            outTrx.setRtn_mesg("没有批次号信息请确认");
+            return _ERROR;
+        }
+
         List<FbpretlotOA> oaryList = new ArrayList<>();
         for (Oem_prd_lot oem_prd_lot : oemPrdLotList) {
             FbpretlotOA oary = new FbpretlotOA();

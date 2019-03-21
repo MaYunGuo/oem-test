@@ -26,9 +26,9 @@ $(document).ready(function () {
         $lotIdText    : $("#lotIdText"),
         $boxIdText    : $("#boxIdText"),
         grid :{
-            $pickListDiv  : $("#pickListDiv"),
-            $pcikListGrid : $("#pickListGrd"),
-            $picListkPg   : "#picListkPg"
+            $packListDiv  : $("#packListDiv"),
+            $packListGrid : $("#packListGrd"),
+            $pacListkPg   : "#pacListkPg"
         },
         dialog : {
             $uploadDialog : $("#uploadDialog"),
@@ -63,9 +63,9 @@ $(document).ready(function () {
                 viewrecords: true,
                 multiselect: true,
                 colModel: itemInfoCM,
-                pager: domObj.grid.$picListkPg
+                pager: domObj.grid.$pacListkPg
             }
-            domObj.grid.$pcikListGrid.ddGrid(options);
+            domObj.grid.$packListGrid.ddGrid(options);
         },
         queryFnc: function (box_no, lot_no) {
             var inObj = {
@@ -96,11 +96,12 @@ $(document).ready(function () {
 
     var buttonFnc = {
         queryBtnFnc :function () {
+            domObj.grid.$packListGrid.jqGrid("clearGridData");
             var box_no = domObj.$boxIdText.val();
             var lot_no = domObj.$lotIdText.val();
             var data = initFnc.queryFnc(box_no, lot_no);
             if(data != null){
-                setGridInfo(data, domObj.grid.$pcikListGrid);
+                setGridInfo(data, domObj.grid.$packListGrid);
             }
         },
         //更新或者新增
@@ -112,7 +113,7 @@ $(document).ready(function () {
                 return false;
             }
 
-            var rowIds = domObj.grid.$pcikListGrid.jqGrid('getGridParam', 'selarrrow');
+            var rowIds = domObj.grid.$packListGrid.jqGrid('getGridParam', 'selarrrow');
             if (rowIds.length === 0) {
                 showErrorDialog("", "请选择需要绑定箱号的数据！");
                 return false;
@@ -120,7 +121,7 @@ $(document).ready(function () {
 
             var iary = new Array();
             for (var i = 0; i < rowIds.length; i++) {
-                var rowData = domObj.grid.$pcikListGrid.jqGrid('getRowData', rowIds[i]);
+                var rowData = domObj.grid.$packListGrid.jqGrid('getRowData', rowIds[i]);
                 iary.push({
                     box_no : box_id,
                     lot_no : rowData.lot_no
@@ -138,7 +139,7 @@ $(document).ready(function () {
                 $("input").val("");
                 var data = buttonFnc.queryFnc(box_id);
                 if(data != null){
-                   setGridInfo(data, domObj.grid.$pcikListGrid);
+                   setGridInfo(data, domObj.grid.$packListGrid);
                 }
                 showSuccessDialog("保存成功");
             }
@@ -167,8 +168,10 @@ $(document).ready(function () {
                 showErrorDialog(outObj.rtn_code, outObj.rtn_mesg);
                 return false;
             }
-            setGridInfo(outObj.oary, domObj.grid.$pcikListGrid);
             domObj.dialog.$uploadDialog.modal('hide');
+            showSuccessDialog("数据上传成功");
+            setGridInfo(outObj.oary, domObj.grid.$packListGrid);
+
         },
 
         downLoadFnc :function () {
@@ -218,13 +221,13 @@ $(document).ready(function () {
                       for(var i=0;i<rowIds.length;i++){
                           var rowData = domObj.grid.$pcikListGrid.jqGrid("getRowData", rowIds[i]);
                          if(rowData.lot_no == lot_no){
-                             domObj.grid.$pcikListGrid.jqGrid("delRowData", rowIds[i]);
+                             domObj.grid.$packListGrid.jqGrid("delRowData", rowIds[i]);
                              i = i-1;
                          }
                       }
                    }
-                   domObj.grid.$pcikListGrid.jqGrid("addRowData", data[0].id,data[0],"last");
-                   domObj.grid.$pcikListGrid.jqGrid('setSelection',data[0].id);
+                   domObj.grid.$packListGrid.jqGrid("addRowData", data[0].id,data[0],"last");
+                   domObj.grid.$packListGrid.jqGrid('setSelection',data[0].id);
                }
            }
        })
@@ -247,7 +250,7 @@ $(document).ready(function () {
 
     //表格自适应
     function resizeFnc(){
-        domObj.grid.$pcikListGrid.changeTableLocation({
+        domObj.grid.$packListGrid.changeTableLocation({
             widthOffset: 50,     //调整表格宽度
             heightOffset: 153,   //调整表格高度
         });

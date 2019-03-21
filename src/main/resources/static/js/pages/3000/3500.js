@@ -140,9 +140,11 @@ $(document).ready(function () {
                     showErrorDialog(outObj.rtn_code, outObj.rtn_mesg);
                     return false;
                 }
+                domObj.dialog.$uploadDialog.modal('hide');
+                showSuccessDialog("数据上传成功");
                 var oary = $.isArray(outObj.oary) ? outObj.oary : [outObj.oary];
                 setGridInfo(oary, domObj.grid.$shipListGrd);
-                domObj.dialog.$uploadDialog.modal('hide');
+
             },
             download_func: function () {
                 if ($("#downForm").length > 0) {
@@ -164,6 +166,7 @@ $(document).ready(function () {
          */
         var iniButtonAction = function () {
             domObj.button.$query_btn.click(function () {
+                domObj.grid.$shipListGrd.jqGrid("clearGridData");
                 var box_no = domObj.$box_no.val();
                 var outObj = btnFunc.query_func(box_no);
                 if(outObj.rtn_code == _NORMAL){
