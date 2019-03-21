@@ -14,6 +14,7 @@ import com.oem.tx.brm.Fbpretmtrl.FbpretmtrlOA;
 import com.oem.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
@@ -42,6 +43,7 @@ public class FbpretmtrlService implements IFbpretmtrlService {
     private LogUtils logUtils;
 
     @Override
+    @Transactional
     public String subMainProc(String evt_no, String strInMsg) {
         AppContext.clear();
         AppContext.setCurrServiceName(FbpretboxService.class.getSimpleName());
@@ -126,7 +128,7 @@ public class FbpretmtrlService implements IFbpretmtrlService {
         }
         List<Oem_mtrl_use> mtrlUseList = oemMtrlUseRepository.find(hql.toString());
         if(mtrlUseList == null || mtrlUseList.isEmpty()) {
-            outTrx.setRtn_mesg(E_OEM_MTRL_USE + E_READ_NOT_FOUND + _SPACE);
+            outTrx.setRtn_code(E_OEM_MTRL_USE + E_READ_NOT_FOUND + _SPACE);
             outTrx.setRtn_mesg("没有找到物料使用信息,请确认");
             return _ERROR;
         }
