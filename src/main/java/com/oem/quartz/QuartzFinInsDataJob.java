@@ -76,7 +76,7 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
                             continue;
                         }
                         String lot_id = ExcelUtil.getCellValue(row.getCell(0));
-                        List<Oem_prd_lot> oem_prd_lotList = oemPrdLotRepository.listWithLock("From Oem_prd_lot where lot_no = ?", lot_id);
+                        List<Oem_prd_lot> oem_prd_lotList = oemPrdLotRepository.listWithLock("From Oem_prd_lot where lot_no = ?0", lot_id);
                         if(oem_prd_lotList == null || oem_prd_lotList.isEmpty()){
                             logUtils.info(task_name + "终检数据解析错误,第" + i +"行数据，批次号[" + lot_id +"]信息不存在，请确认");
                             continue;
