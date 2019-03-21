@@ -140,7 +140,7 @@ $(document).ready(function () {
             str = str + '<input type="hidden" name="fileName" id= "fileName" />';
             str = str + "</form>";
             $(str).appendTo("body");
-            $("#fileName").val("IV数据模板.xlsx");
+            $("#fileName").val("扣料信息模板.xlsx");
             $("#downForm").submit();
         }
     };
