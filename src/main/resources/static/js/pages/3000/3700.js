@@ -32,8 +32,8 @@ function showImg(img_typ, lot_no, oem_id){
         showErrorDialog("","没有找到批次[" + lot_no +"]的" + img_typ +"图片");
         return false;
     }
-    var width =  $("#imgDialog").width()*0.27;
-    var height = $("#imgDialog").height()*0.5;
+    var width =  $("#imgDialog").width()*0.3;
+    var height = $("#imgDialog").height()*0.6;
 
     var img_path = imgOutObj.rtn_mesg;
     $("#imgPath").attr("src", _SPACE);
@@ -57,8 +57,8 @@ function showMtrl(lot_no, oem_id){
    var outObj = comTrxSubSendPostJson(inObj);
    if(outObj.rtn_code == _NORMAL){
        setGridInfo(outObj.oary, $("#mtrlListGrd"));
+       $("#mtrlDialog").modal('show');
    }
-   $("#mtrlDialog").modal('show');
 }
 
 
