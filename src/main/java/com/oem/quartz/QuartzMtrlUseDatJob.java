@@ -79,12 +79,12 @@ public class QuartzMtrlUseDatJob extends QuartzJobBean {
                         if(row == null){
                             continue;
                         }
-                        lot_no = row.getCell(0).getStringCellValue();
-                        mtrl_no = row.getCell(1).getStringCellValue();
-                        mtrl_vender = row.getCell(2).getStringCellValue();
-                        mtrl_power = row.getCell(3).getStringCellValue();
-                        mtrl_color = row.getCell(4).getStringCellValue();
-                        mtrl_model = row.getCell(5).getStringCellValue();
+                        lot_no = ExcelUtil.getCellValue(row.getCell(0));
+                        mtrl_no = ExcelUtil.getCellValue(row.getCell(1));
+                        mtrl_vender = ExcelUtil.getCellValue(row.getCell(2));
+                        mtrl_power = ExcelUtil.getCellValue(row.getCell(3));
+                        mtrl_color = ExcelUtil.getCellValue(row.getCell(4));
+                        mtrl_model = ExcelUtil.getCellValue(row.getCell(5));
                         if(StringUtil.isSpaceCheck(lot_no)){
                             logUtils.info(task_name +"解析无聊使用数据，文件["+ finalInsFile.getName() +"]第[" + i+ "]行批次号为空") ;
                             continue;

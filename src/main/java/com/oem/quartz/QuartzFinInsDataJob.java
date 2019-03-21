@@ -75,16 +75,16 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
                         if(row == null){
                             continue;
                         }
-                        String lot_id = row.getCell(0).getStringCellValue();
+                        String lot_id = ExcelUtil.getCellValue(row.getCell(0));
                         List<Oem_prd_lot> oem_prd_lotList = oemPrdLotRepository.listWithLock("From Oem_prd_lot where lot_no = ?", lot_id);
                         if(oem_prd_lotList == null || oem_prd_lotList.isEmpty()){
                             logUtils.info(task_name + "终检数据解析错误,第" + i +"行数据，批次号[" + lot_id +"]信息不存在，请确认");
                             continue;
                         }
 
-                        fin_grade = row.getCell(1).getStringCellValue();
-                        fin_power = row.getCell(2).getStringCellValue();
-                        fin_color = row.getCell(3).getStringCellValue();
+                        fin_grade = ExcelUtil.getCellValue(row.getCell(1));
+                        fin_power = ExcelUtil.getCellValue(row.getCell(2));
+                        fin_color = ExcelUtil.getCellValue(row.getCell(3));
                         if(StringUtil.isSpaceCheck(fin_grade) && StringUtil.isSpaceCheck(fin_power)&& StringUtil.isSpaceCheck(fin_color)){
                             continue;
                         }

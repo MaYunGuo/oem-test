@@ -85,8 +85,8 @@ public class QuartzPackDataJob extends QuartzJobBean {
                         if(row == null){
                             continue;
                         }
-                        box_id = row.getCell(0).getStringCellValue();
-                        lot_id = row.getCell(1).getStringCellValue();
+                        box_id = ExcelUtil.getCellValue(row.getCell(0));
+                        lot_id = ExcelUtil.getCellValue(row.getCell(1));
                         if(StringUtil.isSpaceCheck(box_id) || StringUtil.isSpaceCheck(lot_id)){
                             continue;
                         }

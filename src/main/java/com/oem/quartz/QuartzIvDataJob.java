@@ -17,6 +17,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 
@@ -42,21 +43,20 @@ public class QuartzIvDataJob extends QuartzJobBean {
 
         long startTimes = System.currentTimeMillis();
         logUtils.info(task_name + "IV数据解析开始执行---------------------------");
-
-        File filePath = new File(task_path);
-        String realPath = null;
-        Workbook wb = null;
-        Sheet sheet = null;
-        Row row = null;
-        Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
-        if(filePath.exists() && filePath.isDirectory()){
-           File[] allFiles =  filePath.listFiles();
-           for(File ivFile : allFiles){
-               if(ivFile.isDirectory()){
-                   continue;
-               }
-               realPath = ivFile.getAbsolutePath();
-               try {
+        try {
+            File filePath = new File(task_path);
+            String realPath = null;
+            Workbook wb = null;
+            Sheet sheet = null;
+            Row row = null;
+            Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
+            if(filePath.exists() && filePath.isDirectory()){
+               File[] allFiles =  filePath.listFiles();
+               for(File ivFile : allFiles){
+                   if(ivFile.isDirectory()){
+                       continue;
+                   }
+                   realPath = ivFile.getAbsolutePath();
                    wb = ExcelUtil.readExcel(realPath);
                    if(wb == null){
                        logUtils.info(task_name +"解析IV数据,文件:["+ realPath +"]不存在");
@@ -74,26 +74,26 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        }
                        Oem_prd_lot oem_prd_lot = new Oem_prd_lot();
                        oem_prd_lot.setOem_id(task_name);
-                       oem_prd_lot.setLot_no(row.getCell(0).getStringCellValue());
-                       oem_prd_lot.setIv_power(BigDecimal.valueOf(Double.valueOf(row.getCell(1).getStringCellValue())));
-                       oem_prd_lot.setIv_isc(BigDecimal.valueOf(Double.valueOf(row.getCell(1).getStringCellValue())));
-                       oem_prd_lot.setIv_voc(BigDecimal.valueOf(Double.valueOf(row.getCell(1).getStringCellValue())));
-                       oem_prd_lot.setIv_imp(BigDecimal.valueOf(Double.valueOf(row.getCell(1).getStringCellValue())));
-                       oem_prd_lot.setIv_vmp(BigDecimal.valueOf(Double.valueOf(row.getCell(1).getStringCellValue())));
-                       oem_prd_lot.setIv_ff(BigDecimal.valueOf(Double.valueOf(row.getCell(1).getStringCellValue())));
-                       oem_prd_lot.setIv_tmper(BigDecimal.valueOf(Double.valueOf(row.getCell(1).getStringCellValue())));
-                       oem_prd_lot.setIv_adj_versioni(row.getCell(8).getStringCellValue());
-                       oem_prd_lot.setIv_timestamp(DateUtil.String2Timestamp(row.getCell(9).getStringCellValue()));
+                       oem_prd_lot.setLot_no(ExcelUtil.getCellValue(row.getCell(0)));
+                       oem_prd_lot.setIv_power(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(1)))));
+                       oem_prd_lot.setIv_isc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(2)))));
+                       oem_prd_lot.setIv_voc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(3)))));
+                       oem_prd_lot.setIv_imp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(4)))));
+                       oem_prd_lot.setIv_vmp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(5)))));
+                       oem_prd_lot.setIv_ff(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(6)))));
+                       oem_prd_lot.setIv_tmper(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(7)))));
+                       oem_prd_lot.setIv_adj_versioni(ExcelUtil.getCellValue(row.getCell(8)));
+                       oem_prd_lot.setIv_timestamp(DateUtil.Date2Timestamp(new Date(ExcelUtil.getCellValue(row.getCell(9)))));
                        oem_prd_lot.setUpdate_user("IV_TASK");
                        oem_prd_lot.setUpdate_timestamp(cr_timestamp);
                        oemPrdLotRepository.save(oem_prd_lot);
                    }
                    FileUtil.backExcelFile(ivFile);
-               } catch (Exception e) {
-                   TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                   logUtils.info(task_name +"解析IV数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
                }
-           }
+            }
+         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            logUtils.info(task_name +"解析IV数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
         }
         long endTimes = System.currentTimeMillis();
         logUtils.info(task_name +"IV数据解析完成，总耗时:" +(endTimes -startTimes));
