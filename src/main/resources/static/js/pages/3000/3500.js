@@ -217,5 +217,29 @@ $(document).ready(function () {
         };
 
         initializationFunc();
-    }
-);
+        resizeFnc();
+
+        //表格自适应
+        function resizeFnc(){
+            domObj.jgird.$mtrlInfoGrid.changeTableLocation({
+                widthOffset: 50,     //调整表格宽度
+                heightOffset: 153,   //调整表格高度
+            });
+
+            var tabs = ['.cardBoxForm']
+            tabs.forEach(function(v) {
+                $(v).changeTabHeight({
+                    heightOffset: 60   //合并表格边框线
+                });
+            });
+        };
+
+        $(window).resize(function() {
+            resizeFnc();
+        });
+
+        var nodeNames = ['.ui-jqgrid-bdiv'];
+        nodeNames.forEach(function(v) {
+            $(v).setNiceScrollType({});   //设置滚动条样式
+        });
+});

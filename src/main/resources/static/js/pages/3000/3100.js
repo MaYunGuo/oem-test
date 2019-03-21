@@ -87,7 +87,7 @@ $(document).ready(function () {
                 shrinkToFit: true,
                 viewrecords: true,
                 colModel: itemInfoCM,
-                pager: domObj.$lotInfoPag,
+                pager: domObj.jgird.$lotInfoPag,
             }
             domObj.jgird.$lotInfoGrid.ddGrid(options);
         },

@@ -2,12 +2,8 @@ package com.oem.quartz;
 
 import com.oem.dao.IOemPrdBoxRepository;
 import com.oem.dao.IOemPrdLotRepository;
-import com.oem.dao.IRetBoxInfoRepository;
-import com.oem.dao.IRetLotInfoRepository;
 import com.oem.entity.Oem_prd_box;
 import com.oem.entity.Oem_prd_lot;
-import com.oem.entity.Ret_box_info;
-import com.oem.entity.Ret_lot_info;
 import com.oem.util.*;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -21,9 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.File;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import static com.oem.comdef.GenericDef._NO;

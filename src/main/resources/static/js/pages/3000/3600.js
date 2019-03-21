@@ -74,7 +74,7 @@ $(document).ready(function () {
                 shrinkToFit: true,
                 viewrecords: true,
                 colModel: itemInfoCM,
-                pager: domObj.$mtrlInfoPag,
+                pager: domObj.jgird.$mtrlInfoPag,
             }
             domObj.jgird.$mtrlInfoGrid.ddGrid(options);
         },

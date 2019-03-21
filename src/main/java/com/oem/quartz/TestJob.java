@@ -1,16 +1,6 @@
 package com.oem.quartz;
 
-import com.oem.dao.IRetLotInfoRepository;
-import com.oem.entity.Ret_lot_info;
-import com.oem.util.DateUtil;
-import com.oem.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Timestamp;
-import java.util.List;
 
 @Component
 public class TestJob {

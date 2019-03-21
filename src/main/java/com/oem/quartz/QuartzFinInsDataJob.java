@@ -1,9 +1,7 @@
 package com.oem.quartz;
 
 import com.oem.dao.IOemPrdLotRepository;
-import com.oem.dao.IRetLotInfoRepository;
 import com.oem.entity.Oem_prd_lot;
-import com.oem.entity.Ret_lot_info;
 import com.oem.util.*;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
