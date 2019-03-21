@@ -129,7 +129,7 @@ $(document).ready(function () {
             }
             domObj.dialog.$uploadDialog.modal('hide');
             showSuccessDialog("导入成功");
-            setGridInfo(outObj.oary, domObj.jgird.$lotInfoGrid);
+            setGridInfo(outObj.oary, domObj.jgird.$mtrlInfoGrid);
 
         },
         downLoadFnc :function () {
@@ -151,6 +151,9 @@ $(document).ready(function () {
         });
         domObj.$import_btn.click(function () {
             buttonFnc.importBtnFnc();
+        });
+        domObj.dialog.$uploadSureBtn.click(function () {
+            buttonFnc.importSureFnc();
         });
         domObj.$downLoad_btn.click(function () {
            buttonFnc.downLoadFnc();
