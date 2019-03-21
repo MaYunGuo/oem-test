@@ -36,6 +36,8 @@ public class FbpretmtrlService implements IFbpretmtrlService {
     @Autowired
     private IBisFactoryRepository bisFactoryRepository;
 
+
+
     @Autowired
     private IBisUserRepository bisUserRepository;
 
@@ -184,6 +186,14 @@ public class FbpretmtrlService implements IFbpretmtrlService {
             return _ERROR;
         }
 
+        Bis_factory bis_factory = bisFactoryRepository.get(usr_faty);
+        if(bis_factory == null){
+            outTrx.setRtn_code(E_BIS_FACTORY + E_READ_NOT_FOUND + _SPACE);
+            outTrx.setRtn_mesg("没有找到代工厂编码[" + usr_faty + "]的代工厂信息，请确认");
+            return _ERROR;
+        }
+
+
         List<FbpretmtrlOA> oary = new ArrayList<>();
 
         for(FbpretmtrlIA fbpretmtrlIA : iary){
@@ -202,6 +212,8 @@ public class FbpretmtrlService implements IFbpretmtrlService {
             FbpretmtrlOA fbpretmtrlOA = new FbpretmtrlOA();
             fbpretmtrlOA.setLot_no(oem_mtrl_use.getLot_no());
             fbpretmtrlOA.setMtrl_no(oem_mtrl_use.getMtrl_no());
+            fbpretmtrlOA.setOem_id(usr_faty);
+            fbpretmtrlOA.setOem_name(bis_factory.getFaty_name());
             fbpretmtrlOA.setMtrl_vender(oem_mtrl_use.getVender());
             fbpretmtrlOA.setMtrl_power(oem_mtrl_use.getPower().toString());
             fbpretmtrlOA.setMtrl_color(oem_mtrl_use.getColor());
