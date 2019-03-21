@@ -53,7 +53,7 @@ $(document).ready(function () {
                 {name: 'final_power',     index: 'final_power',         label: LOT_FIN_POWER_TAG, width: 120},
                 {name: 'final_color',     index: 'final_color',         label: LOT_FIN_COLOR_TAG, width: 120},
                 {name: 'final_grade',     index: 'final_grade',         label: LOT_FIN_GRADE_TAG, width: 120},
-                {name: 'box_no',          index: 'box_no',              label: BOX_ID_TAG,        width: 120}
+                {name: 'box_no',          index: 'box_no',              label: BOX_ID_TAG,        width: 140}
             ];
             //调用封装的ddGrid方法
             var options = {

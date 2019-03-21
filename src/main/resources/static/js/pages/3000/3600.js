@@ -64,7 +64,7 @@ $(document).ready(function () {
                     {name: 'mtrl_power',       index: 'mtrl_power',       label: EFFC_TAG,       sortable: false, width: 100},
                     {name: 'mtrl_color',       index: 'mtrl_color',       label: COLOR_TAG,      sortable: false, width: 100},
                     {name: 'mtrl_model',       index: 'mtrl_model',       label: MODEL_TAG,      sortable: false, width: 100},
-                    {name: 'update_user',      index: 'update_user',      label: UPDATE_USR_TAG, sortable: false, width: 100},
+                    {name: 'update_usr',       index: 'update_usr',       label: UPDATE_USR_TAG, sortable: false, width: 100},
                     {name: 'update_timestamp', index: 'update_timestamp', label: UPDATE_TIMESTAMP_TAG, sortable: false, width: 100}
                 ];
             //调用封装的ddGrid方法
