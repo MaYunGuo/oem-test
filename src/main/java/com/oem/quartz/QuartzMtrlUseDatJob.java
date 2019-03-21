@@ -45,18 +45,21 @@ public class QuartzMtrlUseDatJob extends QuartzJobBean {
         String task_path = FTP_PATH  + File.separator + task_name + File.separator + "EXCEL" + File.separator + "MTRL";
         long startTimes = System.currentTimeMillis();
         logUtils.info(task_name + "物料使用数据解析开始执行---------------------------");
+        try {
+            File filePath = new File(task_path);
+            String realPath = null;
+            Workbook wb = null;
+            Sheet sheet = null;
+            Row row = null;
+            Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
+            if(filePath.exists() && filePath.isDirectory()){
+                File[] allFiles =  filePath.listFiles();
+                for(File mtrlFile : allFiles){
+                    if(!mtrlFile.isFile()){
+                       continue;
+                    }
+                    realPath = mtrlFile.getAbsolutePath();
 
-        File filePath = new File(task_path);
-        String realPath = null;
-        Workbook wb = null;
-        Sheet sheet = null;
-        Row row = null;
-        Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
-        if(filePath.exists() && filePath.isDirectory()){
-            File[] allFiles =  filePath.listFiles();
-            for(File finalInsFile : allFiles){
-                realPath = finalInsFile.getAbsolutePath();
-                try {
                     wb = ExcelUtil.readExcel(realPath);
                     if(wb == null){
                         logUtils.info(task_name +"解析物料使用数据,文件:["+ realPath +"]不存在");
@@ -86,27 +89,27 @@ public class QuartzMtrlUseDatJob extends QuartzJobBean {
                         mtrl_color = ExcelUtil.getCellValue(row.getCell(4));
                         mtrl_model = ExcelUtil.getCellValue(row.getCell(5));
                         if(StringUtil.isSpaceCheck(lot_no)){
-                            logUtils.info(task_name +"解析无聊使用数据，文件["+ finalInsFile.getName() +"]第[" + i+ "]行批次号为空") ;
+                            logUtils.info(task_name +"解析无聊使用数据，文件["+ mtrlFile.getName() +"]第[" + i+ "]行批次号为空") ;
                             continue;
                         }
                         if(StringUtil.isSpaceCheck(mtrl_no)){
-                            logUtils.info(task_name +"解析物料使用数据，文件["+ finalInsFile.getName() +"]第[" + i+ "]行物料号为空") ;
+                            logUtils.info(task_name +"解析物料使用数据，文件["+ mtrlFile.getName() +"]第[" + i+ "]行物料号为空") ;
                             continue;
                         }
                         if(StringUtil.isSpaceCheck(mtrl_vender)){
-                            logUtils.info(task_name +"解析物料使用数据，文件["+ finalInsFile.getName() +"]第[" + i+ "]行厂家为空") ;
+                            logUtils.info(task_name +"解析物料使用数据，文件["+ mtrlFile.getName() +"]第[" + i+ "]行厂家为空") ;
                             continue;
                         }
                         if(StringUtil.isSpaceCheck(mtrl_power)){
-                            logUtils.info(task_name +"解析物料使用数据，文件["+ finalInsFile.getName() +"]第[" + i+ "]行效率为空") ;
+                            logUtils.info(task_name +"解析物料使用数据，文件["+ mtrlFile.getName() +"]第[" + i+ "]行效率为空") ;
                             continue;
                         }
                         if(StringUtil.isSpaceCheck(mtrl_color)){
-                            logUtils.info(task_name +"解析物料使用数据，文件["+ finalInsFile.getName() +"]第[" + i+ "]行颜色为空") ;
+                            logUtils.info(task_name +"解析物料使用数据，文件["+ mtrlFile.getName() +"]第[" + i+ "]行颜色为空") ;
                             continue;
                         }
                         if(StringUtil.isSpaceCheck(mtrl_model)){
-                            logUtils.info(task_name +"解析物料使用数据，文件["+ finalInsFile.getName() +"]第[" + i+ "]行型号为空") ;
+                            logUtils.info(task_name +"解析物料使用数据，文件["+ mtrlFile.getName() +"]第[" + i+ "]行型号为空") ;
                             continue;
                         }
                         Oem_mtrl_use oem_mtrl_use = new Oem_mtrl_use();
@@ -128,12 +131,13 @@ public class QuartzMtrlUseDatJob extends QuartzJobBean {
                         mtrl_color = _SPACE;
                         mtrl_model = _SPACE;
                     }
-                    FileUtil.backExcelFile(finalInsFile);
-                } catch (Exception e) {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    logUtils.info(task_name +"解析物料使用数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
+                    FileUtil.backExcelFile(mtrlFile);
+
                 }
             }
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            logUtils.info(task_name +"解析物料使用数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
         }
         long endTimes = System.currentTimeMillis();
         logUtils.info(task_name +"IV数据解析完成，总耗时:" +(endTimes -startTimes));

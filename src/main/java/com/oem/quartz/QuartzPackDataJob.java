@@ -56,17 +56,20 @@ public class QuartzPackDataJob extends QuartzJobBean {
         long startTimes = System.currentTimeMillis();
         logUtils.info(task_name + "包装数据解析开始执行---------------------------");
 
-        File filePath = new File(task_path);
-        String realPath = null;
-        Workbook wb = null;
-        Sheet sheet = null;
-        Row row = null;
-        Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
-        if(filePath.exists() && filePath.isDirectory()){
-            File[] allFiles =  filePath.listFiles();
-            for(File ivFile : allFiles){
-                realPath = ivFile.getAbsolutePath();
-                try {
+        try {
+            File filePath = new File(task_path);
+            String realPath = null;
+            Workbook wb = null;
+            Sheet sheet = null;
+            Row row = null;
+            Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
+            if(filePath.exists() && filePath.isDirectory()){
+                File[] allFiles =  filePath.listFiles();
+                for(File packFile : allFiles){
+                    if(!packFile.isFile()){
+                        continue;
+                    }
+                    realPath = packFile.getAbsolutePath();
                     wb = ExcelUtil.readExcel(realPath);
                     if(wb == null){
                         logUtils.info(task_name +"解析包装数据,文件:["+ realPath +"]不存在");
@@ -109,12 +112,12 @@ public class QuartzPackDataJob extends QuartzJobBean {
                             oemPrdBoxRepository.save(oem_prd_box);
                         }
                     }
-                    FileUtil.backExcelFile(ivFile);
-                } catch (Exception e) {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    logUtils.info(task_name +"解析包装数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
+                    FileUtil.backExcelFile(packFile);
                 }
             }
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            logUtils.info(task_name +"解析包装数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
         }
         long endTimes = System.currentTimeMillis();
         logUtils.info(task_name +"包装数据解析完成，总耗时:" +(endTimes -startTimes));
