@@ -65,6 +65,7 @@ public class GenericDef {
     public static final String TX_FUPFNCMAGE = "FUPFNCMAGE";
     public static final String TX_FBPBISDATA = "FBPBISDATA";
     public static final String TX_FBPBISFATY = "FBPBISFATY";
+    public static final String TX_FBPRETMTRL = "FBPRETMTRL";
     public static final String TX_FBPRETBOX = "FBPRETBOX";
     public static final String TX_FBPRETLOT = "FBPRETLOT";
 
@@ -94,6 +95,9 @@ public class GenericDef {
     public static final long E_FBPRETBOX_INVALID_INPUT = E_FBTRETBOX + 1;
     public static final long E_FBPRETBOX_BOX_HAD_SHIPED = E_FBTRETBOX + 2;
 
+    public static final long E_FBPRETMTRL = 1000700;
+    public static final long E_FBPRETMTRL_INVALID_INPUT = E_FBPRETMTRL + 1;
+
 
 
     /**
@@ -121,6 +125,7 @@ public class GenericDef {
     public static final long E_BIS_USR_GRP = 3000700;
     public static final long E_OEM_PRD_LOT = 3000800;
     public static final long E_OEM_PRD_BOX = 3000900;
+    public static final long E_OEM_MTRL_USE = 3001000;
 
 
 

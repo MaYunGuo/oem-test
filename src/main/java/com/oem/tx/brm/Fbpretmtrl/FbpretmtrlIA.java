@@ -1,5 +1,6 @@
 package com.oem.tx.brm.Fbpretmtrl;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class FbpretmtrlIA {
@@ -8,7 +9,7 @@ public class FbpretmtrlIA {
     private String mtrl_no;
     private String mtrl_batch;
     private String mtrl_vender;
-    private String mtrl_power;
+    private BigDecimal mtrl_power;
     private String mtrl_color;
     private String mtrl_model;
     private String update_usr;
@@ -54,11 +55,11 @@ public class FbpretmtrlIA {
         this.mtrl_vender = mtrl_vender;
     }
 
-    public String getMtrl_power() {
+    public BigDecimal getMtrl_power() {
         return mtrl_power;
     }
 
-    public void setMtrl_power(String mtrl_power) {
+    public void setMtrl_power(BigDecimal mtrl_power) {
         this.mtrl_power = mtrl_power;
     }
 

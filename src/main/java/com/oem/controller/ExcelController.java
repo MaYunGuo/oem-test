@@ -14,6 +14,8 @@ import com.oem.tx.brm.Fbpretbox.FbpretboxIA;
 import com.oem.tx.brm.Fbpretbox.FbpretboxO;
 import com.oem.tx.brm.Fbpretlot.FbpretlotI;
 import com.oem.tx.brm.Fbpretlot.FbpretlotIA;
+import com.oem.tx.brm.Fbpretmtrl.FbpretmtrlI;
+import com.oem.tx.brm.Fbpretmtrl.FbpretmtrlIA;
 import com.oem.util.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -379,6 +381,7 @@ public class ExcelController {
                 inTrxStr = dealShipData(trx_id, action_flg, evt_usr, dataList);
                 break;
             case "M":  //扣料信息
+                inTrxStr = dealMtrlData(trx_id, action_flg, evt_usr, dataList);
                 break;
             default:
                 break;
@@ -486,5 +489,25 @@ public class ExcelController {
         }
         fbpretboxI.setIary(iary);
         return JacksonUtil.toJSONStr(fbpretboxI);
+    }
+
+    private String dealMtrlData(String trx_id, String action_flg, String evt_usr, List<String[]> dataList){
+        FbpretmtrlI fbpretmtrlI = new FbpretmtrlI();
+        fbpretmtrlI.setTrx_id(trx_id);
+        fbpretmtrlI.setAction_flg(action_flg);
+        fbpretmtrlI.setEvt_usr(evt_usr);
+        List<FbpretmtrlIA> iary = new ArrayList<>();
+        for(String[] strings: dataList){
+            FbpretmtrlIA fbpretmtrlIA =  new FbpretmtrlIA();
+            fbpretmtrlIA.setLot_no(strings[0]);
+            fbpretmtrlIA.setMtrl_no(strings[1]);
+            fbpretmtrlIA.setMtrl_vender(strings[2]);
+            fbpretmtrlIA.setMtrl_power(BigDecimal.valueOf(Double.valueOf(strings[3])));
+            fbpretmtrlIA.setMtrl_color(strings[4]);
+            fbpretmtrlIA.setMtrl_model(strings[5]);
+            iary.add(fbpretmtrlIA);
+        }
+        fbpretmtrlI.setIary(iary);
+        return JacksonUtil.toJSONStr(fbpretmtrlI);
     }
 }
