@@ -1,0 +1,55 @@
+body {
+	height:auto!important;
+	background:url(../../img/home.jpg) no-repeat center fixed!important;
+	-webkit-background-size:cover!important;
+	-moz-background-size:cover!important;
+	-o-background-size:cover!important;
+	background-size:cover!important;
+}
+
+#navDiv {
+	width:60%;
+	margin: 0 auto;
+}
+
+.navbar {
+	margin-top: 80px;
+	margin-bottom: 0px;
+	background-color: rgba(211, 211, 211, 0.5);
+}
+
+#mainDiv {
+	height: 500px;
+	margin-top: 150px;
+}
+
+#loginDiv {
+	margin-left: 54.5%;
+	border: 1px solid lightgrey;
+	background-color: rgba(247, 238, 214, 0.5);
+	border-radius: 6px;
+}
+
+#loginDiv .form-group, #loginDiv p {
+	margin: 30px 0px;
+}
+
+#loginDiv button {
+	width: 100px;
+}
+
+
+#linkDiv{
+	margin-bottom: 150px;
+}
+
+.directCss{
+	padding-left: 50px;
+	font-size: 30px;
+	color:red;
+}
+.fontCss{
+	color: black;
+	font-size: 25px;
+	text-decoration:underline;
+}

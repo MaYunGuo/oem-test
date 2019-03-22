@@ -22,6 +22,9 @@
 
 
 function showImg(img_typ, lot_no, oem_id){
+
+    $("#lotIvImgPath").attr("src", _SPACE);
+    $("#lotElImgPath").attr("src", _SPACE);
     var imgInObj ={
         lot_no  : lot_no,
         oem_id  : oem_id,
@@ -37,14 +40,12 @@ function showImg(img_typ, lot_no, oem_id){
 
     var img_path = imgOutObj.rtn_mesg;
     if("IV" == img_typ){
-        $("#lotIvImgPath").attr("src", _SPACE);
         $("#lotIvImgPath").attr("width", width);
         $("#lotIvImgPath").attr("height", height);
         $("#lotIvImgPath").attr("src", "showImg.do?imgPath=" + img_path);
         $("#ivImgSpan").text(img_typ + "图片");
 
     }else {
-        $("#lotElImgPath").attr("src", _SPACE);
         $("#lotElImgPath").attr("width", width);
         $("#lotElImgPath").attr("height", height);
         $("#lotElImgPath").attr("src", "showImg.do?imgPath=" + img_path);
