@@ -32,6 +32,7 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -398,7 +399,7 @@ public class ExcelController {
             fbpretlotIA.setIv_ff(BigDecimal.valueOf(Double.valueOf(strings[6])));
             fbpretlotIA.setIv_tmper(BigDecimal.valueOf(Double.valueOf(strings[7])));
             fbpretlotIA.setIv_adj_versioni(strings[8]);
-            fbpretlotIA.setIv_timestamp(DateUtil.Date2Timestamp(new Date(strings[9])));
+            fbpretlotIA.setIv_timestamp(Timestamp.valueOf(strings[9]));
             iary.add(fbpretlotIA);
         }
         fbpretlotI.setIary(iary);

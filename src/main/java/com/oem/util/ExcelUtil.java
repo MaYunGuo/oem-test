@@ -10,8 +10,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ExcelUtil {
@@ -44,15 +48,14 @@ public class ExcelUtil {
 
     public static String getCellValue(Cell cell) {
         String cellValue = "";
-        DataFormatter formatter = new DataFormatter();
+        DateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (cell != null) {
             switch (cell.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC:
                     if (DateUtil.isCellDateFormatted(cell)) {
-                        cellValue = formatter.formatCellValue(cell);
+                        cellValue = formater.format(cell.getDateCellValue());
                     } else {
-                        DecimalFormat df = new DecimalFormat("0");
-                        cellValue = df.format(cell.getNumericCellValue());
+                        cellValue = String.valueOf(cell.getNumericCellValue());
                     }
                     break;
                 case Cell.CELL_TYPE_STRING:

@@ -86,7 +86,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        oem_prd_lot.setIv_ff(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(6)))));
                        oem_prd_lot.setIv_tmper(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(7)))));
                        oem_prd_lot.setIv_adj_versioni(ExcelUtil.getCellValue(row.getCell(8)));
-                       oem_prd_lot.setIv_timestamp(DateUtil.Date2Timestamp(new Date(ExcelUtil.getCellValue(row.getCell(9)))));
+                       oem_prd_lot.setIv_timestamp(Timestamp.valueOf(ExcelUtil.getCellValue(row.getCell(9))));
                        oem_prd_lot.setUpdate_user("IV_TASK");
                        oem_prd_lot.setUpdate_timestamp(cr_timestamp);
                        oemPrdLotRepository.save(oem_prd_lot);
