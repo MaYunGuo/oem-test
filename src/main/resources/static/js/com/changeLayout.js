@@ -17,7 +17,8 @@
                 resizable: true,
                 loadonce: true,
                 rownumbers: true,
-                rowNum: 20
+                rownumWidth: 30,// 行号所在列的宽度
+                rowNum: 50
                 /* emptyrecords: true*/
             };
 
