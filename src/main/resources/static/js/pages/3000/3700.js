@@ -32,18 +32,24 @@ function showImg(img_typ, lot_no, oem_id){
         showErrorDialog("","没有找到批次[" + lot_no +"]的" + img_typ +"图片");
         return false;
     }
-    var width =  $("#imgDialog").width()*0.3;
-    var height = $("#imgDialog").height()*0.6;
+    var width =  $("#imgDialog").width()*0.2;
+    var height = $("#imgDialog").height()*0.3;
 
     var img_path = imgOutObj.rtn_mesg;
-    $("#imgPath").attr("src", _SPACE);
-    $("#titleSpan").text(_SPACE);
+    if("IV" == img_typ){
+        $("#lotIvImgPath").attr("src", _SPACE);
+        $("#lotIvImgPath").attr("width", width);
+        $("#lotIvImgPath").attr("height", height);
+        $("#lotIvImgPath").attr("src", "showImg.do?imgPath=" + img_path);
+        $("#ivImgSpan").text(img_typ + "图片");
 
-    $("#imgPath").attr("width", width);
-    $("#imgPath").attr("height", height);
-    $("#imgPath").attr("src", "showImg.do?imgPath=" + img_path);
-    $("#titleSpan").text(img_typ + "图片展示");
-    $("#imgDialog").modal('show');
+    }else {
+        $("#lotElImgPath").attr("src", _SPACE);
+        $("#lotElImgPath").attr("width", width);
+        $("#lotElImgPath").attr("height", height);
+        $("#lotElImgPath").attr("src", "showImg.do?imgPath=" + img_path);
+        $("#elImgSpan").text(img_typ + "图片");
+    }
 };
 function showMtrl(lot_no, oem_id){
    var inObj = {
@@ -60,6 +66,59 @@ function showMtrl(lot_no, oem_id){
        $("#mtrlDialog").modal('show');
    }
 }
+function showDeatil(lot_no, oem_id){
+    var inobj ={
+        trx_id     : "FBPRETLOT",
+        action_flg : "I",
+        iary :[{
+            lot_no : lot_no,
+            oem_id : oem_id,
+        }]
+    };
+    var outObj = comTrxSubSendPostJson(inobj);
+    if(outObj.rtn_code == _NORMAL){
+        var oary = outObj.oary[0];
+        $("#detailLotIdText").val(oary.lot_no);
+        $("#detailIvPowerText").val(oary.iv_power);
+        $("#detailIvIscText").val(oary.iv_isc);
+        $("#detailIvVocText").val(oary.iv_voc);
+        $("#detailIvImpText").val(oary.iv_imp);
+        $("#detailIvVmpText").val(oary.iv_vmp);
+        $("#detailIvFfText").val(oary.iv_ff);
+        $("#detailIvTemperText").val(oary.iv_tmper);
+        $("#detailIvCalText").val(oary.iv_adj_versioni);
+        $("#detailIvMeasTimeText").val(oary.iv_timestamp);
+        $("#detailFinPowerText").val(oary.final_power);
+        $("#detailFinGradeText").val(oary.final_grade);
+        $("#detailFinColorText").val(oary.final_color);
+        var box_no = oary.box_no;
+        if(!box_no){
+            $("#deatilPackStatText").val("未包装");
+            $("#detailPackBoxText").parent().parent().hide();
+            $("#detailOqcText").parent().parent().hide();;
+            $("#detatilShipStatText").parent().parent().hide();;
+
+        }else{
+            $("#deatilPackStatText").val("已包装");
+            $("#detailPackBoxText").parent().parent().show();
+            $("#detailOqcText").parent().parent().show();
+            $("#detatilShipStatText").parent().parent().show();
+            $("#detailPackBoxText").val(oary.box_no);
+            $("#detailOqcText").show(oary.oqc_grade);
+            $("#detatilShipStatText").show(oary.ship_stat);
+        }
+        showImg("IV", lot_no, oem_id);
+        showImg("EL3", lot_no, oem_id);
+
+
+
+
+
+
+        $("#detailDialog").modal('show');
+    }
+
+}
 
 
 $(document).ready(function () {
@@ -72,10 +131,10 @@ $(document).ready(function () {
 
     var domObj = {
         W: $(window),
-        $box_no: $("#box_no"),
-        $lot_no: $("#lot_no"),
-        $row_id: $("#row_id"),
-        $data_type: $("#data_type"),
+        $box_no: $("#boxIdText"),
+        $lot_no: $("#lotIdText"),
+        $startTimeText : $("#startTimeText"),
+        $endTimeText   : $("#endTimeText"),
 
         button: {
             $query_btn: $("#query_btn"),
@@ -127,39 +186,41 @@ $(document).ready(function () {
 
     var iniGridInfo = function () {
         var colModel = [
-            {name: 'box_no',          index: 'box_no',          label: BOX_ID_TAG,        sortable: false, width: 120},
-            {name: 'lot_no',          index: 'lot_no',          label: LOT_ID_TAG,        sortable: false, width: 120},
+            {name: 'lot_no',          index: 'lot_no',          label: LOT_ID_TAG,        align: 'center', sortable: false, width: 130,formatter:function (value, gird,rows, stat) {
+                return "<a href='javescript:void(0)' onclick='showDeatil(" + "\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>"+ value + "</a>";
+            }},
+            {name: 'box_no',          index: 'box_no',          label: BOX_ID_TAG,        align: 'center', sortable: false, width: 130},
             {name: 'oem_id',          index: 'oem_id',          hidden:true                                          },
-            {name: 'oem_name',        index: 'oem_name',        label: LOT_OEM_ID_TAG ,   sortable: false, width: 120},
-            {name: 'iv_power',        index: 'iv_power',        label: LOT_IV_POWER_TAG,  sortable: false, width: 80,},
-            {name: 'iv_isc',          index: 'iv_isc',          label: LOT_IV_ISC_TAG,    sortable: false, width: 80},
-            {name: 'iv_voc',          index: 'iv_voc',          label: LOT_IV_VOC_TAG,    sortable: false, width: 80},
-            {name: 'iv_imp',          index: 'iv_imp',          label: LOT_IV_IMP_TAG,    sortable: false, width: 80},
-            {name: 'iv_vmp',          index: 'iv_vmp',          label: LOT_IV_VMP_TAG,    sortable: false, width: 80},
-            {name: 'iv_ff',           index: 'iv_ff',           label: LOT_IV_FF_TAG,     sortable: false, width: 80},
-            {name: 'iv_tmper',        index: 'iv_tmper',        label: LOT_IV_TEMPER_RAG, sortable: false, width: 80},
-            {name: 'iv_adj_versioni', index: 'iv_adj_versioni', label: LOT_IV_CAL_TAG,    sortable: false, width: 80},
-            {name: 'iv_timestamp',    index: 'Iv_timestamp',    label: LOT_IV_TIMESTAMP,  sortable: false, width: 130},
-            {name: 'final_grade',     index: 'Final_grade',     label: LOT_FIN_GRADE_TAG, sortable: false, width: 80},
-            {name: 'final_power',     index: 'Final_power',     label: LOT_FIN_POWER_TAG, sortable: false, width: 80},
-            {name: 'final_color',     index: 'Final_color',     label: LOT_FIN_COLOR_TAG, sortable: false, width: 80},
-            {name: 'oqc_grade',       index: 'oqc_grade',       label: BOX_OQC_GRADE_TAG, sortable: false, width: 80},
-            {name: 'ship_stat',       index: 'ship_stat',       label: BOX_SHIP_STAT_TAG, sortable: false, width: 80},
-            {name: 'oem_mtrl_use',    index: 'oem_mtrl_use',    label: MTRL_USE_INFO_TAG, width: 80,formatter:function (value, grid, rows, stat) {
+            {name: 'oem_name',        index: 'oem_name',        label: LOT_OEM_ID_TAG ,   align: 'center', sortable: false, width: 120},
+            {name: 'iv_power',        index: 'iv_power',        label: LOT_IV_POWER_TAG,  align: 'center', sortable: false, width: 80,},
+            {name: 'iv_isc',          index: 'iv_isc',          label: LOT_IV_ISC_TAG,    align: 'center', sortable: false, width: 80},
+            {name: 'iv_voc',          index: 'iv_voc',          label: LOT_IV_VOC_TAG,    align: 'center', sortable: false, width: 80},
+            {name: 'iv_imp',          index: 'iv_imp',          label: LOT_IV_IMP_TAG,    align: 'center', sortable: false, width: 80},
+            {name: 'iv_vmp',          index: 'iv_vmp',          label: LOT_IV_VMP_TAG,    align: 'center', sortable: false, width: 80},
+            {name: 'iv_ff',           index: 'iv_ff',           label: LOT_IV_FF_TAG,     align: 'center', sortable: false, width: 80},
+            {name: 'iv_tmper',        index: 'iv_tmper',        label: LOT_IV_TEMPER_RAG, align: 'center', sortable: false, width: 80},
+            {name: 'iv_adj_versioni', index: 'iv_adj_versioni', label: LOT_IV_CAL_TAG,    align: 'center', sortable: false, width: 80},
+            {name: 'iv_timestamp',    index: 'Iv_timestamp',    label: LOT_IV_TIMESTAMP,  align: 'center', sortable: false, width: 150},
+            {name: 'final_grade',     index: 'Final_grade',     label: LOT_FIN_GRADE_TAG, align: 'center', sortable: false, width: 90},
+            {name: 'final_power',     index: 'Final_power',     label: LOT_FIN_POWER_TAG, align: 'center', sortable: false, width: 90},
+            {name: 'final_color',     index: 'Final_color',     label: LOT_FIN_COLOR_TAG, align: 'center', sortable: false, width: 90},
+            {name: 'oqc_grade',       index: 'oqc_grade',       label: BOX_OQC_GRADE_TAG, align: 'center', sortable: false, width: 90},
+            {name: 'ship_stat',       index: 'ship_stat',       label: BOX_SHIP_STAT_TAG, align: 'center', sortable: false, width: 90},
+            {name: 'oem_mtrl_use',    index: 'oem_mtrl_use',    label: MTRL_USE_INFO_TAG, width: 80, align: 'center', formatter:function (value, grid, rows, stat) {
                 return "<button class='btn btn-default' onclick='showMtrl(" + "\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
                 }
             },
-            {name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,     width: 55, formatter:function (value, grid, rows, stat) {
+            /*{name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,     width: 60, align: 'center', formatter:function (value, grid, rows, stat) {
                     var img_typ = "IV";
                     return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
                 }
             },
             {
-                name: 'oem_el3_img', index: 'oem_el3_img',     label: LOT_EL3_IMG_TAG,   width: 55, formatter: function (value, grid, rows, stat) {
+                name: 'oem_el3_img', index: 'oem_el3_img',     label: LOT_EL3_IMG_TAG,   width: 60, align: 'center', formatter: function (value, grid, rows, stat) {
                     var img_typ = "EL3";
                     return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\"" + rows.oem_id + "\")'>查看</button>";
                 }
-            }
+            }*/
         ];
 
         //调用封装的ddGrid方法
@@ -176,6 +237,22 @@ $(document).ready(function () {
         domObj.grid.$dataListGrd.ddGrid(options);
 
     };
+    function initDatePicker(){
+        laydate.render({
+            elem: '#startTimeText',
+            type: 'datetime',
+            max:'nowTime',
+            format: 'yyyy-MM-dd HH:mm:ss',
+            btns: ['clear', 'confirm'],
+        });
+        laydate.render({
+            elem: '#endTimeText',
+            type: 'datetime',
+            max:'nowTime',
+            format: 'yyyy-MM-dd HH:mm:ss',
+            btns: ['clear', 'confirm'],
+        });
+    }
     var btnFunc = {
         img_show_func: function (imgPath) {
 
@@ -195,12 +272,20 @@ $(document).ready(function () {
 
             var box_no = domObj.$box_no.val();
             var lot_no = domObj.$lot_no.val();
+            var start_time = domObj.$startTimeText.val();
+            var end_time = domObj.$endTimeText.val();
             var iary = {};
             if(box_no){
                 iary.box_no =box_no;
             }
             if(lot_no){
                 iary.lot_no=lot_no;
+            }
+            if(start_time){
+                iary.start_time=start_time;
+            }
+            if(end_time){
+                iary.end_time=end_time;
             }
             if(!$.isEmptyObject(iary)){
                 inObj.iary = [iary];
@@ -231,6 +316,7 @@ $(document).ready(function () {
     var initFunc = function () {
         iniMtrlGridInfo();
         iniGridInfo();
+        initDatePicker();
         iniButtonAction();
     };
 

@@ -18,7 +18,7 @@
                 loadonce: true,
                 rownumbers: true,
                 rownumWidth: 30,// 行号所在列的宽度
-                rowNum: 50
+                rowNum: 50,
                 /* emptyrecords: true*/
             };
 
