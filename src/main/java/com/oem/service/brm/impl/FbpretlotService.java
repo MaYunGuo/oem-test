@@ -379,27 +379,41 @@ public class FbpretlotService implements IFbpretlotService {
 
     public long queryOeMFnc(FbpretlotI inTrx, FbpretlotO outTrx){
         StringBuffer hql = new StringBuffer(" where 1=1");
-        String evt_usr = inTrx.getEvt_usr();
-        Bis_user bis_user = bisUserRepository.get(evt_usr);
-        if(bis_user == null){
-            outTrx.setRtn_code(E_BIS_USER + E_READ_NOT_FOUND + _SPACE);
-            outTrx.setRtn_mesg("没有找到用户[" + evt_usr +"]的信息，情确认");
-            return _ERROR;
-        }
-        String usr_faty = bis_user.getUsr_fty();
-        if(!StringUtil.isSpaceCheck(usr_faty)){
-            hql.append(" and A.oem_id ='").append(usr_faty).append("'");
-        }
-
         List<FbpretlotIA> iary = inTrx.getIary();
         if(iary != null && !iary.isEmpty()){
             String box_no = iary.get(0).getBox_no();
             String lot_no = iary.get(0).getLot_no();
+            String oem_id = iary.get(0).getOem_id();
+            String start_time = iary.get(0).getStart_time();
+            String end_time = iary.get(0).getEnd_time();
             if(!StringUtil.isSpaceCheck(box_no)){
                 hql.append(" and A.box_no like '").append(box_no).append("%'");
             }
             if(!StringUtil.isSpaceCheck(lot_no)){
                 hql.append(" and A.lot_no like '").append(lot_no).append("%'");
+            }
+            if(!StringUtil.isSpaceCheck(oem_id)){
+                hql.append(" and A.oem_id ='").append(oem_id).append("'");
+            }else{
+                String evt_usr = inTrx.getEvt_usr();
+                if(!StringUtil.isSpaceCheck(evt_usr)){
+                    Bis_user bis_user = bisUserRepository.get(evt_usr);
+                    if(bis_user == null){
+                        outTrx.setRtn_code(E_BIS_USER + E_READ_NOT_FOUND + _SPACE);
+                        outTrx.setRtn_mesg("没有找到用户[" + evt_usr +"]的信息，情确认");
+                        return _ERROR;
+                    }
+                    String usr_faty = bis_user.getUsr_fty();
+                    if(!StringUtil.isSpaceCheck(usr_faty)){
+                        hql.append(" and A.oem_id ='").append(usr_faty).append("'");
+                    }
+                }
+            }
+            if(!StringUtil.isSpaceCheck(start_time)){
+                hql.append(" and A.iv_timestamp >='").append(start_time).append("'");
+            }
+            if(!StringUtil.isSpaceCheck(end_time)){
+                hql.append(" and A.iv_timestamp <'").append(end_time).append("'");
             }
         }
 
