@@ -21,35 +21,40 @@
  */
 
 
-function showImg(img_typ, lot_no, oem_id){
+function showImg(lot_no, oem_id){
 
     $("#lotIvImgPath").attr("src", _SPACE);
     $("#lotElImgPath").attr("src", _SPACE);
-    var imgInObj ={
+    var ivImgInObj ={
         lot_no  : lot_no,
         oem_id  : oem_id,
-        img_typ : img_typ
+        img_typ : "IV"
     }
-    var imgOutObj = comUplaod("checkImg.do", imgInObj);
-    if(imgOutObj.rtn_code !=  _NORMAL){
-        showErrorDialog("","没有找到批次[" + lot_no +"]的" + img_typ +"图片");
-        return false;
+    var ivImgOutObj = comUplaod("checkImg.do", ivImgInObj);
+    if(ivImgOutObj.rtn_code !=  _NORMAL){
+        showErrorDialog("","没有找到批次[" + lot_no +"]的IV图片");
+    }else{
+        var img_path = ivImgOutObj.rtn_mesg;
+        $("#lotIvImgPath").attr("width", $("#detailDialog").width()*0.2);
+        $("#lotIvImgPath").attr("height", $("#detailDialog").height()*0.3);
+        $("#lotIvImgPath").attr("src", "showImg.do?imgPath=" + encodeURI(img_path));
+        $("#ivImgSpan").text("IV图片");
     }
-    var width =  $("#imgDialog").width()*0.2;
-    var height = $("#imgDialog").height()*0.3;
 
-    var img_path = imgOutObj.rtn_mesg;
-    if("IV" == img_typ){
-        $("#lotIvImgPath").attr("width", width);
-        $("#lotIvImgPath").attr("height", height);
-        $("#lotIvImgPath").attr("src", "showImg.do?imgPath=" + img_path);
-        $("#ivImgSpan").text(img_typ + "图片");
-
-    }else {
-        $("#lotElImgPath").attr("width", width);
-        $("#lotElImgPath").attr("height", height);
-        $("#lotElImgPath").attr("src", "showImg.do?imgPath=" + img_path);
-        $("#elImgSpan").text(img_typ + "图片");
+    var elImgInObj ={
+        lot_no  : lot_no,
+        oem_id  : oem_id,
+        img_typ : "EL3"
+    }
+    var elImgOutObj = comUplaod("checkImg.do", elImgInObj);
+    if(elImgOutObj.rtn_code !=  _NORMAL){
+        showErrorDialog("","没有找到批次[" + lot_no +"]的EL3图片");
+    }else{
+        var img_path = elImgOutObj.rtn_mesg;
+        $("#lotElImgPath").attr("width", $("#detailDialog").width()*0.2);
+        $("#lotElImgPath").attr("height", $("#detailDialog").height()*0.3);
+        $("#lotElImgPath").attr("src", "showImg.do?imgPath=" + encodeURI(img_path));
+        $("#elImgSpan").text("EL3图片");
     }
 };
 function showMtrl(lot_no, oem_id){
@@ -108,14 +113,7 @@ function showDeatil(lot_no, oem_id){
             $("#detailOqcText").show(oary.oqc_grade);
             $("#detatilShipStatText").show(oary.ship_stat);
         }
-        showImg("IV", lot_no, oem_id);
-        showImg("EL3", lot_no, oem_id);
-
-
-
-
-
-
+        showImg(lot_no, oem_id);
         $("#detailDialog").modal('show');
     }
 
@@ -211,7 +209,7 @@ $(document).ready(function () {
                 return "<button class='btn btn-default' onclick='showMtrl(" + "\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
                 }
             },
-            /*{name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,     width: 60, align: 'center', formatter:function (value, grid, rows, stat) {
+            {name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,     width: 60, align: 'center', formatter:function (value, grid, rows, stat) {
                     var img_typ = "IV";
                     return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
                 }
@@ -221,7 +219,7 @@ $(document).ready(function () {
                     var img_typ = "EL3";
                     return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\"" + rows.oem_id + "\")'>查看</button>";
                 }
-            }*/
+            }
         ];
 
         //调用封装的ddGrid方法
