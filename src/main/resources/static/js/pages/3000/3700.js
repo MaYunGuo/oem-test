@@ -35,8 +35,8 @@ function showImg(lot_no, oem_id){
         showErrorDialog("","没有找到批次[" + lot_no +"]的IV图片");
     }else{
         var img_path = ivImgOutObj.rtn_mesg;
-        $("#lotIvImgPath").attr("width", $("#detailDialog").width()*0.2);
-        $("#lotIvImgPath").attr("height", $("#detailDialog").height()*0.3);
+        $("#lotIvImgPath").attr("width", $("#detailDialog").width()*0.1);
+        $("#lotIvImgPath").attr("height", $("#detailDialog").height()*0.2);
         $("#lotIvImgPath").attr("src", "showImg.do?imgPath=" + encodeURI(img_path));
         $("#ivImgSpan").text("IV图片");
     }
@@ -51,8 +51,8 @@ function showImg(lot_no, oem_id){
         showErrorDialog("","没有找到批次[" + lot_no +"]的EL3图片");
     }else{
         var img_path = elImgOutObj.rtn_mesg;
-        $("#lotElImgPath").attr("width", $("#detailDialog").width()*0.2);
-        $("#lotElImgPath").attr("height", $("#detailDialog").height()*0.3);
+        $("#lotElImgPath").attr("width", $("#detailDialog").width()*0.1);
+        $("#lotElImgPath").attr("height", $("#detailDialog").height()*0.2);
         $("#lotElImgPath").attr("src", "showImg.do?imgPath=" + encodeURI(img_path));
         $("#elImgSpan").text("EL3图片");
     }
@@ -209,7 +209,7 @@ $(document).ready(function () {
                 return "<button class='btn btn-default' onclick='showMtrl(" + "\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
                 }
             },
-            {name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,     width: 60, align: 'center', formatter:function (value, grid, rows, stat) {
+            /*{name :'oem_iv_img',      index: 'oem_iv_img',      label:LOT_IV_IMG_TAG,     width: 60, align: 'center', formatter:function (value, grid, rows, stat) {
                     var img_typ = "IV";
                     return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\""+ rows.oem_id + "\")'>查看</button>";
                 }
@@ -219,7 +219,7 @@ $(document).ready(function () {
                     var img_typ = "EL3";
                     return "<button class='btn btn-default' onclick='showImg(" + "\"" + img_typ + "\"" + ",\"" + rows.lot_no + "\"" + ",\"" + rows.oem_id + "\")'>查看</button>";
                 }
-            }
+            }*/
         ];
 
         //调用封装的ddGrid方法
