@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{M_3500_SHIP_DATA_TAG}"></title>
+    <title th:text="#{M_3500_OQC_GRADE_TAG}"></title>
     <head th:include="compage/comCSS::commCss"></head>
     <span th:include="compage/comJS :: commJs"></span>
     <script th:src="@{js/pages/3000/3500.js}"></script>
@@ -11,7 +11,8 @@
 <div class="container-fluid">
     <div class="col-lg-12 btnDivCss">
         <button class="btn btn-info" id="query_btn" th:text="#{QUERY_BTN_TAG}"></button>
-        <button class="btn btn-primary" id="ship_btn" th:text="#{MOVEOUT_BTN_TAG}"></button>
+        <button class="btn btn-primary" id="ok_btn" th:text="#{OK_BTN_TAG}"></button>
+        <button class="btn btn-primary" id="ng_btn" th:text="#{NG_BTN_TAG}"></button>
         <button class="btn btn-warning" id="import_btn" th:text="#{IMPORT_EXC_BTN_TAG}"></button>
         <button class="btn btn-danger" id="download_btn" th:text="#{DOWNLOAD_OQC_EXC_BTN_TAG}"></button>
     </div>
@@ -30,20 +31,24 @@
                 <div class="tab-content tabs">
                     <div role="tabpane" class="tab-pane fade in active" id="tab1">
                         <div class="col-lg-12">
-                            <span id="dataForm" class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2" for="box_no" th:text="箱号"></label>
-                                    <div class="col-lg-3">
-                                        <input id="box_no" class="form-control">
-                                    </div>
-                                </div>
-                            </span>
+								<span id="dataForm" class="form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-lg-2" for="box_no" th:text="箱号"></label>
+										<div class="col-lg-3">
+											<input id="box_no" class="form-control">
+										</div>
+									</div>
+								</span>
                         </div>
-                        <div class="form_group">
-                            <div id="shipListDiv" class="col-lg-12" style="padding-left: 0; padding-right: 0;">
-                                <table id="shipListGrd"></table>
-                                <div id="shipListPg"></div>
-                            </div>
+                        <div class="col-lg-12">
+								<span id="dataForm2" class="form-horizontal">
+									<div class="form-group">
+										<label class="control-label col-lg-2" for="judge_code" th:text="判定结果"></label>
+										<div class="col-lg-3">
+											<input id="judge_code" class="form-control" disabled>
+										</div>
+									</div>
+								</span>
                         </div>
                     </div>
                 </div>

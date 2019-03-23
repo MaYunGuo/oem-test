@@ -47,8 +47,6 @@ public class ImgController {
             baseO.setRtn_mesg("用户[" +usr_id +"]没有绑定代工厂信息");
             return JacksonUtil.toJSONStr(baseO);
         }
-
-        String fileName = img_file.getOriginalFilename();
         String targetFiilePath = FTP_PATH + File.separator + usr_faty + File.separator + "IMAGE" + File.separator + img_typ + File.separator + lot_no + ".jpg";
         try {
             File targeFile = new File(targetFiilePath);
@@ -62,6 +60,51 @@ public class ImgController {
             baseO.setRtn_mesg("图片上传失败，原因[" + StringUtil.stackTraceToString(e));
             return JacksonUtil.toJSONStr(baseO);
         }
+        baseO.setRtn_code(RETURN_CODE_OK);
+        baseO.setRtn_mesg(RETURN_MESG_OK);
+        return JacksonUtil.toJSONStr(baseO);
+    }
+
+    @RequestMapping("/batchUploadImg.do")
+    public String batchUploadImgs(String usr_id, String img_typ, MultipartFile[] img_files){
+
+        logUtils = new LogUtils(ImgController.class);
+
+        BaseO baseO = new BaseO();
+        Bis_user bis_user = bisUserRepository.get(usr_id);
+        if(bis_user == null){
+            baseO.setRtn_code(E_BIS_USER + E_READ_NOT_FOUND + _SPACE);
+            baseO.setRtn_mesg("没有找到用户[" +usr_id +"]的信息");
+            return JacksonUtil.toJSONStr(baseO);
+        }
+        String usr_faty = bis_user.getUsr_fty();
+        if(StringUtil.isSpaceCheck(usr_faty)){
+            baseO.setRtn_code(E_BIS_USER + E_READ_NOT_FOUND + _SPACE);
+            baseO.setRtn_mesg("用户[" +usr_id +"]没有绑定代工厂信息");
+            return JacksonUtil.toJSONStr(baseO);
+        }
+        if(img_files.length ==0){
+            baseO.setRtn_code(E_BIS_USER + E_READ_NOT_FOUND + _SPACE);
+            baseO.setRtn_mesg("请选择要上传的图片或者目录");
+            return JacksonUtil.toJSONStr(baseO);
+        }
+        String targetFiilePath = FTP_PATH + File.separator + usr_faty + File.separator + "IMAGE" + File.separator + img_typ + File.separator;
+
+        for(MultipartFile img_file : img_files){
+            try {
+                File targeFile = new File(targetFiilePath + img_file.getOriginalFilename());
+                if(!targeFile.exists()){
+                    targeFile.createNewFile();
+                }
+                InputStream inputStream = img_file.getInputStream();
+                FileUtil.copyFile(inputStream, targeFile);
+            } catch (Exception e) {
+                baseO.setRtn_code(E_FBPRETLOT_IMG_UPLOAD_ERR + _SPACE);
+                baseO.setRtn_mesg("图片上传失败，原因[" + StringUtil.stackTraceToString(e));
+                return JacksonUtil.toJSONStr(baseO);
+            }
+        }
+
         baseO.setRtn_code(RETURN_CODE_OK);
         baseO.setRtn_mesg(RETURN_MESG_OK);
         return JacksonUtil.toJSONStr(baseO);

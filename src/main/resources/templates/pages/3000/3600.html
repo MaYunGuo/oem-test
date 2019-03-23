@@ -1,111 +1,87 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{M_3600_MTRL_USR_INFO_TAG}"></title>
-	<head th:include="compage/comCSS::commCss"></head>
-	<span th:include="compage/comJS :: commJs"></span>
-	<script th:src="@{js/pages/3000/3600.js}"></script>
+    <title th:text="#{M_3600_SHIP_DATA_TAG}"></title>
+    <head th:include="compage/comCSS::commCss"></head>
+    <span th:include="compage/comJS :: commJs"></span>
+    <script th:src="@{js/pages/3000/3600.js}"></script>
 </head>
 <body>
-    <div th:include="compage/navbar :: ComTop"></div>
-	<div class="container-fluid col-lg-12 col-md-12 col-sm-12" id="divTotal">
-		<div class="btnDivCss col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
-			<button class="btn btn-info"    id="query_btn"    th:text="#{QUERY_BTN_TAG}"></button>
-			<button class="btn btn-primary" id="import_btn"   th:text="#{UPLOAD_LOT_EXCEL_TAG}"></button>
-			<button class="btn btn-warning" id="downLoad_btn" th:text="#{DOWNLOAD_EXCEL_MODEL_BTN_TAG}"></button>
-		</div>
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="cardBox cardBoxTable noPosition" style="border: none;">
-				<div class="tab" role="tabpane">
-					<ul class="nav nav-tabs" role="tablist" style="border: none;">
-						<li role="presentation" class="active">
-							<a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
-								<i class="fa fa-table" >
-									<span th:text="#{MTRL_INFO_TAG}"></span>
-								</i>
-							</a>
-						</li>
-					</ul>
-					<!-- Tab panes -->
-					<div class="tab-content tabs" id="heightCls1">
-						<div role="tabpane" class="tab-pane fade in active" id="tab1">
-							<form class="form-horizontal">
-								<div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
-									<div class="col-lg-3 col-md-3 col-sm-3">
-										<label class="control-label col-lg-3 col-md-3 col-sm-3" for="lotIdText" th:text="#{MTRL_ID_TAG}"></label>
-										<div class="col-lg-9">
-											<input id="mtrlIdText" class="form-control" style="width: 100%"></input>
-										</div>
-									</div>
-									<div class="col-lg-3 col-md-3 col-sm-3">
-										<label class="control-label col-lg-3 col-md-3 col-sm-3" for="lotIdText" th:text="#{LOT_ID_TAG}"></label>
-										<div class="col-lg-9">
-											<input id="lotIdText" class="form-control" style="width: 100%"></input>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-12 col-md-12 col-sm-12" id="divTotalTable">
-			<div class="cardBox cardBoxTable noPosition" style="border: none;">
-				<div class="tab" role="tabpane">
-					<!-- Nav tabs -->
-					<ul class="nav nav-tabs" role="tablist" style="border: none;">
-						<li role="presentation" class="active">
-							<a href="#tabPane_toolChangeHis" aria-controls="tabpane" role="tab" data-toggle="tab">
-								<i class="fa fa-table">
-									<span th:text="#{MTRL_LIST_INFO_TAG}"></span>
-								</i>
-							</a>
-						</li>
-					</ul>
-					<!-- Tab panes -->
-					<div class="tab-content tabs" id="tabPane_toolChangeHis">
-						<div id="mtrlInfoListDiv">
-							<table id="mtrlInfoListGrd"></table>
-							<div id="mtrlInfoListPg"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- file 选择 模态框 -->
-	<div id="uploadDialog" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true" >
-		<div class="modal-dialog" style="width:480px;">
-			<div class="modal-content">
-				<!-- 模框头部 -->
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title" th:text="#{SELECT_UNOLAD_FILE_TAG}"></h4>
-				</div>
-				<!-- 模框主体 -->
-				<div class="modal-body">
-					<div class="row">
-						<form class="form-horizontal">
-							<div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 4px;">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<label class="control-label col-lg-4 col-md-4 col-sm-4" for="uploadFile" th:text="#{ADD_FILE_TAG}"></label>
-									<div class="col-lg-8">
-										<input id="uploadFile" type="file" accept=".xls,.xlsx" class="form-control" style="width: 100%"/>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-				<!-- 模框底部 -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancelBtn" th:text="#{CANCEL_BTN_TAG}"></button>
-					<button type="button" class="btn btn-primary" id="uploadSureBtn" th:text="#{UPLOAD_BTN_TAG}"></button>
-				</div>
-			</div>
-		</div>
-	</div>
+<div th:include="compage/navbar :: ComTop"></div>
+<div class="container-fluid">
+    <div class="col-lg-12 btnDivCss">
+        <button class="btn btn-info" id="query_btn" th:text="#{QUERY_BTN_TAG}"></button>
+        <button class="btn btn-primary" id="ship_btn" th:text="#{MOVEOUT_BTN_TAG}"></button>
+        <button class="btn btn-warning" id="import_btn" th:text="#{IMPORT_EXC_BTN_TAG}"></button>
+        <button class="btn btn-danger" id="download_btn" th:text="#{DOWNLOAD_OQC_EXC_BTN_TAG}"></button>
+    </div>
+    <div class="col-lg-12">
+        <div class="cardBox cardBoxTable noPosition" style="border: none;">
+            <div class="tab" role="tabpane">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" style="border: none;">
+                    <li role="presentation" class="active">
+                        <a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
+                            <i class="fa fa-table" th:text="#{PARAMTER_INFO_TAG}"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content tabs">
+                    <div role="tabpane" class="tab-pane fade in active" id="tab1">
+                        <div class="col-lg-12">
+                            <span id="dataForm" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2" for="box_no" th:text="箱号"></label>
+                                    <div class="col-lg-3">
+                                        <input id="box_no" class="form-control">
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="form_group">
+                            <div id="shipListDiv" class="col-lg-12" style="padding-left: 0; padding-right: 0;">
+                                <table id="shipListGrd"></table>
+                                <div id="shipListPg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- file 选择 模态框 -->
+<div id="uploadDialog" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true" >
+    <div class="modal-dialog" style="width:480px;">
+        <div class="modal-content">
+            <!-- 模框头部 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" th:text="#{SELECT_UNOLAD_FILE_TAG}"></h4>
+            </div>
+            <!-- 模框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <form class="form-horizontal">
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 4px;">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <label class="control-label col-lg-4 col-md-4 col-sm-4" for="uploadFile" th:text="#{ADD_FILE_TAG}"></label>
+                                <div class="col-lg-8">
+                                    <input id="uploadFile" type="file" accept=".xls,.xlsx" class="form-control" style="width: 100%"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- 模框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancelBtn" th:text="#{CANCEL_BTN_TAG}"></button>
+                <button type="button" class="btn btn-primary" id="uploadSureBtn" th:text="#{UPLOAD_BTN_TAG}"></button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

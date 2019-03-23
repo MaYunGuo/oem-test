@@ -99,29 +99,32 @@
                         </ul>
                     </li>
                 </shiro:hasAnyPermissions>
-                <shiro:hasAnyPermissions name = "PAGE_3100, PAGE_3200, PAGE_3300, PAGE_3400, PAGE_3500, PAGE_3600">
+                <shiro:hasAnyPermissions name = "PAGE_3100, PAGE_3200, PAGE_3300, PAGE_3400, PAGE_3500, PAGE_3600, PAGE_3700, PAGE_3800">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">数据管理<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li shiro:hasPermission="PAGE_3100" >
                                 <a target="_blank" href="pageRedict.do?page=3000/3100"  th:text="#{M_3100_LOT_LV_DATA_TAG}"></a>
                             </li>
                             <li shiro:hasPermission="PAGE_3200" >
-                                <a target="_blank" href="pageRedict.do?page=3000/3200"  th:text="#{M_3200_LOT_FIN_DATA_TAG}"></a>
+                                <a target="_blank" href="pageRedict.do?page=3000/3200"  th:text="#{M_3200_IMG_DATA_TAG}"></a>
                             </li>
                             <li shiro:hasPermission="PAGE_3300" >
-                                <a target="_blank" href="pageRedict.do?page=3000/3300"  th:text="#{M_3300_PACK_DATA_TAG}"></a>
+                                <a target="_blank" href="pageRedict.do?page=3000/3300"  th:text="#{M_3300_LOT_FIN_DATA_TAG}"></a>
                             </li>
-                            <li shiro:hasPermission="PAGE_3400">
-                                <a target="_blank" href="pageRedict.do?page=3000/3400" th:text="#{M_3400_OQC_GRADE_TAG}" ></a>
+                            <li shiro:hasPermission="PAGE_3400" >
+                                <a target="_blank" href="pageRedict.do?page=3000/3400"  th:text="#{M_3400_PACK_DATA_TAG}"></a>
                             </li>
                             <li shiro:hasPermission="PAGE_3500">
-                                <a target="_blank" href="pageRedict.do?page=3000/3500" th:text="#{M_3500_SHIP_DATA_TAG}" ></a>
+                                <a target="_blank" href="pageRedict.do?page=3000/3500" th:text="#{M_3500_OQC_GRADE_TAG}" ></a>
                             </li>
                             <li shiro:hasPermission="PAGE_3600">
-                                <a target="_blank" href="pageRedict.do?page=3000/3600" th:text="#{M_3600_MTRL_USR_INFO_TAG}" ></a>
+                                <a target="_blank" href="pageRedict.do?page=3000/3600" th:text="#{M_3600_SHIP_DATA_TAG}" ></a>
                             </li>
-                            <li shiro:hasPermission="PAGE_3700">
-                                <a target="_blank" href="pageRedict.do?page=3000/3700" th:text="#{M_3700_OEM_DATA_TAG}" ></a>
+                            <li shiro:hasPermission="PAGE_36700">
+                                <a target="_blank" href="pageRedict.do?page=3000/3700" th:text="#{M_3700_MTRL_USR_INFO_TAG}" ></a>
+                            </li>
+                            <li shiro:hasPermission="PAGE_3800">
+                                <a target="_blank" href="pageRedict.do?page=3000/3800" th:text="#{M_3800_OEM_DATA_TAG}" ></a>
                             </li>
                         </ul>
                      </li>

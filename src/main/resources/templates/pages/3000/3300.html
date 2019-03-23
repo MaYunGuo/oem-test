@@ -1,19 +1,20 @@
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <title th:text="#{M_3300_PACK_DATA_TAG}"></title>
+    <title th:text="#{M_3300_LOT_FIN_DATA_TAG}"></title>
     <head th:include="compage/comCSS::commCss"></head>
     <span th:include="compage/comJS :: commJs"></span>
     <script th:src="@{js/pages/3000/3300.js}"></script>
 </head>
 <body>
-    <div th:include="compage/navbar :: ComTop"></div>
-    <div class="container-fluid">
-        <div class="col-lg-12 btnDivCss">
-            <button class="btn btn-warning" id="query_btn"   th:text="#{QUERY_BTN_TAG}"></button>
-            <button class="btn btn-warning" id="import_btn"   th:text="#{IMPORT_EXC_BTN_TAG}"></button>
-            <button class="btn btn-warning" id="downLoad_btn" th:text="#{DOWNLOAD_EXCEL_MODEL_BTN_TAG}"></button>
-        </div>
+<div th:include="compage/navbar :: ComTop"></div>
+<div class="container-fluid col-lg-12 col-md-12 col-sm-12" id="divTotal">
+    <div class="btnDivCss col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
+        <button class="btn btn-info"    id="query_btn"    th:text="#{QUERY_BTN_TAG}"></button>
+        <button class="btn btn-primary" id="add_btn"      th:text="#{UPLOAD_LOT_FIN_DATA_TAG}"></button>
+        <button class="btn btn-primary" id="import_btn"   th:text="#{UPLOAD_LOT_EXCEL_TAG}"></button>
+        <button class="btn btn-primary" id="downLoad_btn" th:text="#{DOWNLOAD_EXCEL_MODEL_BTN_TAG}"></button>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="cardBox cardBoxTable noPosition" style="border: none;">
@@ -33,20 +34,11 @@
                         <form class="form-horizontal">
                             <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
                                 <div class="col-lg-3 col-md-3 col-sm-3">
-                                    <label class="control-label col-lg-3 col-md-3 col-sm-3" for="lotIdText" th:text="#{LOT_ID_TAG}"></label>
+                                    <label class="control-label col-lg-3 col-md-3 col-sm-3" for="lotIdText" th:text="#{LOT_ID_TAG}">
+
+                                    </label>
                                     <div class="col-lg-9">
                                         <input id="lotIdText" class="form-control" style="width: 100%"></input>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3">
-                                    <label class="control-label col-lg-3 col-md-3 col-sm-3" for="boxIdText" th:text="#{BOX_ID_TAG}"></label>
-                                    <div class="col-lg-9">
-                                        <input id="boxIdText" class="form-control" style="width: 100%"></input>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3">
-                                    <div class="col-lg-3">
-                                        <button id="pack_btn" type="button" class="btn btn-success"style="width: 100%" th:text="#{PACK_BTN_TAG}"></button>
                                     </div>
                                 </div>
                             </div>
@@ -56,64 +48,110 @@
             </div>
         </div>
     </div>
-
-    <div class="col-lg-12 col-md-12 col-sm-12 UnderDiv">
+    <div class="col-lg-12 col-md-12 col-sm-12" id="divTotalTable">
         <div class="cardBox cardBoxTable noPosition" style="border: none;">
             <div class="tab" role="tabpane">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist" style="border: none;">
                     <li role="presentation" class="active">
-                        <a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
-                            <i class="fa fa-table">
-                                <span th:text="#{PACK_LIST_INFO_TAG}"></span>
+                        <a href="#tabPane_toolChangeHis" aria-controls="tabpane" role="tab" data-toggle="tab">
+                            <i class="fa fa-table" >
+                                <span th:text="#{LOT_FIN_DATA_TAG}"></span>
                             </i>
                         </a>
                     </li>
                 </ul>
                 <!-- Tab panes -->
-                <div class="tab-content tabs">
-                    <div role="tabpane" class="tab-pane fade in active" id="pick">
-                        <div id="packListDiv" class="col-lg-12 col-md-12 col-sm-12" style="padding-left: 0; padding-right: 0;">
-                            <table id="packListGrd"></table>
-                            <div id="pacListkPg"></div>
-                        </div>
+                <div class="tab-content tabs" id="tabPane_toolChangeHis">
+                    <div id="lotInfoListDiv">
+                        <table id="lotInfoListGrd"></table>
+                        <div id="lotInfoListPg"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- file 选择 模态框 -->
-    <div id="uploadDialog" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true" >
-        <div class="modal-dialog" style="width:480px;">
-            <div class="modal-content">
-                <!-- 模框头部 -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" th:text="#{SELECT_UNOLAD_FILE_TAG}"></h4>
-                </div>
-                <!-- 模框主体 -->
-                <div class="modal-body">
-                    <div class="row">
-                        <form class="form-horizontal">
-                            <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 4px;">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <label class="control-label col-lg-4 col-md-4 col-sm-4" for="uploadFile" th:text="#{ADD_FILE_TAG}"></label>
-                                    <div class="col-lg-8">
-                                        <input id="uploadFile" type="file" accept=".xls,.xlsx" class="form-control" style="width: 100%"/>
-                                    </div>
+<!-- 原因代码对话框 -->
+<div id="addLotInfoDialog"   style="top: 10%; right: 100px" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="title" data-keyboard="false" data-backdrop="static" aria-hidden="true" >
+    <div class="modal-dialog" style="width: 1500px;"  >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" th:text="#{LOT_FIN_DATA_TAG}" ></h4>
+            </div>
+            <div class="modal-body" >
+                <div id="reasonInputDiv" class="row">
+                    <form class="form-horizontal">
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 4px;">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <label class="control-label col-lg-4 col-md-4 col-sm-4" for="addLotIdText" th:text="#{LOT_ID_TAG}"></label>
+                                <div class="col-lg-8">
+                                    <input id="addLotIdText" class="form-control" style="width: 100%"></input>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <label class="control-label col-lg-4 col-md-4 col-sm-4" for="addPowerText" th:text="#{LOT_FIN_POWER_TAG}"></label>
+                                <div class="col-lg-8">
+                                    <input id="addPowerText" class="form-control" style="width: 100%"></input>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <label class="control-label col-lg-4 col-md-4 col-sm-4" for="addColorText" th:text="#{LOT_FIN_COLOR_TAG}"></label>
+                                <div class="col-lg-8">
+                                    <input id="addColorText" class="form-control" style="width: 100%"></input>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <label class="control-label col-lg-4 col-md-4 col-sm-4" for="addGradeText" th:text="#{LOT_FIN_GRADE_TAG}"></label>
+                                <div class="col-lg-8">
+                                    <input id="addGradeText" class="form-control" style="width: 100%"></input>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <!-- 模框底部 -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancelBtn" th:text="#{CANCEL_BTN_TAG}"></button>
-                    <button type="button" class="btn btn-primary" id="uploadSureBtn" th:text="#{UPLOAD_BTN_TAG}"></button>
-                </div>
+            </div>
+            <!--Modal body-->
+            <div class="modal-footer">
+                <a id="addCancelBtn" class="btn" data-dismiss="modal" th:text="#{CANCEL_BTN_TAG}"></a>
+                <a id="addSureBtn" class="btn btn-primary" th:text="#{SAVE_BTN_TAG}"></a>
             </div>
         </div>
     </div>
+</div>
+<!-- file 选择 模态框 -->
+<div id="uploadDialog" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true" >
+    <div class="modal-dialog" style="width:480px;">
+        <div class="modal-content">
+            <!-- 模框头部 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" th:text="#{SELECT_UNOLAD_FILE_TAG}"></h4>
+            </div>
+            <!-- 模框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <form class="form-horizontal">
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 4px;">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <label class="control-label col-lg-4 col-md-4 col-sm-4" for="uploadFile" th:text="#{ADD_FILE_TAG}"></label>
+                                <div class="col-lg-8">
+                                    <input id="uploadFile" type="file" accept=".xls,.xlsx" class="form-control" style="width: 100%"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- 模框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancelBtn" th:text="#{CANCEL_BTN_TAG}"></button>
+                <button type="button" class="btn btn-primary" id="uploadSureBtn" th:text="#{UPLOAD_BTN_TAG}"></button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

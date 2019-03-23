@@ -1,118 +1,166 @@
-/**************************************************************************/
-/*                                                                        */
-/*  System  Name :  ICIM                                                  */
-/*                                                                        */
-/*  Description  :  OQC Grade Management                                   */
-/*                                                                        */
-/*  MODIFICATION HISTORY                                                  */
-/*    Date     Ver     Name          Description                          */
-/* ---------- ----- ----------- ----------------------------------------- */
-/* 2019/03/06 N0.00                   Initial release                     */
-/*                                                                        */
-/**************************************************************************/
-
+/**
+ *
+ */
 $(document).ready(function () {
+    $("form").submit(function () {
+        return false;
+    });
 
-    var VAL = { //val
-        // T_FBPBISDATA: "FBPBISDATA",
-        T_FBPRETBOX: "FBPRETBOX",
-        EVT_USR: $("#userId").text(), //evt_usr
-        NORMAL: "0000000", //normal
-    };
-
-    /**
-     * All controls's jquery object/text
-     * 所有控件的jquery对象文本
-     * @type {Object}
-     */
-    var domObj = {
-        W: $(window),
-        $box_no: $("#box_no"),
-        $judge_code: $("#judge_code"),
-        $fileinput: $("#fileinput"),
-
-        button: {
-            $query_btn: $("#query_btn"),
-            $ok_btn: $("#ok_btn"),
-            $ng_btn: $("#ng_btn"),
-            $import_btn: $("#import_btn"),
-            $download_btn: $("#download_btn"),
-
+    var VAL = {
+        EVT_USR: $("#userId").text(),
+        FBPRETLOT : "FBPRETLOT",
+        DISABLED_ATTR: {
+            "disabled": true
         },
-        dialog : {
-            $uploadDialog  : $("#uploadDialog"),
-            $uploadFile    : $("#uploadFile"),
-            $uploadSureBtn : $("#uploadSureBtn")
+        ENABLED_ATTR: {
+            "disabled": false
         }
     };
 
+    var domObj = {
+        W: $(window),
+        $query_btn    : $("#query_btn"),
+        $import_btn   : $("#import_btn"),
+        $downLoad_btn : $("#downLoad_btn"),
+        $pack_btn     : $("#pack_btn"),
+        $lotIdText    : $("#lotIdText"),
+        $boxIdText    : $("#boxIdText"),
+        grid :{
+            $packListDiv  : $("#packListDiv"),
+            $packListGrid : $("#packListGrd"),
+            $pacListkPg   : "#pacListkPg"
+        },
+        dialog : {
+            $uploadDialog : $("#uploadDialog"),
+            $uploadFile    : $("#uploadFile"),
+            $uploadSureBtn :$("#uploadSureBtn")
+        }
+    };
 
-    var btnFunc = {
-        query_func: function () {
-            var box_no = domObj.$box_no.val();
-            if (!box_no || "" == box_no) {
-                showErrorDialog("", "请输入箱号！");
-                return false;
+    var initFnc = {
+        initGrid :function () {
+            var itemInfoCM = [
+                {name: 'lot_no'     ,     index: 'lot_no',              label: LOT_ID_TAG,        width: 130},
+                {name: 'iv_power',        index: 'iv_power',            label: LOT_IV_POWER_TAG,  width: 120},
+                {name: 'iv_isc',          index: 'iv_isc',              label: LOT_IV_ISC_TAG,    width: 120},
+                {name: 'iv_voc',          index: 'iv_voc',              label: LOT_IV_VOC_TAG,    width: 120},
+                {name: 'iv_imp',          index: 'iv_imp',              label: LOT_IV_IMP_TAG,    width: 120},
+                {name: 'iv_vmp',          index: 'iv_vmp',              label: LOT_IV_VMP_TAG,    width: 120},
+                {name: 'iv_ff',           index: 'iv_ff',               label: LOT_IV_FF_TAG,     width: 120},
+                {name: 'iv_tmper',        index: 'iv_tmper',            label: LOT_IV_TEMPER_RAG, width: 150},
+                {name: 'iv_adj_versioni', index: 'iv_adj_versioni',     label: LOT_IV_CAL_TAG,    width: 120},
+                {name: 'iv_timestamp',    index: 'iv_timestamp',        label: LOT_IV_TIMESTAMP,  width: 120},
+                {name: 'final_power',     index: 'final_power',         label: LOT_FIN_POWER_TAG, width: 120},
+                {name: 'final_color',     index: 'final_color',         label: LOT_FIN_COLOR_TAG, width: 120},
+                {name: 'final_grade',     index: 'final_grade',         label: LOT_FIN_GRADE_TAG, width: 120},
+                {name: 'box_no',          index: 'box_no',              label: BOX_ID_TAG,        width: 140}
+            ];
+            //调用封装的ddGrid方法
+            var options = {
+                scroll: true,   //支持滚动条
+                fixed: true,
+                shrinkToFit: true,
+                viewrecords: true,
+                multiselect: true,
+                colModel: itemInfoCM,
+                pager: domObj.grid.$pacListkPg
             }
-            var iary = {
-                box_no: box_no,
-            }
-
+            domObj.grid.$packListGrid.ddGrid(options);
+        },
+        queryFnc: function (box_no, lot_no) {
             var inObj = {
-                trx_id: VAL.T_FBPRETBOX,
-                action_flg: 'Q',
-                evt_usr : VAL.EVT_USR,
-                iary: [iary]
+                trx_id     : VAL.FBPRETLOT,
+                action_flg : "Q",
+                evt_usr    : VAL.EVT_USR,
+            };
+
+            var iary = {};
+            if(box_no){
+                iary.box_no =box_no;
+            }
+            if(lot_no){
+                iary.lot_no=lot_no;
+            }
+            if(!$.isEmptyObject(iary)){
+                inObj.iary = [iary];
             }
             var outObj = comTrxSubSendPostJson(inObj);
-            if (outObj.rtn_code == _NORMAL) {
-                if (0 == outObj.tbl_cnt) {
-                    showErrorDialog("", "请输入正确的箱号！");
-                    return false;
+            if (outObj.rtn_code === _NORMAL) {
+                if(outObj.oary != undefined && outObj.oary.length >0){
+                    return outObj.oary;
                 }
-                domObj.$judge_code.val(outObj.oary[0].oqc_grade);
+            }
+            return null;
+        }
+    }
+
+    var buttonFnc = {
+        queryBtnFnc :function () {
+            domObj.grid.$packListGrid.jqGrid("clearGridData");
+            var box_no = domObj.$boxIdText.val();
+            var lot_no = domObj.$lotIdText.val();
+            var data = initFnc.queryFnc(box_no, lot_no);
+            if(data != null){
+                setGridInfo(data, domObj.grid.$packListGrid);
             }
         },
-        set_grade_func: function (oqc_grade) {
-            var box_no = domObj.$box_no.val();
-            if (!box_no || "" == box_no) {
-                showErrorDialog("", "请输入箱号！");
+        //更新或者新增
+        packBtnFnc: function () {
+            // 可编辑说明为新增，不可编辑说明为修改
+            var box_id = domObj.$boxIdText.val();
+            if (!box_id) {
+                showErrorDialog("", "请填写箱号!");
                 return false;
             }
-            //没有判定过的箱子才开始进行判定
-            var iary = {
-                box_no: box_no,
-                oqc_grade: oqc_grade,
+
+            var rowIds = domObj.grid.$packListGrid.jqGrid('getGridParam', 'selarrrow');
+            if (rowIds.length === 0) {
+                showErrorDialog("", "请选择需要绑定箱号的数据！");
+                return false;
+            }
+
+            var iary = new Array();
+            for (var i = 0; i < rowIds.length; i++) {
+                var rowData = domObj.grid.$packListGrid.jqGrid('getRowData', rowIds[i]);
+                iary.push({
+                    box_no : box_id,
+                    lot_no : rowData.lot_no
+                });
             }
             var inObj = {
-                trx_id     : VAL.T_FBPRETBOX,
-                action_flg : 'O',
+                trx_id     : VAL.FBPRETLOT,
                 evt_usr    : VAL.EVT_USR,
-                iary       : [iary]
+                action_flg : "P",
+                iary       : iary
             };
             var outObj = comTrxSubSendPostJson(inObj);
-            if (outObj.rtn_code == _NORMAL) {
-                showSuccessDialog("判定成功!");
-                var oary = $.isArray(outObj.oary)? outObj.oary :[outObj.oary];
-                domObj.$box_no.val(oary[0].box_no);
-                domObj.$judge_code.val(oary[0].oqc_grade);
+            if (outObj.rtn_code === _NORMAL) {
+                // buttonFnc.clearFnc();
+                $("input").val("");
+                var data = buttonFnc.queryFnc(box_id);
+                if(data != null){
+                   setGridInfo(data, domObj.grid.$packListGrid);
+                }
+                showSuccessDialog("保存成功");
             }
         },
-        import_func: function () {
-             domObj.dialog.$uploadFile.val(_SPACE);
-             domObj.dialog.$uploadDialog.modal('show');
+
+        importBtnFnc :function () {
+            domObj.dialog.$uploadFile.val(_SPACE);
+            domObj.dialog.$uploadDialog.modal('show');
         },
-        upload_func: function () {
+
+        uploadBtnFnc : function () {
             var excel_file = document.getElementById("uploadFile").files[0]; // js 获取文件对象
             if (!excel_file) {
                 showErrorDialog("","请选择要上传的文件");
                 return false;
             }
             var inObj ={
-                trx_id      : VAL.T_FBPRETBOX,
-                action_flg  : "O",
+                trx_id      : VAL.FBPRETLOT,
+                action_flg  : "P",
+                data_type   : "P",
                 evt_usr     : VAL.EVT_USR,
-                data_type   : "O",
                 upload_file : excel_file
             }
             var outObj = comUplaod("uploadExcel.do", inObj);
@@ -122,56 +170,104 @@ $(document).ready(function () {
             }
             domObj.dialog.$uploadDialog.modal('hide');
             showSuccessDialog("数据上传成功");
-            var oary = $.isArray(outObj.oary) ? outObj.oary : [outObj.oary];
-            domObj.$box_no.val(oary[0].box_no);
-            domObj.$judge_code.val(oary[0].oqc_grade);
+            setGridInfo(outObj.oary, domObj.grid.$packListGrid);
 
         },
-        download_func: function () {
+
+        downLoadFnc :function () {
             if ($("#downForm").length > 0) {
                 $("#downForm").remove();
             }
             var str = '<form id="downForm" action="download.do" method="post">';
-            str = str + '<input type="hidden" name="filePath" id= "filePath" />';
             str = str + '<input type="hidden" name="fileName" id= "fileName" />';
             str = str + "</form>";
-
             $(str).appendTo("body");
-            $("#fileName").val("OQC模板.xlsx");
+            $("#fileName").val("包装模板.xlsx");
             $("#downForm").submit();
         }
+    };
+
+    var iniButtonAction = function () {
+
+       domObj.$query_btn.click(function () {
+           buttonFnc.queryBtnFnc();
+       });
+
+       domObj.$pack_btn.click(function () {
+           buttonFnc.packBtnFnc();
+       });
+
+       domObj.$import_btn.click(function () {
+           buttonFnc.importBtnFnc();
+       });
+       domObj.dialog.$uploadSureBtn.click(function () {
+           buttonFnc.uploadBtnFnc();
+       });
+       domObj.$downLoad_btn.click(function () {
+           buttonFnc.downLoadFnc();
+       })
+
+       domObj.$lotIdText.keydown(function (event) {
+           if(event.keyCode == 13){
+               var lot_no = domObj.$lotIdText.val();
+               if(lot_no){
+                   var data = initFnc.queryFnc(null, lot_no);
+                   if(data == null){
+                       showErrorDialog("","没有找到批次号[" +lot_no +"]的信息，请确认");
+                       return false;
+                   }
+                   var rowIds = domObj.grid.$pcikListGrid.getDataIDs(); //获取当前显示的记录
+                   if(rowIds.length > 0){
+                      for(var i=0;i<rowIds.length;i++){
+                          var rowData = domObj.grid.$pcikListGrid.jqGrid("getRowData", rowIds[i]);
+                         if(rowData.lot_no == lot_no){
+                             domObj.grid.$packListGrid.jqGrid("delRowData", rowIds[i]);
+                             i = i-1;
+                         }
+                      }
+                   }
+                   domObj.grid.$packListGrid.jqGrid("addRowData", data[0].id,data[0],"last");
+                   domObj.grid.$packListGrid.jqGrid('setSelection',data[0].id);
+               }
+           }
+       })
+    };
+
+    domObj.W.resize(function () {
+        resizeFnc();
+    });
+
+
+    //页面初始化函数
+    function pageInit() {
+        initFnc.initGrid();
+        iniButtonAction();
+        resizeFnc();
     }
 
-    /**
-     * Bind button click action
-     */
-    var iniButtonAction = function () {
-        domObj.button.$query_btn.click(function () {
-            btnFunc.query_func();
-        });
-        domObj.button.$ok_btn.click(function () {
-            btnFunc.set_grade_func("OK");
-        });
-        domObj.button.$ng_btn.click(function () {
-            btnFunc.set_grade_func("NG");
-        });
-        domObj.button.$import_btn.click(function () {
-            btnFunc.import_func();
-        });
-        domObj.dialog.$uploadSureBtn.click(function () {
-            btnFunc.upload_func();
-        })
-        domObj.button.$download_btn.click(function () {
-            btnFunc.download_func();
-        });
-    };
-    /**
-     * Ini view, data and action bind
-     */
-    var initializationFunc = function () {
-        iniButtonAction();
-    };
+    pageInit();
+    resizeFnc();
 
-    initializationFunc();
     //表格自适应
+    function resizeFnc(){
+        domObj.grid.$packListGrid.changeTableLocation({
+            widthOffset: 50,     //调整表格宽度
+            heightOffset: 153,   //调整表格高度
+        });
+
+        var tabs = ['.cardBoxForm']
+        tabs.forEach(function(v) {
+            $(v).changeTabHeight({
+                heightOffset: 60   //合并表格边框线
+            });
+        });
+    };
+    $(window).resize(function() {
+        resizeFnc();
+    });
+
+    var nodeNames = ['.ui-jqgrid-bdiv'];
+    nodeNames.forEach(function(v) {
+        $(v).setNiceScrollType({});   //设置滚动条样式
+    });
 });
