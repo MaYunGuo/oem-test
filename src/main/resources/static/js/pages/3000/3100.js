@@ -24,6 +24,8 @@ $(document).ready(function () {
         $import_btn   : $("#import_btn"),
         $downLoad_btn : $("#downLoad_btn"),
         $lotIdText    : $("#lotIdText"),
+        $startTimeText : $("#startTimeText"),
+        $endTimeText   : $("#endTimeText"),
         jgird :{
             $lotInfoDiv  : $("#lotInfoListDiv"),
             $lotInfoGrid : $("#lotInfoListGrd"),
@@ -51,18 +53,27 @@ $(document).ready(function () {
         },
     };
 
-    function iniDateTimePicker() {
-        laydate.render({
-            elem: '#addMeasTimeText',
-            type: 'datetime'
-        });
-
-    }
     var initFnc = {
         initTime: function () {
             laydate.render({
                 elem: '#addMeasTimeText',
                 type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm:ss',
+                btns: ['clear', 'confirm'],
+            });
+        },
+        initQueryTime:function () {
+            laydate.render({
+                elem: '#startTimeText',
+                type: 'datetime',
+                max:'nowTime',
+                format: 'yyyy-MM-dd HH:mm:ss',
+                btns: ['clear', 'confirm'],
+            });
+            laydate.render({
+                elem: '#endTimeText',
+                type: 'datetime',
+                max:'nowTime',
                 format: 'yyyy-MM-dd HH:mm:ss',
                 btns: ['clear', 'confirm'],
             });
@@ -94,7 +105,7 @@ $(document).ready(function () {
     }
 
     var buttonFnc = {
-        queryFnc : function (lot_id) {
+        queryFnc : function (lot_id, start_time, end_time) {
             domObj.jgird.$lotInfoGrid.jqGrid("clearGridData");
             var inObj ={
                  trx_id  : VAL.FBPRETLOT,
@@ -102,11 +113,20 @@ $(document).ready(function () {
                  action_flg: "Q",
 
             }
+            var iary = {};
             if(lot_id){
-                inObj.iary = [{
-                    lot_no : lot_id
-                }];
+                iary.lot_no = lot_id;
             }
+            if(start_time){
+                iary.start_time = start_time;
+            }
+            if(end_time){
+                iary.end_time = end_time;
+            }
+            if(!$.isEmptyObject(iary)){
+                inObj.iary = [iary];
+            }
+
             var outObj = comTrxSubSendPostJson(inObj);
             if(outObj.rtn_code == _NORMAL){
                 setGridInfo(outObj.oary, domObj.jgird.$lotInfoGrid);
@@ -229,7 +249,7 @@ $(document).ready(function () {
             if (outObj.rtn_code === _NORMAL) {
                 showSuccessDialog("保存成功");
                 domObj.dialog.$addLotInfoDialog.modal('hide');
-                buttonFnc.queryFnc(lot_id);
+                buttonFnc.queryFnc(lot_id,null,null);
             }
         },
         importBtnFnc : function () {
@@ -277,7 +297,9 @@ $(document).ready(function () {
     var iniButtonAction = function () {
         domObj.$query_btn.click(function () {
             var lot_id = domObj.$lotIdText.val();
-            buttonFnc.queryFnc(lot_id);
+            var start_time = domObj.$startTimeText.val();
+            var end_time = domObj.$endTimeText.val();
+            buttonFnc.queryFnc(lot_id, start_time, end_time);
         });
         domObj.$add_btn.click(function () {
             buttonFnc.addFnc();
@@ -299,6 +321,7 @@ $(document).ready(function () {
 
     function init(){
         initFnc.initLotInfoGrd();
+        initFnc.initQueryTime();
         iniButtonAction();
         $('input').val(_SPACE);
     }

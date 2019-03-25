@@ -24,6 +24,8 @@ $(document).ready(function () {
         $import_btn   : $("#import_btn"),
         $downLoad_btn : $("#downLoad_btn"),
         $lotIdText    : $("#lotIdText"),
+        $startTimeText : $("#startTimeText"),
+        $endTimeText   : $("#endTimeText"),
         jgird :{
             $lotInfoDiv  : $("#lotInfoListDiv"),
             $lotInfoGrid : $("#lotInfoListGrd"),
@@ -45,10 +47,18 @@ $(document).ready(function () {
     };
 
     var initFnc = {
-        initTime: function () {
+        initQueryTime:function () {
             laydate.render({
-                elem: '#addMeasTimeText',
+                elem: '#startTimeText',
                 type: 'datetime',
+                max:'nowTime',
+                format: 'yyyy-MM-dd HH:mm:ss',
+                btns: ['clear', 'confirm'],
+            });
+            laydate.render({
+                elem: '#endTimeText',
+                type: 'datetime',
+                max:'nowTime',
                 format: 'yyyy-MM-dd HH:mm:ss',
                 btns: ['clear', 'confirm'],
             });
@@ -83,17 +93,25 @@ $(document).ready(function () {
     }
 
     var buttonFnc = {
-        queryFnc : function (lot_id) {
+        queryFnc : function (lot_id,start_time, end_time) {
             var inObj ={
                 trx_id  : VAL.FBPRETLOT,
                 evt_usr : VAL.EVT_USR,
                 action_flg: "Q",
 
             }
+            var iary = {};
             if(lot_id){
-                inObj.iary = [{
-                    lot_no : lot_id
-                }];
+                iary.lot_no = lot_id;
+            }
+            if(start_time){
+                iary.start_time = start_time;
+            }
+            if(end_time){
+                iary.end_time = end_time;
+            }
+            if(!$.isEmptyObject(iary)){
+                inObj.iary = [iary];
             }
             return comTrxSubSendPostJson(inObj);
         },
@@ -149,7 +167,7 @@ $(document).ready(function () {
             if (outObj.rtn_code === _NORMAL) {
                 showSuccessDialog("保存成功");
                 domObj.dialog.$addLotInfoDialog.modal('hide');
-                var dataObj = buttonFnc.queryFnc(lot_id);
+                var dataObj = buttonFnc.queryFnc(lot_id,null,null);
                 if(dataObj.rtn_code == _NORMAL){
                     setGridInfo(dataObj.oary, domObj.jgird.$lotInfoGrid);
                 }
@@ -200,7 +218,9 @@ $(document).ready(function () {
         domObj.$query_btn.click(function () {
             domObj.jgird.$lotInfoGrid.jqGrid("clearGridData");
             var lot_id = domObj.$lotIdText.val();
-            var dataObj = buttonFnc.queryFnc(lot_id);
+            var start_time = domObj.$startTimeText.val();
+            var end_time = domObj.$endTimeText.val();
+            var dataObj = buttonFnc.queryFnc(lot_id, start_time, end_time);
             if(dataObj.rtn_code == _NORMAL){
                 setGridInfo(dataObj.oary, domObj.jgird.$lotInfoGrid);
             }
@@ -227,7 +247,7 @@ $(document).ready(function () {
                 //执行操作
                 var lot_id = domObj.dialog.$addLotIdText.val();
                 if(lot_id){
-                    var dataObj = buttonFnc.queryFnc(lot_id);
+                    var dataObj = buttonFnc.queryFnc(lot_id,null,null);
                     if(dataObj.rtn_code == _NORMAL){
                         var oary = dataObj.oary;
                         if(oary.length == 0){
@@ -242,7 +262,7 @@ $(document).ready(function () {
             //执行操作
             var lot_id = domObj.dialog.$addLotIdText.val();
             if(lot_id){
-                var dataObj = buttonFnc.queryFnc(lot_id);
+                var dataObj = buttonFnc.queryFnc(lot_id,null,null);
                 if(dataObj.rtn_code == _NORMAL){
                     var oary = dataObj.oary;
                     if(oary.length == 0){
@@ -258,6 +278,7 @@ $(document).ready(function () {
     function init(){
         initFnc.initLotInfoGrd();
         iniButtonAction();
+        initFnc.initQueryTime();
         $('input').val(_SPACE);
     }
 

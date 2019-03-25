@@ -114,11 +114,19 @@ public class FbpretlotService implements IFbpretlotService {
             FbpretlotIA fbpretlotIA = inTrx.getIary().get(0);
             String lot_no = fbpretlotIA.getLot_no();
             String box_no = fbpretlotIA.getBox_no();
+            String start_time = fbpretlotIA.getStart_time();
+            String end_time = fbpretlotIA.getEnd_time();
             if (!StringUtil.isSpaceCheck(lot_no)) {
                 hql.append(" and lot_no like '").append(lot_no).append("%'");
             }
             if(!StringUtil.isSpaceCheck(box_no)){
                 hql.append(" and box_no like'").append(box_no).append("%'");
+            }
+            if(!StringUtil.isSpaceCheck(start_time)){
+                hql.append(" and iv_timestamp >='").append(start_time).append("'");
+            }
+            if(!StringUtil.isSpaceCheck(end_time)){
+                hql.append(" and iv_timestamp <'").append(end_time).append("'");
             }
         }
         Bis_user bis_user = bisUserRepository.get(evt_usr);
