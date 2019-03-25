@@ -72,6 +72,5 @@ public class LoginController {
             session.setAttribute("user", user);
         }
         return flg;
-
     }
 }

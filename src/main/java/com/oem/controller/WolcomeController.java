@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class WolcomeController {
 
     @RequestMapping(value={"/","/login","/login.html"})
-    public String welcome(HttpServletRequest request, HttpServletResponse response){
+    public String welcome(){
         Subject subject = SecurityUtils.getSubject();
         Bis_user user= (Bis_user) subject.getPrincipal();
         if(user != null){
@@ -25,11 +25,20 @@ public class WolcomeController {
     }
 
     @RequestMapping("/pageRedict.do")
-    public String pageRedict(String page,HttpServletRequest request, HttpServletResponse response){
+    public String pageRedict(String page){
         Subject subject = SecurityUtils.getSubject();
         Bis_user user= (Bis_user) subject.getPrincipal();
         if(user != null){
             return page;
+        }
+        return "login";
+    }
+    @RequestMapping("/home.do")
+    public String rtnHome(){
+        Subject subject = SecurityUtils.getSubject();
+        Bis_user user= (Bis_user) subject.getPrincipal();
+        if(user != null){
+            return "home";
         }
         return "login";
     }

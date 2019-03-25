@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static com.oem.comdef.GenericDef._YES;
+
 public class MyRealm extends AuthorizingRealm {
     //用于用户查询
     @Autowired
@@ -24,14 +26,15 @@ public class MyRealm extends AuthorizingRealm {
         //添加角色和权限
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         if(bis_user != null){
+            if(_YES.equals(bis_user.getAdmin_flg())){
+                simpleAuthorizationInfo.addRole("admin");
+            }
             List<String> func_codeList = usermageService.getUserFuncCode(bis_user);
             for (String func_code : func_codeList) {
                 //添加权限
                 simpleAuthorizationInfo.addStringPermission(func_code);
             }
         }
-
-
         return simpleAuthorizationInfo;
     }
 

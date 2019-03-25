@@ -1,74 +1,82 @@
 $(document).ready(function(){
-        //获取
 
-        var userId = $("#spanCookie1").text();
-        if (userId == "undefined" || userId == ""){
-            //window.location.href="http://localhost:8080/mes-bz-web-login/";
-            window.location.href="index.jsp";
-        }
+    var VAL = { //val
+        T_FIPINQANN : "FIPINQANN", //t_fbpbisdat
+        EVT_USR : $("#userId").text(), //evt_usr
+        NORMAL : "0000000", //normal
+    };
     //公告
     var listAnnounceFunc = function () {
-        var inTrxObj = {
+        var leftObj = {
             trx_id: "FIPINQANN",
-            action_flg: 'Q'
+            action_flg: 'Q',
+            announce_no: "02",
         };
-        var outTrxObj = comTrxSubSendPostJson(inTrxObj);
-        if (outTrxObj.rtn_code == "0000000") {
-            var announceCount = outTrxObj.count;
-            if(announceCount>0){
-                for (var i = 0; i < announceCount; i++) {
-                    setAnnounceFunc(outTrxObj.oary[i].announce_no, outTrxObj.oary[i].announce_text);
-                }
-            }
-
+        var leftOutObj = comTrxSubSendPostJson(leftObj);
+        if (leftOutObj.rtn_code == _NORMAL) {
+            setAnnounceFunc("02", leftOutObj.oary);
         }
-        // inTrxObj = {
-        //     trx_id: "XPLSTDAT",
-        //     action_flg: "Q",
-        //     iary: {
-        //         data_cate: "SPCL"
-        //     }
-        // };
-        // outTrxObj = comTrxSubSendPostJson(inTrxObj);
-        // var href = outTrxObj.oary ? outTrxObj.oary.data_desc : "";
-        // if (outTrxObj.rtn_code === "0000000" && href) {
-        //     $("#spcPage").attr("href", href);
-        // }
+
+        var rightObj = {
+            trx_id: "FIPINQANN",
+            action_flg: 'Q',
+            announce_no: "03",
+        };
+        var rightOutObj = comTrxSubSendPostJson(rightObj);
+        if (rightOutObj.rtn_code == _NORMAL) {
+            setAnnounceFunc("03", rightOutObj.oary);
+        }
     };
 
-    var setAnnounceFunc = function (announce_no, announce_text) {
+    var setAnnounceFunc = function (announce_no, data) {
+
+        var htmlObj = "<ul>";
+        for(var i=0;i<data.length;i++){
+            htmlObj += "<li>" + data[i].announce_text + "</li>";
+        }
+        htmlObj += "</ul>";
         if ('01' == announce_no) {
             $('#mainInfoTxt').val(announce_text);
         } else if ('02' == announce_no) {
-            $('#leftInfoTxt').val(announce_text);
+            $("#leftDetail marquee").empty();
+            $("#leftDetail marquee").append(htmlObj);
         } else if ('03' == announce_no) {
-            $('#rightInfoTxt').val(announce_text);
+            $("#rightDetail marquee").empty();
+            $("#rightDetail marquee").append(htmlObj);
         }
     };
-    var updateAnounceFunc = function (announce_no, announce_text) {
+
+    var updateAnounceFunc = function (announce_no, obj) {
+        var texts = $.trim(obj.val()).split("\n");
+        var iary = new Array();
+        for(var i=0;i<texts.length;i++){
+           var item = {
+               announce_seq : i+1,
+               announce_text : texts[i],
+           }
+           iary.push(item);
+        }
         var inTrxObj = {
-            trx_id: "FIPINQANN",
-            action_flg: 'S',
+            trx_id     : VAL.T_FIPINQANN,
+            evt_usr    : VAL.EVT_USR,
+            action_flg : 'S',
             announce_no: announce_no,
-            announce_text: announce_text,
-            evt_usr: userId
+            iary       : iary
         };
         var outTrxObj = comTrxSubSendPostJson(inTrxObj);
-        if (outTrxObj.rtn_code == "0000000") {
-            showSuccessDialog("更新成功！")
+        if (outTrxObj.rtn_code == _NORMAL) {
+            showSuccessDialog("更新成功！");
+            setAnnounceFunc(announce_no, outTrxObj.oary);
         } else {
             showErrorDialog("", "公告更新失败！");
         }
     };
 
-    $('#updateAnnounce1Btn').click(function () {
-        updateAnounceFunc("01", $('#mainInfoTxt').val());
-    });
     $('#updateAnnounce2Btn').click(function () {
-        updateAnounceFunc("02", $('#leftInfoTxt').val());
+        updateAnounceFunc("02", $('#leftInfoTxt'));
     });
     $('#updateAnnounce3Btn').click(function () {
-        updateAnounceFunc("03", $('#rightInfoTxt').val());
+        updateAnounceFunc("03", $('#rightInfoTxt'));
     });
     listAnnounceFunc();
     });

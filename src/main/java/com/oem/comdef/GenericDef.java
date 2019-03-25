@@ -70,6 +70,7 @@ public class GenericDef {
     public static final String TX_FBPRETMTRL = "FBPRETMTRL";
     public static final String TX_FBPRETBOX = "FBPRETBOX";
     public static final String TX_FBPRETLOT = "FBPRETLOT";
+    public static final String TX_FIPINQANN = "FIPINQANN";
 
 
 
@@ -99,6 +100,9 @@ public class GenericDef {
 
     public static final long E_FBPRETMTRL = 1000700;
     public static final long E_FBPRETMTRL_INVALID_INPUT = E_FBPRETMTRL + 1;
+
+    public static final long E_FIPINQANN = 1000800;
+    public static final long E_FIPINQANN_INVALID_INPUT = E_FIPINQANN + 1;
 
 
 
