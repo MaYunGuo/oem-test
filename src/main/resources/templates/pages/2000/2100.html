@@ -12,11 +12,11 @@
 <div class="container-fluid">
     <div class="col-lg-12 col-md-12 col-sm-12 btnDivCss">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <button class="btn btn-info" id="query_btn">查询</button>
-            <button class="btn btn-danger" id="delete_btn">删除</button>
-            <button class="btn btn-warning" id="update_btn">更新</button>
-            <button class="btn btn-primary" id="add_btn">新增</button>
-            <button class="btn btn-success" id="register_btn">保存</button>
+            <button class="btn btn-info" id="query_btn" th:text="#{QUERY_BTN_TAG}"></button>
+            <button class="btn btn-danger" id="delete_btn" th:text="#{DELETE_BTN_TAG}"></button>
+            <button class="btn btn-warning" id="update_btn" th:text="#{UPDATE_BTN_TAG}"></button>
+            <button class="btn btn-primary" id="add_btn" th:text="#{ADD_BTN_TAG}"></button>
+            <button class="btn btn-success" id="register_btn" th:text="#{SAVE_BTN_TAG}"></button>
         </div>
     </div>
 
@@ -29,8 +29,9 @@
                     <ul class="nav nav-tabs" role="tablist" style="border: none;">
                         <li role="presentation" class="active">
                             <a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
-                                <i class="fa fa-table"></i>
-                                用户列表
+                                <i class="fa fa-table">
+                                    <span th:text="#{USR_LIST_TAG}"></span>
+                                </i>
                             </a>
                         </li>
                     </ul>
@@ -55,8 +56,9 @@
                     <ul class="nav nav-tabs" role="tablist" style="border: none;">
                         <li role="presentation" class="active">
                             <a href="#tab1" aria-controls="tabpane" role="tab" data-toggle="tab">
-                                <i class="fa fa-table"></i>
-                                用户信息
+                                <i class="fa fa-table">
+                                    <span th:text="#{USR_INFO_TAG}" ></span>
+                                </i>
                             </a>
                         </li>
                     </ul>

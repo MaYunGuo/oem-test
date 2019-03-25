@@ -5,7 +5,7 @@
 	<head th:include="compage/comCSS::commCss"></head>
 	<span th:include="compage/comJS :: commJs"></span>
 	<script th:src="@{js/pages/2000/2200.js}"></script>
-	<title th:text="#{M_2100_USR_MANAGE_TAG}"></title>
+	<title th:text="#{M_2200_USR_AUTH_MANAGE_TAG}"></title>
 </head>
 <body>
     <div th:include="compage/navbar :: ComTop"></div>
@@ -70,12 +70,16 @@
 	<div id="usrSelectDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" th:text="#{USR_QUERY_TAG}"></h4>
+				</div>
 				<!--Modal header-->
 				<div class="modal-body">
 					<div class="row">
 						<form id="usrSelectForm" class="row form-horizontal">
 							<div class="control-group ">
-								<label class="control-label col-lg-4 col-md-4 col-sm-4" for="usrSelectDialog_idTxt"> <s:message code="USR_TAG" />
+								<label class="control-label col-lg-3 col-md-3 col-sm-3" for="usrSelectDialog_idTxt" th:text="#{USR_ID_TAG}">
 								</label>
 								<div class="col-lg-5 col-md-5 col-sm-5">
 									<input id="usrSelectDialog_idTxt" class="form-control"/>
