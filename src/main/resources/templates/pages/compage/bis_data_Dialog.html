@@ -16,17 +16,13 @@
 				<div class="modal-body">
 					<form class="form-horizontal">
 						<div class="control-group col-md-6 col-sm-6 col-lg-6" style="padding-left: 0px">
-							<label class="control-label col-xs-5 col-lg-5 col-md-5 col-sm-5" for="dia_dataCateSel">
-								<s:message code="DATA_CATE_TAG" />
-							</label>
+							<label class="control-label col-xs-5 col-lg-5 col-md-5 col-sm-5" for="dia_dataCateTxt" th:text="#{PARAMTER_CATE_TAG}"></label>
 							<div class="col-xs-7 col-lg-7 col-md-7 col-sm-7">
 								<input type="text" id="dia_dataCateTxt" class="form-control" readonly>
 							</div>
 						</div>
-						<div class="form-group col-md-6 col-sm-6 col-lg-6">
-							<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 col-md-push-4" >
-								<label id="dia_cateDescSpn" class="help-inline"></label>
-							</div>
+						<div class="form-group col-md-6 col-sm-6 col-lg-6" style="padding-right: 230px;">
+							<label id="dia_cateDescSpn" class="control-label col-xs-12 col-lg-12 col-md-12 col-sm-12" ></label>
 						</div>
 
 					</form>
