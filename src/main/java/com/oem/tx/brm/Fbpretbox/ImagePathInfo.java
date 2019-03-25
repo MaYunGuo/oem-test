@@ -1,13 +1,11 @@
 package com.oem.tx.brm.Fbpretbox;
 
-import lombok.Data;
 
 import java.sql.Timestamp;
 
 /**
  * Created by ghosta on 2019/3/8.
  */
-@Data
 public class ImagePathInfo {
     private int id;
     private String lot_no;

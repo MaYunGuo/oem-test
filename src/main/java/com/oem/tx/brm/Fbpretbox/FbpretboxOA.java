@@ -1,11 +1,10 @@
 package com.oem.tx.brm.Fbpretbox;
 
 
-import lombok.Data;
 
 import java.util.List;
 
-@Data
+
 public class FbpretboxOA {
     private String box_no;
     private String oqc_grade;

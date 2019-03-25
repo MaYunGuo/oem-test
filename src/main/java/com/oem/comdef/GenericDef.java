@@ -153,4 +153,16 @@ public class GenericDef {
 
 
 
+
+    public static final String REDIS_KEY_OEM = "OEM:JZ";
+    //用户admin_flg
+    public static final String REDIS_KEY_IS_ADMIN_FLG = REDIS_KEY_OEM +":IS_ADMIN_FLG:%s";
+
+    //用户page对应的func_code
+    public static final String REDIS_KEY_UAS_FNC_CODE = REDIS_KEY_OEM + ":UAS_FNC_CODE:%s";
+
+    public static final String REDIS_KEY_UAS_AUTH_INFO = REDIS_KEY_OEM + "USR_ID:%s";
+
+
+
 }

@@ -1,11 +1,9 @@
 package com.oem.tx.brm.Fbpretbox;
 
 
-import lombok.Data;
 
 import java.util.List;
 
-@Data
 public class FbpretboxIA {
 
     //ret_box 以Box_no 为主
