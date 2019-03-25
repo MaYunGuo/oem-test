@@ -110,8 +110,8 @@ function showDeatil(lot_no, oem_id){
             $("#detailOqcText").parent().parent().show();
             $("#detatilShipStatText").parent().parent().show();
             $("#detailPackBoxText").val(oary.box_no);
-            $("#detailOqcText").show(oary.oqc_grade);
-            $("#detatilShipStatText").show(oary.ship_stat);
+            $("#detailOqcText").val(oary.oqc_grade);
+            $("#detatilShipStatText").val(oary.ship_stat);
         }
         showImg(lot_no, oem_id);
         $("#detailDialog").modal('show');
