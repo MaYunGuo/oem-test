@@ -5,6 +5,12 @@ $(document).ready(function(){
         EVT_USR : $("#userId").text(), //evt_usr
         NORMAL : "0000000", //normal
     };
+    var sessionTimeOut = function () {
+        var evt_usr = VAL.EVT_USR;
+        if(!evt_usr){
+            window.location.href="logout.do";
+        }
+    }
     //公告
     var listAnnounceFunc = function () {
         var leftObj = {
@@ -78,5 +84,6 @@ $(document).ready(function(){
     $('#updateAnnounce3Btn').click(function () {
         updateAnounceFunc("03", $('#rightInfoTxt'));
     });
+    sessionTimeOut();
     listAnnounceFunc();
     });

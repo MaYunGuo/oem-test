@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,7 @@ public class LoginController {
     private IFupusrmageService usermageService;
 
     @RequestMapping("/login.do")
-    public String login(HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response){
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -34,7 +35,7 @@ public class LoginController {
             subject.login(usernamePasswordToken);   //完成登录
             Bis_user user= (Bis_user) subject.getPrincipal();
             session.setAttribute("user", user);
-            return "home";
+            return  new ModelAndView("home");
         } catch(UnknownAccountException e) {
             session.setAttribute("loginErr","用户不存在，请确认账号是否正确");
         }catch (IncorrectCredentialsException e){
@@ -42,7 +43,7 @@ public class LoginController {
         }catch (Exception e){
             session.setAttribute("loginErr","登录异常，请稍后重试");
         }
-        return "login";
+        return  new ModelAndView("login");
     }
     @RequestMapping("/logout.do")
     public String logout(){

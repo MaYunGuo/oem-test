@@ -29,12 +29,6 @@ public class FbpretboxOB {
     private Timestamp db_timestamp;
 
 
-    //oem_mtrl_use 扣料信息  根据lot_no 所以可以一对一
-    private List<MtrlUseInfo> mtrlUseList;
-
-    //image path  根据lot_no 所以可以一对一
-    private ImagePathInfo imagePathList;
-
     public int getId() {
         return id;
     }
@@ -187,19 +181,4 @@ public class FbpretboxOB {
         this.db_timestamp = db_timestamp;
     }
 
-    public List<MtrlUseInfo> getMtrlUseList() {
-        return mtrlUseList;
-    }
-
-    public void setMtrlUseList(List<MtrlUseInfo> mtrlUseList) {
-        this.mtrlUseList = mtrlUseList;
-    }
-
-    public ImagePathInfo getImagePathList() {
-        return imagePathList;
-    }
-
-    public void setImagePathList(ImagePathInfo imagePathList) {
-        this.imagePathList = imagePathList;
-    }
 }

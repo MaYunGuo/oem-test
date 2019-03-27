@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class WolcomeController {
 
     @RequestMapping(value={"/","/login","/login.html"})
-    public String welcome(){
-        Subject subject = SecurityUtils.getSubject();
-        Bis_user user= (Bis_user) subject.getPrincipal();
+    public String welcome(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Bis_user user= (Bis_user) session.getAttribute("user");
         if(user != null){
             return "home";
         }
@@ -25,18 +26,18 @@ public class WolcomeController {
     }
 
     @RequestMapping("/pageRedict.do")
-    public String pageRedict(String page){
-        Subject subject = SecurityUtils.getSubject();
-        Bis_user user= (Bis_user) subject.getPrincipal();
+    public String pageRedict(String page,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Bis_user user= (Bis_user) session.getAttribute("user");
         if(user != null){
             return page;
         }
         return "login";
     }
     @RequestMapping("/home.do")
-    public String rtnHome(){
-        Subject subject = SecurityUtils.getSubject();
-        Bis_user user= (Bis_user) subject.getPrincipal();
+    public String rtnHome(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Bis_user user= (Bis_user) (Bis_user) session.getAttribute("user");;
         if(user != null){
             return "home";
         }
