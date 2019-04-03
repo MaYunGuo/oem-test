@@ -139,7 +139,7 @@ $(document).ready(function() {
             controlsQuery.dialog.queryDialog_fatyIdText.val("");
     	},
     	delete_func : function(){
-			if(controlsQuery.$fatyNameText.attr("disabled") != "disabled"){
+			if(controlsQuery.$fatyNameText.prop("disabled") != true){
 				showErrorDialog("", "目前是编辑状态，不可进行其它操作！");
 				return false;
 			}
@@ -174,11 +174,11 @@ $(document).ready(function() {
     	    });
     	},
     	add_func : function(){
-    		if(controlsQuery.$fatyIdText.attr("disabled") != "disabled"){
+    		if(controlsQuery.$fatyIdText.prop("disabled") != true){
 				showErrorDialog("", "已经在新增中，请勿重复新增");
 				return false;
 			}
-			if(controlsQuery.$fatyNameText.attr("disabled") != "disabled"){
+			if(controlsQuery.$fatyNameText.prop("disabled") != true){
 				showErrorDialog("", "目前是编辑状态，不可进行其它操作！");
 				return false;
 			}
@@ -190,7 +190,7 @@ $(document).ready(function() {
     		controlsQuery.$fatyNameText.focus();
     	},
     	save_func : function(){
-    		var actionFlg = controlsQuery.$fatyIdText.attr("disabled") === "disabled" ? "U" : "A";
+    		var actionFlg = controlsQuery.$fatyIdText.prop("disabled") == true ? "U" : "A";
     		var faty_id = controlsQuery.$fatyIdText.val().trim();
     		var faty_name = controlsQuery.$fatyNameText.val().trim();
     		var anls_rate = controlsQuery.$anlsRateText.val().trim();
@@ -255,7 +255,7 @@ $(document).ready(function() {
     		
     	},
     	update_func : function() {
-			if(controlsQuery.$fatyNameText.attr("disabled") != "disabled"){
+			if(controlsQuery.$fatyNameText.prop("disabled") != true){
 				showErrorDialog("", "目前是编辑状态，不可进行其它操作！");
 				return false;
 			}
@@ -268,53 +268,31 @@ $(document).ready(function() {
 			$("#fatyConditionForm select").attr(VAL.ENABLED_ATTR);
 			controlsQuery.$fatyNameText.focus();
 		},
-		copy_func:function(){
-			if($("#opeDscTxt").attr("disabled") != "disabled"){
-				showErrorDialog("", "目前是编辑状态，不可进行其它操作！");
-				return false;
-			}
-			var selRowId = controlsQuery.mainGrd.grdId.jqGrid("getGridParam","selrow");
-			if (!selRowId) {
-				showErrorDialog("", "请选择需要复制的站点信息");
-				return false;
-			}
-            $("#fatyConditionForm input").attr(VAL.DISABLED_ATTR);
-            $("#fatyConditionForm select").attr(VAL.DISABLED_ATTR);
-			controlsQuery.$fatyNameText.focus();
-		},
 		rollback_func : function(){
-			if($("#opeDscTxt").attr("disabled") == "disabled"){
+			if(controlsQuery.$fatyNameText.prop("disabled") == true){
 				showErrorDialog("", "没有编辑，无需撤回");
 				return false;
 			}
-			var outObj,opeId,iary ={};
-			opeId = $("#opeIDTxt").val();
-			if(opeId){
-				iary.opeId = opeId;
-			}
-			var inObj_Query = {
-						trx_id : VAL.T_FBPBISFATY,
-						action_flg : 'Q',
-                        evt_usr : VAL.EVT_USR,
-						iary : [iary]
-					};
             $("#fatyConditionForm input").attr(VAL.DISABLED_ATTR);
             $("#fatyConditionForm select").attr(VAL.DISABLED_ATTR);
-			outObj = comTrxSubSendPostJson(inObj_Query);
+
+            var iary = {};
+			var faty_id = opeId = controlsQuery.$fatyIdText.val();
+			if(faty_id){
+				iary.faty_id = faty_id;
+			}
+			var inObj = {
+				trx_id : VAL.T_FBPBISFATY,
+				action_flg : 'Q',
+				evt_usr : VAL.EVT_USR,
+				iary : [iary]
+			};
+			var outObj = comTrxSubSendPostJson(inObj);
 			if (outObj.rtn_code === VAL.NORMAL) {
 				setGridInfo(outObj.oary, controlsQuery.mainGrd.grdId);
 				controlsQuery.dialog.queryDialog.modal("hide");
 				toolFunc.com_get_1st_inf();
 			}
-		},
-		clear_func : function() {
-			$("input[type='text']").val("");
-			SelectDom.setSelect($("select"), "", "");
-            SelectDom.setSelect(controlsQuery.$deptIDSel, "", "");
-            SelectDom.setSelect(controlsQuery.$toolgIDSel, "", "");
-            controlsQuery.mainGrd.grdId.jqGrid("clearGridData");
-            $("#fatyConditionForm input").attr(VAL.DISABLED_ATTR);
-            $("#fatyConditionForm select").attr(VAL.DISABLED_ATTR);
 		},
 		dialog_qyeryFnc:function () {
             var iary = {};
@@ -376,14 +354,8 @@ $(document).ready(function() {
         btnQuery.update_btn.click(function(){
             btnFunc.update_func();
         });
-        btnQuery.copy_btn.click(function(){
-            btnFunc.copy_func();
-        });
         btnQuery.rollback_btn.click(function(){
             btnFunc.rollback_func();
-        });
-        btnQuery.clear_btn.click(function(){
-            btnFunc.clear_func();
         });
         controlsQuery.dialog.qyeryDialgo_queryBtn.click(function () {
 			btnFunc.dialog_qyeryFnc();
