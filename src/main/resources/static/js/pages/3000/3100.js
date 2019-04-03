@@ -222,7 +222,7 @@ $(document).ready(function () {
             }
             var imgOutObj = comUplaod("uploadImg.do", imgInObj);
             if(imgOutObj.rtn_code !=  _NORMAL){
-                showErrorDialog("","IV图片上传失败");
+                showErrorDialog(imgOutObj.rtn_code,imgOutObj.rtn_mesg);
                 return false;
             }
 

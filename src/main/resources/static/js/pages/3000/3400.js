@@ -137,7 +137,7 @@ $(document).ready(function () {
             if (outObj.rtn_code === _NORMAL) {
                 // buttonFnc.clearFnc();
                 $("input").val("");
-                var data = buttonFnc.queryFnc(box_id);
+                var data = initFnc.queryFnc(box_id,null);
                 if(data != null){
                    setGridInfo(data, domObj.grid.$packListGrid);
                 }
@@ -213,13 +213,12 @@ $(document).ready(function () {
                if(lot_no){
                    var data = initFnc.queryFnc(null, lot_no);
                    if(data == null){
-                       showErrorDialog("","没有找到批次号[" +lot_no +"]的信息，请确认");
                        return false;
                    }
-                   var rowIds = domObj.grid.$pcikListGrid.getDataIDs(); //获取当前显示的记录
+                   var rowIds = domObj.grid.$packListGrid.getDataIDs(); //获取当前显示的记录
                    if(rowIds.length > 0){
                       for(var i=0;i<rowIds.length;i++){
-                          var rowData = domObj.grid.$pcikListGrid.jqGrid("getRowData", rowIds[i]);
+                          var rowData = domObj.grid.$packListGrid.jqGrid("getRowData", rowIds[i]);
                          if(rowData.lot_no == lot_no){
                              domObj.grid.$packListGrid.jqGrid("delRowData", rowIds[i]);
                              i = i-1;

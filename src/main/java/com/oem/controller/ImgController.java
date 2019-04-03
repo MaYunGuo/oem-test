@@ -3,7 +3,9 @@ package com.oem.controller;
 import com.oem.base.tx.BaseO;
 import com.oem.dao.IBisFactoryRepository;
 import com.oem.dao.IBisUserRepository;
+import com.oem.dao.IOemPrdLotRepository;
 import com.oem.entity.Bis_user;
+import com.oem.entity.Oem_prd_lot;
 import com.oem.util.FileUtil;
 import com.oem.util.JacksonUtil;
 import com.oem.util.LogUtils;
@@ -28,6 +30,9 @@ public class ImgController {
 
     @Autowired
     private IBisUserRepository bisUserRepository;
+
+    @Autowired
+    private IOemPrdLotRepository oemPrdLotRepository;
 
     @RequestMapping("/uploadImg.do")
     public String uploadImg(String usr_id, String img_typ, String lot_no, MultipartFile img_file){
@@ -89,10 +94,18 @@ public class ImgController {
             return JacksonUtil.toJSONStr(baseO);
         }
         String targetFiilePath = FTP_PATH + File.separator + usr_faty + File.separator + "IMAGE" + File.separator + img_typ + File.separator;
-
+        String hql ="From Oem_prd_lot where oem_id=?0 and lot_no =?1";
         for(MultipartFile img_file : img_files){
             try {
-                File targeFile = new File(targetFiilePath + img_file.getOriginalFilename());
+                String originName = img_file.getOriginalFilename();
+                String img_name = originName.substring(0, originName.indexOf("."));
+                Oem_prd_lot oem_prd_lot = oemPrdLotRepository.uniqueResult(hql, usr_faty, img_name);
+                if(oem_prd_lot == null){
+                    baseO.setRtn_code(E_OEM_PRD_LOT + E_READ_NOT_FOUND + _SPACE);
+                    baseO.setRtn_mesg("图片[" + img_name +"]对应的批次信息不存在，请确认");
+                    return JacksonUtil.toJSONStr(baseO);
+                }
+                File targeFile = new File(targetFiilePath + img_name +".jpg");
                 if(!targeFile.exists()){
                     targeFile.createNewFile();
                 }
