@@ -57,6 +57,7 @@ public class ImgController {
             File targeFile = new File(targetFiilePath);
             if(!targeFile.exists()){
                 targeFile.createNewFile();
+                FileUtil.storeFile(targetFiilePath);
             }
             InputStream inputStream = img_file.getInputStream();
             FileUtil.copyFile(inputStream, targeFile);
@@ -108,6 +109,7 @@ public class ImgController {
                 File targeFile = new File(targetFiilePath + img_name +".jpg");
                 if(!targeFile.exists()){
                     targeFile.createNewFile();
+                    FileUtil.storeFile(targetFiilePath);
                 }
                 InputStream inputStream = img_file.getInputStream();
                 FileUtil.copyFile(inputStream, targeFile);

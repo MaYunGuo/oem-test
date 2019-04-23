@@ -4,8 +4,12 @@ package com.oem.util;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class FileUtil {
@@ -97,12 +101,12 @@ public class FileUtil {
         return new File(fileName);
     }
 
-    public static File createFile(String path, String fileName) {
+    public static File createFile(String path, String fileName) throws Exception {
 
         File directory = new File(path);
-
         if (!directory.exists()) {
             directory.mkdirs();
+            storeFile(path);
         }
 
         return new File(path + fileName);
@@ -150,13 +154,37 @@ public class FileUtil {
         bw.close();
     }
 
-    public static void backExcelFile(File excelFile) throws IOException {
+    public static void backExcelFile(File excelFile) throws Exception {
         String fileName = excelFile.getName();
         String filePath = excelFile.getAbsolutePath();
         String fileBakPath = filePath.substring(0, filePath.lastIndexOf(File.separator)) + File.separator + "TEMP" + File.separator;
         File destFile = FileUtil.createFile(fileBakPath, fileName);  //备份
         FileUtil.copyFile(excelFile, destFile);
         FileUtil.deleteFile(excelFile);
+    }
+
+    /**
+     * 修改linux图片权限
+     * @param filePath
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    public static void storeFile(String filePath) throws Exception {
+        File file = new File(filePath);
+        //设置权限
+        Set<PosixFilePermission> perms = new HashSet<PosixFilePermission>();
+        perms.add(PosixFilePermission.OWNER_READ);//设置所有者的读取权限
+        perms.add(PosixFilePermission.OWNER_WRITE);//设置所有者的写权限
+        perms.add(PosixFilePermission.OWNER_EXECUTE);//设置所有者的执行权限
+        perms.add(PosixFilePermission.GROUP_READ);//设置组的读取权限
+        perms.add(PosixFilePermission.GROUP_EXECUTE);//设置组的读取权限
+        perms.add(PosixFilePermission.OTHERS_READ);//设置其他的读取权限
+        perms.add(PosixFilePermission.OTHERS_EXECUTE);//设置其他的读取权限
+        //设置文件和文件夹的权限
+        Path pathParent = Paths.get(file.getParentFile().getAbsolutePath());
+        Path pathDest = Paths.get(file.getAbsolutePath());
+        Files.setPosixFilePermissions(pathParent, perms);//修改文件夹路径的权限
+        Files.setPosixFilePermissions(pathDest, perms);//修改图片文件的权限
     }
 
 }

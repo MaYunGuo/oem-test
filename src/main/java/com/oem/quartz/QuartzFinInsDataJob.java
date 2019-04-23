@@ -46,6 +46,7 @@ public class QuartzFinInsDataJob extends QuartzJobBean {
             File filePath = new File(task_path);
             if(!filePath.exists()){
                 filePath.mkdirs();
+                FileUtil.storeFile(task_path);
             }
             String realPath = null;
             Workbook wb = null;
