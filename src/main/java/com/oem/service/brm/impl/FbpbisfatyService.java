@@ -17,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.oem.comdef.GenericDef.*;
+import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 
 @Service("fbpbisfatyService")
 public class FbpbisfatyService implements IFbpbisfatyService {
@@ -65,7 +67,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
         return strOutTrx;
     }
 
-    public long subMainProc2(FbpbisfatyI inTrx, FbpbisfatyO outTrx) throws SchedulerException {
+    public long subMainProc2(FbpbisfatyI inTrx, FbpbisfatyO outTrx) throws Exception {
         long rtn_code = _ERROR;
         char action_flg = inTrx.getAction_flg().charAt(0);
         switch (action_flg){
@@ -114,7 +116,7 @@ public class FbpbisfatyService implements IFbpbisfatyService {
         }
         return _NORMAL;
     }
-    public long addFunc(FbpbisfatyI inTrx, FbpbisfatyO outTrx){
+    public long addFunc(FbpbisfatyI inTrx, FbpbisfatyO outTrx) throws Exception{
         List<FbpbisfatyIA> iaryList = inTrx.getIary();
         if(iaryList == null || iaryList.isEmpty()){
            outTrx.setRtn_code(E_FBPBISFATY_INVALID_INPUT + _SPACE);
@@ -139,6 +141,21 @@ public class FbpbisfatyService implements IFbpbisfatyService {
             bis_factory.setEvt_usr(inTrx.getEvt_usr());
             bis_factory.setEvt_timestamp(DateUtil.getCurrentTimestamp());
             bisFactoryRepository.save(bis_factory);
+
+            String ivImgPath = FTP_PATH  + File.separator + fbpbisfatyIA.getFaty_id() + File.separator + "IMAGE" + File.separator + "IV";
+            File ivImg = new File(ivImgPath);
+            if(!ivImg.exists()){
+                ivImg.createNewFile();
+                FileUtil.storeFile(ivImgPath);
+
+            }
+
+            String elImgPath = FTP_PATH  + File.separator + fbpbisfatyIA.getFaty_id() + File.separator + "IMAGE" + File.separator + "EL3";
+            File elImg = new File(elImgPath);
+            if(!elImg.exists()){
+                elImg.createNewFile();
+                FileUtil.storeFile(elImgPath);
+            }
 
             String conExcepssion = getConExpession(fbpbisfatyIA.getAnls_rate(), fbpbisfatyIA.getAnls_unit());
             quartzService.addJob(QuartzIvDataJob.class,     fbpbisfatyIA.getFaty_id(), QUARTZ_GROUP_IV,   conExcepssion,   fbpbisfatyIA.getFaty_id());
