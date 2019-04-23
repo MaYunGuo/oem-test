@@ -177,9 +177,11 @@ public class FileUtil {
         perms.add(PosixFilePermission.OWNER_WRITE);//设置所有者的写权限
         perms.add(PosixFilePermission.OWNER_EXECUTE);//设置所有者的执行权限
         perms.add(PosixFilePermission.GROUP_READ);//设置组的读取权限
-        perms.add(PosixFilePermission.GROUP_EXECUTE);//设置组的读取权限
+        perms.add(PosixFilePermission.GROUP_WRITE); //设置组的写权限
+        perms.add(PosixFilePermission.GROUP_EXECUTE);//设置组的执行权限
         perms.add(PosixFilePermission.OTHERS_READ);//设置其他的读取权限
-        perms.add(PosixFilePermission.OTHERS_EXECUTE);//设置其他的读取权限
+        perms.add(PosixFilePermission.OTHERS_WRITE); //设置其他的写权限
+        perms.add(PosixFilePermission.OTHERS_EXECUTE);//设置其他的执行权限
         //设置文件和文件夹的权限
         Path pathParent = Paths.get(file.getParentFile().getAbsolutePath());
         Path pathDest = Paths.get(file.getAbsolutePath());
