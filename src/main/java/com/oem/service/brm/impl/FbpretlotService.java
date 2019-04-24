@@ -465,7 +465,7 @@ public class FbpretlotService implements IFbpretlotService {
                 fbpretlotOA.setUpdate_user(obj[15] == null ? _SPACE : obj[15].toString());
                 fbpretlotOA.setUpdate_timestamp(obj[16] == null ? null : Timestamp.valueOf(obj[16].toString()));
                 fbpretlotOA.setOqc_grade(obj[17] == null ? _SPACE : obj[17].toString());
-                fbpretlotOA.setShip_stat(obj[18] == null ? "未出货" : _YES.equals(obj[18].toString()) ? "已出货" : "为出货");
+                fbpretlotOA.setShip_stat(obj[18] == null ? "未出货" : _YES.equals(obj[18].toString()) ? "已出货" : "未出货");
                 oary.add(fbpretlotOA);
             }
             outTrx.setOary(oary);
