@@ -139,6 +139,7 @@ public class FbpretlotService implements IFbpretlotService {
         if(!StringUtil.isSpaceCheck(usr_faty)){
             hql.append(" and oem_id='").append(usr_faty).append("'");
         }
+        hql.append(" order by lot_no asc");
 
         List<Oem_prd_lot> oemPrdLotList = oemPrdLotRepository.find(hql.toString());
         if(oemPrdLotList == null || oemPrdLotList.isEmpty()){
