@@ -59,23 +59,21 @@ $(document).ready(function () {
                 elem: '#addMeasTimeText',
                 type: 'datetime',
                 format: 'yyyy-MM-dd HH:mm:ss',
-                btns: ['clear', 'confirm'],
+                btns: ['clear','now', 'confirm'],
             });
         },
         initQueryTime:function () {
             laydate.render({
                 elem: '#startTimeText',
                 type: 'datetime',
-                max:'nowTime',
                 format: 'yyyy-MM-dd HH:mm:ss',
-                btns: ['clear', 'confirm'],
+                btns: ['clear','now', 'confirm'],
             });
             laydate.render({
                 elem: '#endTimeText',
                 type: 'datetime',
-                max:'nowTime',
                 format: 'yyyy-MM-dd HH:mm:ss',
-                btns: ['clear', 'confirm'],
+                btns: ['clear','now', 'confirm'],
             });
         },
         initLotInfoGrd: function () {

@@ -6,6 +6,7 @@ import com.oem.util.*;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -22,6 +23,7 @@ import java.util.Date;
 import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 
 
+@DisallowConcurrentExecution
 public class QuartzIvDataJob extends QuartzJobBean {
 
     private LogUtils logUtils;
