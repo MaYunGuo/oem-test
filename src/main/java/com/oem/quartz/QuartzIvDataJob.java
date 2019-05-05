@@ -19,6 +19,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 
@@ -73,14 +74,22 @@ public class QuartzIvDataJob extends QuartzJobBean {
                    //获取最大行数
                    int rownum = sheet.getPhysicalNumberOfRows();
                    //获取最大列数
+                   String hql = "From Oem_prd_lot where lot_no = ?0  and oem_id = ?1";
                    for (int i = 1; i<rownum; i++) {
                        row = sheet.getRow(i);
                        if(row == null){
                            continue;
                        }
+                       String lot_no = ExcelUtil.getCellValue(row.getCell(0));
+                       List<Oem_prd_lot> oemPrdLotList = oemPrdLotRepository.list(hql,lot_no, task_name);
+                       if(oemPrdLotList != null && !oemPrdLotList.isEmpty()){
+                           logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
+                           continue;
+                       }
+
                        Oem_prd_lot oem_prd_lot = new Oem_prd_lot();
                        oem_prd_lot.setOem_id(task_name);
-                       oem_prd_lot.setLot_no(ExcelUtil.getCellValue(row.getCell(0)));
+                       oem_prd_lot.setLot_no(lot_no);
                        oem_prd_lot.setIv_power(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(1)))));
                        oem_prd_lot.setIv_isc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(2)))));
                        oem_prd_lot.setIv_voc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(3)))));
