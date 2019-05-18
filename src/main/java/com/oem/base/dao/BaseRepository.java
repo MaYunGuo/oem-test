@@ -184,6 +184,16 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
     }
 
     @Override
+    public <T extends BaseEntity> void saveNew(T entity) {
+        getEntityManager().persist(entity);
+        flush();
+//
+//        setEntity(entity, INSERT);
+//        sendHis(entity);
+
+    }
+
+    @Override
     public <T extends BaseEntity> void save(Collection<T> entities) {
         entities.forEach(entity -> {
             getEntityManager().persist(entity);

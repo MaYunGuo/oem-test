@@ -62,6 +62,8 @@ public interface IBaseRepository<T extends Serializable,ID extends Serializable>
 
     <T extends BaseEntity> void save(T object);
 
+    <T extends BaseEntity> void saveNew(T object);
+
     <T extends BaseEntity> void save(Collection<T> objectList);
 
     <T extends BaseEntity> void update(T object);
