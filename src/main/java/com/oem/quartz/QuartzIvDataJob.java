@@ -33,7 +33,6 @@ public class QuartzIvDataJob extends QuartzJobBean {
     private IOemPrdLotRepository oemPrdLotRepository;
 
     @Override
-    @Transactional
     public void executeInternal(JobExecutionContext jobExecutionContext){
 
         logUtils = new LogUtils(QuartzIvDataJob.class);
@@ -79,37 +78,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
                    //获取最大列数
                    String hql = "From Oem_prd_lot where lot_no = ?0  and oem_id = ?1";
                    for (int i = 1; i<rownum; i++) {
-                       long startTime = System.currentTimeMillis();
-                       row = sheet.getRow(i);
-                       if(row == null){
-                           continue;
-                       }
-                       String lot_no = ExcelUtil.getCellValue(row.getCell(0));
-                       List<Oem_prd_lot> oemPrdLotList = oemPrdLotRepository.list(hql,lot_no, task_name);
-                       if(oemPrdLotList != null && !oemPrdLotList.isEmpty()){
-                           logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
-                           continue;
-                       }
-
-                       Oem_prd_lot oem_prd_lot = new Oem_prd_lot();
-                       oem_prd_lot.setOem_id(task_name);
-                       oem_prd_lot.setLot_no(lot_no);
-                       oem_prd_lot.setIv_power(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(1)))));
-                       oem_prd_lot.setIv_isc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(2)))));
-                       oem_prd_lot.setIv_voc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(3)))));
-                       oem_prd_lot.setIv_imp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(4)))));
-                       oem_prd_lot.setIv_vmp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(5)))));
-                       oem_prd_lot.setIv_ff(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(6)))));
-                       oem_prd_lot.setIv_tmper(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(7)))));
-                       oem_prd_lot.setIv_adj_versioni(ExcelUtil.getCellValue(row.getCell(8)));
-                       oem_prd_lot.setIv_timestamp(Timestamp.valueOf(ExcelUtil.getCellValue(row.getCell(9))));
-                       oem_prd_lot.setUpdate_user("IV_TASK");
-                       oem_prd_lot.setUpdate_timestamp(cr_timestamp);
-                       long saveStartTime = System.currentTimeMillis();
-                       oemPrdLotRepository.saveNew(oem_prd_lot);
-                       long endTime = System.currentTimeMillis();
-                       logUtils.info("解析第[" + i +"]条数据保存数据库耗时:[" +(endTime-saveStartTime) +"]");
-                       logUtils.info("解析第[" + i +"]条数据耗时:[" +(endTime-startTime) +"]");
+                       saveExcelData(row,sheet,i,hql,task_name,cr_timestamp);
                    }
                    long endTime = System.currentTimeMillis();
                    logUtils.info("解析excel数据，耗时[" + (endTime - fileEndTime)+"]");
@@ -122,6 +91,41 @@ public class QuartzIvDataJob extends QuartzJobBean {
         }
         long endTimes = System.currentTimeMillis();
         logUtils.info(task_name +"IV数据解析完成，总耗时:" +(endTimes -startTimes));
+    }
+
+    @Transactional
+    public void saveExcelData(Row row,Sheet sheet, int i, String hql, String task_name, Timestamp cr_timestamp){
+        long startTime = System.currentTimeMillis();
+        row = sheet.getRow(i);
+        if(row == null){
+            return;
+        }
+        String lot_no = ExcelUtil.getCellValue(row.getCell(0));
+        List<Oem_prd_lot> oemPrdLotList = oemPrdLotRepository.list(hql,lot_no, task_name);
+        if(oemPrdLotList != null && !oemPrdLotList.isEmpty()){
+            logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
+            return;
+        }
+
+        Oem_prd_lot oem_prd_lot = new Oem_prd_lot();
+        oem_prd_lot.setOem_id(task_name);
+        oem_prd_lot.setLot_no(lot_no);
+        oem_prd_lot.setIv_power(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(1)))));
+        oem_prd_lot.setIv_isc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(2)))));
+        oem_prd_lot.setIv_voc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(3)))));
+        oem_prd_lot.setIv_imp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(4)))));
+        oem_prd_lot.setIv_vmp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(5)))));
+        oem_prd_lot.setIv_ff(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(6)))));
+        oem_prd_lot.setIv_tmper(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(7)))));
+        oem_prd_lot.setIv_adj_versioni(ExcelUtil.getCellValue(row.getCell(8)));
+        oem_prd_lot.setIv_timestamp(Timestamp.valueOf(ExcelUtil.getCellValue(row.getCell(9))));
+        oem_prd_lot.setUpdate_user("IV_TASK");
+        oem_prd_lot.setUpdate_timestamp(cr_timestamp);
+        long saveStartTime = System.currentTimeMillis();
+        oemPrdLotRepository.saveNew(oem_prd_lot);
+        long endTime = System.currentTimeMillis();
+        logUtils.info("解析第[" + i +"]条数据保存数据库耗时:[" +(endTime-saveStartTime) +"]");
+        logUtils.info("解析第[" + i +"]条数据耗时:[" +(endTime-startTime) +"]");
     }
 }
 
