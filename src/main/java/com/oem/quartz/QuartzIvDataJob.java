@@ -94,24 +94,23 @@ public class QuartzIvDataJob extends QuartzJobBean {
 //                           logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
 //                           continue;
 //                       }
+                       oem_prd_lot = new Oem_prd_lot();
+                       oem_prd_lot.setOem_id(task_name);
+                       oem_prd_lot.setLot_no(lot_no);
+                       oem_prd_lot.setIv_power(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(1)))));
+                       oem_prd_lot.setIv_isc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(2)))));
+                       oem_prd_lot.setIv_voc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(3)))));
+                       oem_prd_lot.setIv_imp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(4)))));
+                       oem_prd_lot.setIv_vmp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(5)))));
+                       oem_prd_lot.setIv_ff(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(6)))));
+                       oem_prd_lot.setIv_tmper(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(7)))));
+                       oem_prd_lot.setIv_adj_versioni(ExcelUtil.getCellValue(row.getCell(8)));
+                       oem_prd_lot.setIv_timestamp(Timestamp.valueOf(ExcelUtil.getCellValue(row.getCell(9))));
+                       oem_prd_lot.setUpdate_user("IV_TASK");
+                       oem_prd_lot.setUpdate_timestamp(cr_timestamp);
+
                        long endTime = System.currentTimeMillis();
                        logUtils.info("耗时:[" + (endTime - startTime)+"]");
-//
-//                       oem_prd_lot = new Oem_prd_lot();
-//                       oem_prd_lot.setOem_id(task_name);
-//                       oem_prd_lot.setLot_no(lot_no);
-//                       oem_prd_lot.setIv_power(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(1)))));
-//                       oem_prd_lot.setIv_isc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(2)))));
-//                       oem_prd_lot.setIv_voc(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(3)))));
-//                       oem_prd_lot.setIv_imp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(4)))));
-//                       oem_prd_lot.setIv_vmp(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(5)))));
-//                       oem_prd_lot.setIv_ff(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(6)))));
-//                       oem_prd_lot.setIv_tmper(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(7)))));
-//                       oem_prd_lot.setIv_adj_versioni(ExcelUtil.getCellValue(row.getCell(8)));
-//                       oem_prd_lot.setIv_timestamp(Timestamp.valueOf(ExcelUtil.getCellValue(row.getCell(9))));
-//                       oem_prd_lot.setUpdate_user("IV_TASK");
-//                       oem_prd_lot.setUpdate_timestamp(cr_timestamp);
-//                       long saveStartTime = System.currentTimeMillis();
 //                       oemPrdLotRepository.saveNew(oem_prd_lot);
 ////                       if(i%100==0){
 ////                           oemPrdLotRepository.
