@@ -33,6 +33,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
     private IOemPrdLotRepository oemPrdLotRepository;
 
     @Override
+    @Transactional
     public void executeInternal(JobExecutionContext jobExecutionContext){
 
         logUtils = new LogUtils(QuartzIvDataJob.class);
