@@ -31,10 +31,10 @@ public class JdbcRepository {
         return conn;
     }
 
-    public boolean getOemInfoByLotNo(Connection conn, String lot_no){
+    public boolean getOemInfoByLotNo(Connection conn, String lot_no,String oem_id){
 
         boolean flg = false;
-        String sql = "select *from oem_prd_lot where lot_no = '" + lot_no+ "'" ;
+        String sql = "select *from oem_prd_lot where lot_no = '" + lot_no+ "' and oem_id ='"+oem_id+"'" ;
         Statement pstmt= null;
         ResultSet rs = null;
         try {
