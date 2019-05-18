@@ -34,7 +34,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
     private IOemPrdLotRepository oemPrdLotRepository;
 
     @Override
-    @Transactional(propagation= Propagation.NOT_SUPPORTED)
+    @Transactional()
     public void executeInternal(JobExecutionContext jobExecutionContext){
 
         logUtils = new LogUtils(QuartzIvDataJob.class);
