@@ -186,7 +186,6 @@ public class BaseRepository<T extends Serializable, ID extends Serializable> imp
     @Override
     public <T extends BaseEntity> void saveNew(T entity) {
         getEntityManager().persist(entity);
-        getEntityManager().getTransaction().commit();
         flush();
 //
 //        setEntity(entity, INSERT);
