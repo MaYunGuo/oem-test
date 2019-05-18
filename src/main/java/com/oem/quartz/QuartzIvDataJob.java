@@ -109,8 +109,8 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        oem_prd_lot.setUpdate_user("IV_TASK");
                        oem_prd_lot.setUpdate_timestamp(cr_timestamp);
 
+                       saveLotInfo(oem_prd_lot);
 
-                       oemPrdLotRepository.saveNew(oem_prd_lot);
                        long endTime = System.currentTimeMillis();
                        logUtils.info("耗时:[" + (endTime - startTime)+"]");
 ////                       if(i%100==0){
@@ -131,6 +131,10 @@ public class QuartzIvDataJob extends QuartzJobBean {
         }
         long endTimes = System.currentTimeMillis();
         logUtils.info(task_name +"IV数据解析完成，总耗时:" +(endTimes -startTimes));
+    }
+    @Transactional
+    public void saveLotInfo(Oem_prd_lot oem_prd_lot){
+        oemPrdLotRepository.saveNew(oem_prd_lot);
     }
 }
 
