@@ -89,7 +89,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
                            continue;
                        }
                        lot_no = ExcelUtil.getCellValue(row.getCell(0));
-                       oemPrdLotList = oemPrdLotRepository.list(hql,ExcelUtil.getCellValue(row.getCell(0)), task_name);
+//                       oemPrdLotList = oemPrdLotRepository.list(hql,ExcelUtil.getCellValue(row.getCell(0)), task_name);
 //                       if(oemPrdLotList != null && !oemPrdLotList.isEmpty()){
 //                           logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
 //                           continue;
@@ -109,9 +109,10 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        oem_prd_lot.setUpdate_user("IV_TASK");
                        oem_prd_lot.setUpdate_timestamp(cr_timestamp);
 
+
+                       oemPrdLotRepository.saveNew(oem_prd_lot);
                        long endTime = System.currentTimeMillis();
                        logUtils.info("耗时:[" + (endTime - startTime)+"]");
-//                       oemPrdLotRepository.saveNew(oem_prd_lot);
 ////                       if(i%100==0){
 ////                           oemPrdLotRepository.
 ////                       }
