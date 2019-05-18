@@ -60,6 +60,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
             if(filePath.exists() && filePath.isDirectory()){
                File[] allFiles =  filePath.listFiles();
                for(File ivFile : allFiles){
+                   long fileStart = System.currentTimeMillis();
                    if(ivFile.isDirectory()){
                        continue;
                    }
@@ -73,9 +74,12 @@ public class QuartzIvDataJob extends QuartzJobBean {
                    sheet = wb.getSheetAt(0);
                    //获取最大行数
                    int rownum = sheet.getPhysicalNumberOfRows();
+                   long fileEndTime = System.currentTimeMillis();
+                   logUtils.info("获取文件，耗时[" +(fileEndTime-fileStart)+ "]");
                    //获取最大列数
                    String hql = "From Oem_prd_lot where lot_no = ?0  and oem_id = ?1";
                    for (int i = 1; i<rownum; i++) {
+                       long startTime = System.currentTimeMillis();
                        row = sheet.getRow(i);
                        if(row == null){
                            continue;
@@ -102,7 +106,11 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        oem_prd_lot.setUpdate_user("IV_TASK");
                        oem_prd_lot.setUpdate_timestamp(cr_timestamp);
                        oemPrdLotRepository.save(oem_prd_lot);
+                       long endTime = System.currentTimeMillis();
+                       logUtils.info("解析第[" + i +"]条数据耗时:[" +(endTime-startTime) +"]");
                    }
+                   long endTime = System.currentTimeMillis();
+                   logUtils.info("解析excel数据，耗时[" + (endTime - fileEndTime)+"]");
                    FileUtil.backExcelFile(ivFile);
                }
             }
