@@ -12,6 +12,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -33,6 +34,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
     private IOemPrdLotRepository oemPrdLotRepository;
 
     @Override
+    @Transactional(propagation= Propagation.NOT_SUPPORTED)
     public void executeInternal(JobExecutionContext jobExecutionContext){
 
         logUtils = new LogUtils(QuartzIvDataJob.class);
