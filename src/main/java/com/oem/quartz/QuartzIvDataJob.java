@@ -105,8 +105,10 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        oem_prd_lot.setIv_timestamp(Timestamp.valueOf(ExcelUtil.getCellValue(row.getCell(9))));
                        oem_prd_lot.setUpdate_user("IV_TASK");
                        oem_prd_lot.setUpdate_timestamp(cr_timestamp);
+                       long saveStartTime = System.currentTimeMillis();
                        oemPrdLotRepository.save(oem_prd_lot);
                        long endTime = System.currentTimeMillis();
+                       logUtils.info("解析第[" + i +"]条数据保存数据库耗时:[" +(endTime-saveStartTime) +"]");
                        logUtils.info("解析第[" + i +"]条数据耗时:[" +(endTime-startTime) +"]");
                    }
                    long endTime = System.currentTimeMillis();
