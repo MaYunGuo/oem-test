@@ -1,5 +1,6 @@
 package com.oem.quartz;
 
+import com.oem.base.dao.IBaseRepository;
 import com.oem.base.dao.JdbcRepository;
 import com.oem.dao.IOemPrdLotRepository;
 import com.oem.entity.Oem_prd_lot;
@@ -20,6 +21,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +33,9 @@ import static com.oem.comdef.GenericStaticDef.FTP_PATH;
 public class QuartzIvDataJob extends QuartzJobBean {
 
     private LogUtils logUtils;
+
+    @Autowired
+    private IOemPrdLotRepository oemPrdLotRepository;
 
     @Autowired
     private JdbcRepository jdbcRepository;
@@ -95,8 +100,8 @@ public class QuartzIvDataJob extends QuartzJobBean {
                            continue;
                        }
                        lot_no = ExcelUtil.getCellValue(row.getCell(0));
-                       chkFlg =jdbcRepository.getOemInfoByLotNo(connection, lot_no);
-                       if(chkFlg){
+                       oemPrdLotList =oemPrdLotRepository.list(hql, lot_no,task_name);
+                       if(oemPrdLotList != null && !oemPrdLotList.isEmpty()){
                            logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
                            continue;
                        }
@@ -118,7 +123,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        jdbcRepository.insertSetting(oem_prd_lot, connection);
 
                        long endTime = System.currentTimeMillis();
-                       logUtils.info("耗时:[" + (endTime - startTime) + "]");
+                       logUtils.info("解析第["+i+"]行数据，耗时:[" + (endTime - startTime) + "]");
                    }
                    long endTime = System.currentTimeMillis();
                    logUtils.info("解析excel数据，耗时[" + (endTime - fileEndTime)+"]");
@@ -127,6 +132,11 @@ public class QuartzIvDataJob extends QuartzJobBean {
             }
          } catch (Exception e) {
             logUtils.info(task_name +"解析IV数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
+            try {
+                connection.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
         long endTimes = System.currentTimeMillis();
         logUtils.info(task_name +"IV数据解析完成，总耗时:" +(endTimes -startTimes));
