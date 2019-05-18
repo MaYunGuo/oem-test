@@ -1,5 +1,6 @@
 package com.oem.quartz;
 
+import com.oem.base.dao.JdbcRepository;
 import com.oem.dao.IOemPrdLotRepository;
 import com.oem.entity.Oem_prd_lot;
 import com.oem.util.*;
@@ -18,6 +19,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -31,10 +33,9 @@ public class QuartzIvDataJob extends QuartzJobBean {
     private LogUtils logUtils;
 
     @Autowired
-    private IOemPrdLotRepository oemPrdLotRepository;
+    private JdbcRepository jdbcRepository;
 
     @Override
-    @Transactional()
     public void executeInternal(JobExecutionContext jobExecutionContext){
 
         logUtils = new LogUtils(QuartzIvDataJob.class);
@@ -47,6 +48,10 @@ public class QuartzIvDataJob extends QuartzJobBean {
 
         long startTimes = System.currentTimeMillis();
         logUtils.info(task_name + "IV数据解析开始执行---------------------------");
+        Connection connection = jdbcRepository.getConnection();
+        if(connection == null){
+            return;
+        }
         try {
             File filePath = new File(task_path);
             if(!filePath.exists()){
@@ -60,6 +65,7 @@ public class QuartzIvDataJob extends QuartzJobBean {
             Oem_prd_lot oem_prd_lot = null;
             List<Oem_prd_lot> oemPrdLotList = null;
             String lot_no = null;
+            boolean chkFlg = false;
             Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
             if(filePath.exists() && filePath.isDirectory()){
                File[] allFiles =  filePath.listFiles();
@@ -85,15 +91,15 @@ public class QuartzIvDataJob extends QuartzJobBean {
                    for (int i = 1; i<rownum; i++) {
                        long startTime = System.currentTimeMillis();
                        row = sheet.getRow(i);
-                       if(row == null){
+                       if (row == null) {
                            continue;
                        }
                        lot_no = ExcelUtil.getCellValue(row.getCell(0));
-//                       oemPrdLotList = oemPrdLotRepository.list(hql,ExcelUtil.getCellValue(row.getCell(0)), task_name);
-//                       if(oemPrdLotList != null && !oemPrdLotList.isEmpty()){
-//                           logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
-//                           continue;
-//                       }
+                       chkFlg =jdbcRepository.getOemInfoByLotNo(connection, lot_no);
+                       if(chkFlg){
+                           logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
+                           continue;
+                       }
                        oem_prd_lot = new Oem_prd_lot();
                        oem_prd_lot.setOem_id(task_name);
                        oem_prd_lot.setLot_no(lot_no);
@@ -109,16 +115,10 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        oem_prd_lot.setUpdate_user("IV_TASK");
                        oem_prd_lot.setUpdate_timestamp(cr_timestamp);
 
-                       saveLotInfo(oem_prd_lot);
+                       jdbcRepository.insertSetting(oem_prd_lot, connection);
 
                        long endTime = System.currentTimeMillis();
-                       logUtils.info("耗时:[" + (endTime - startTime)+"]");
-////                       if(i%100==0){
-////                           oemPrdLotRepository.
-////                       }
-//                       long endTime = System.currentTimeMillis();
-//                       logUtils.info("解析第[" + i +"]条数据保存数据库耗时:[" +(endTime-saveStartTime) +"]");
-//                       logUtils.info("解析第[" + i +"]条数据耗时:[" +(endTime-startTime) +"]");
+                       logUtils.info("耗时:[" + (endTime - startTime) + "]");
                    }
                    long endTime = System.currentTimeMillis();
                    logUtils.info("解析excel数据，耗时[" + (endTime - fileEndTime)+"]");
@@ -126,15 +126,10 @@ public class QuartzIvDataJob extends QuartzJobBean {
                }
             }
          } catch (Exception e) {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             logUtils.info(task_name +"解析IV数据发生异常，原因[" + StringUtil.stackTraceToString(e) +"]");
         }
         long endTimes = System.currentTimeMillis();
         logUtils.info(task_name +"IV数据解析完成，总耗时:" +(endTimes -startTimes));
-    }
-    @Transactional
-    public void saveLotInfo(Oem_prd_lot oem_prd_lot){
-        oemPrdLotRepository.saveNew(oem_prd_lot);
     }
 }
 
