@@ -82,12 +82,14 @@ public class QuartzIvDataJob extends QuartzJobBean {
                    //获取最大列数
                    String hql = "From Oem_prd_lot where lot_no = ?0  and oem_id = ?1";
                    for (int i = 1; i<rownum; i++) {
-                         logUtils.info("当前时间：" + DateUtil.getEvtTime());
-//                       long startTime = System.currentTimeMillis();
-//                       row = sheet.getRow(i);
-//                       if(row == null){
-//                           continue;
-//                       }
+                       logUtils.info("当前时间：" + DateUtil.getEvtTime());
+                       long startTime = System.currentTimeMillis();
+                       row = sheet.getRow(i);
+                       if(row == null){
+                           continue;
+                       }
+                       long endTime = System.currentTimeMillis();
+                       logUtils.info("耗时:[" + (endTime - startTime)+"]");
 //                       lot_no = ExcelUtil.getCellValue(row.getCell(0));
 //                       oemPrdLotList = oemPrdLotRepository.list(hql,ExcelUtil.getCellValue(row.getCell(0)), task_name);
 //                       if(oemPrdLotList != null && !oemPrdLotList.isEmpty()){
