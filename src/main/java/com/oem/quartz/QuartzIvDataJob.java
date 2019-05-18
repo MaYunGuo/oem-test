@@ -56,6 +56,9 @@ public class QuartzIvDataJob extends QuartzJobBean {
             Workbook wb = null;
             Sheet sheet = null;
             Row row = null;
+            Oem_prd_lot oem_prd_lot = null;
+            List<Oem_prd_lot> oemPrdLotList = null;
+            String lot_no = null;
             Timestamp cr_timestamp = DateUtil.getCurrentTimestamp();
             if(filePath.exists() && filePath.isDirectory()){
                File[] allFiles =  filePath.listFiles();
@@ -84,14 +87,14 @@ public class QuartzIvDataJob extends QuartzJobBean {
                        if(row == null){
                            continue;
                        }
-                       String lot_no = ExcelUtil.getCellValue(row.getCell(0));
-                       List<Oem_prd_lot> oemPrdLotList = oemPrdLotRepository.list(hql,lot_no, task_name);
+                       lot_no = ExcelUtil.getCellValue(row.getCell(0));
+                       oemPrdLotList = oemPrdLotRepository.list(hql,ExcelUtil.getCellValue(row.getCell(0)), task_name);
                        if(oemPrdLotList != null && !oemPrdLotList.isEmpty()){
                            logUtils.info(task_name +"解析IV数据,批次号[" + lot_no +"]已经存在");
                            continue;
                        }
 
-                       Oem_prd_lot oem_prd_lot = new Oem_prd_lot();
+                       oem_prd_lot = new Oem_prd_lot();
                        oem_prd_lot.setOem_id(task_name);
                        oem_prd_lot.setLot_no(lot_no);
                        oem_prd_lot.setIv_power(BigDecimal.valueOf(Double.valueOf(ExcelUtil.getCellValue(row.getCell(1)))));
